@@ -17,13 +17,15 @@ export default {
 }
 </script>
 
-<style>
-    #app { 
-        background: url("./assets/Background.jpg") no-repeat center center fixed; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-    }
+<style <style lang="less">
+@import (css)url('https://fonts.googleapis.com/css?family=Play');
+
+  #app { 
+    background: url("./assets/Background.jpg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
 </style>
 

@@ -1,7 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
+import MainCard from "@/views/MainCard";
+import FourOFour from "@/views/FourOFour";
 import LandingPage from "@/views/LandingPage";
-import FourOFour from "@/views/FourOFour"
+import Start from "@/views/Start";
+import LoginForm from "@/views/LoginForm";
+import RegisterForm from "@/views/RegisterForm";
+import TournamentFinder from "@/views/TournamentFinder";
 
 Vue.use(Router);
 
@@ -11,8 +16,38 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "/LandingPage",
-      component: LandingPage
+      name: "MainCard",
+      component: MainCard,
+      children: [
+        {
+          path: "",
+          name: "LandingPage",
+          component: LandingPage,
+        }
+      ]
+    },
+    {
+      path: "/start",
+      redirect: "/start/login",
+      name: "Start",
+      component: Start,
+      children: [
+        {
+          path: "register",
+          name: "register",
+          component: RegisterForm
+        },
+        {
+          path: "login",
+          name: "login",
+          component: LoginForm
+        },
+        {
+          path: "find",
+          name: "find",
+          component: TournamentFinder
+        }
+      ]
     },
     {
       path: "*",
