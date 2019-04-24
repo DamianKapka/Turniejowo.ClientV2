@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
      name: 'RegisterForm',
 
@@ -60,7 +62,16 @@ export default {
           ],
           FullName: function(){
                return this.FName + " " + this.LName
-          }
+          },
+          Model: function(){
+               return{
+               Login: this.Mail,
+               Email: this.Mail,
+               Password: this.Password,
+               FullName: this.FullName(),
+               Phone: this.Phone
+               }
+          },
           }
      },
      watch: {
@@ -71,12 +82,22 @@ export default {
                this.$refs.form.reset();
           },
           submit(){
-               alert(this.FullName())
                if(this.$refs.form.validate()){
-                    
-               }
-               else{
-                    alert('bad');
+                    axios.post("https://localhost:5001/api/user",
+                    this.Model()
+                    )
+                    .then(response => {
+                         alert('Konto założone poprawnie!');
+                         this.$router.replace('login');                        
+                    })
+                    .catch(error => {
+                         if(error.response.status == 409){
+                              alert('POdany adres e-mail istnieje w bazie danych');
+                         }
+                         else{
+                              alert(error.response.data)
+                         }
+                    })                   
                }
           }
      },
