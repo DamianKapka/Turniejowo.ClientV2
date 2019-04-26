@@ -3,19 +3,25 @@
           <v-container>
                <v-layout>
                     <v-flex xs8 offset-xs2>
+                         <div class="RegisterForm-div">
                          <v-text-field v-model="FName" :rules="FNameRules" label="Imię" required/>
                          <v-text-field v-model="LName" :rules="LNameRules" label="Nazwisko" required/>
                          <v-text-field v-model="Password" :rules="PasswordRules" label="Hasło" required/>
                          <v-text-field v-model="PasswordRepeat" :rules="PasswordRepeatRules" label="Powtórz hasło" required/>
                          <v-text-field v-model="Mail" :rules="MailRules" label="Adres e-mail" required/>
                          <v-text-field v-model="Phone" :rules="PhoneRules" label="Nr telefonu"/>
-                         <v-layout row>
-                              <v-flex xs1></v-flex>
-                              <v-flex xs4><v-btn block color="success" v-on:click="submit()">Stwórz Konto</v-btn></v-flex>
-                              <v-flex xs2></v-flex>
-                              <v-flex xs4><v-btn block color="warning" v-on:click="reset()">Reset</v-btn></v-flex>
-                              <v-flex xs1></v-flex>
-                         </v-layout>
+
+                              <div style="padding-top: 5%">
+                              <v-layout row>                              
+                                   <v-flex xs1></v-flex>
+                                   <v-flex xs4><v-btn block color="success" v-on:click="submit()">Stwórz Konto</v-btn></v-flex>
+                                   <v-flex xs2></v-flex>
+                                   <v-flex xs4><v-btn block color="warning" v-on:click="reset()">Reset</v-btn></v-flex>
+                                   <v-flex xs1></v-flex>
+                              </v-layout>
+                              </div>
+
+                         </div>
                     </v-flex>
                </v-layout>
           </v-container>
@@ -92,7 +98,7 @@ export default {
                     })
                     .catch(error => {
                          if(error.response.status == 409){
-                              alert('POdany adres e-mail istnieje w bazie danych');
+                              alert('Podany adres e-mail istnieje w bazie danych');
                          }
                          else{
                               alert(error.response.data)
@@ -105,5 +111,8 @@ export default {
 </script>
 
 <style>
-
+     .RegisterForm-div{
+               padding: 5%;
+               font-family: 'Play', sans-serif;
+          }
 </style>
