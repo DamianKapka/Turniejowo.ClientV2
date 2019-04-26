@@ -21,11 +21,11 @@
 <script>
 export default {
     name: "TournamentFinder",
-    valid: false,
     idToFind: '',
     data(){
         return{
-
+            valid: false,
+            IdToFind: '',
         }
     },
     methods:{

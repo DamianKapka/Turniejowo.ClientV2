@@ -8,19 +8,19 @@
 
                     <v-flex xs4>
                         <router-link :to="{path: 'login'}" replace>
-                        <v-card class="elevation-7 start-inner-card">LOGIN</v-card>
+                        <v-card class="elevation-7 start-inner-card" v-bind:class="{'i-beat-for-you' : currentPage == 'login'}">LOGIN</v-card>
                         </router-link>
                     </v-flex>
 
                     <v-flex xs4>
                         <router-link :to="{path: 'register'}" replace>
-                        <v-card class="elevation-7 start-inner-card">REGISTER</v-card>
+                        <v-card class="elevation-7 start-inner-card" v-bind:class="{'i-beat-for-you' : currentPage == 'register'}">REGISTER</v-card>
                         </router-link>
                     </v-flex>
 
                     <v-flex xs4>
                         <router-link :to="{path: 'find'}" replace>
-                        <v-card class="elevation-7 start-inner-card">FIND</v-card>
+                        <v-card class="elevation-7 start-inner-card" v-bind:class="{'i-beat-for-you' : currentPage == 'find'}">FIND</v-card>
                         </router-link>
                     </v-flex>
 
@@ -37,6 +37,21 @@
 
 export default {
     name:'Start',
+
+    data(){
+        return{
+            currentPage : this.$route.name,            
+        }
+    },
+
+    watch:{
+        $route (to,from){
+            this.currentPage = to.name;                
+        }
+    },
+    methods:{
+ 
+    },
     components:{
     }
 }
@@ -51,6 +66,12 @@ export default {
         border-radius: 4px;
         margin: 7% 0;
         opacity: 0.9;
+    }
+
+    .i-beat-for-you{
+        border: 3px solid #ff9933!important;
+        padding: 5%!important;
+        background-color: #ffb984!important;
     }
 
     .start-inner-card{
@@ -75,5 +96,9 @@ export default {
 
     .start-buttons-div{
         padding-top: 5%;
+    }
+
+    .start-div v-btn{
+        font-weight: bold;
     }
 </style>
