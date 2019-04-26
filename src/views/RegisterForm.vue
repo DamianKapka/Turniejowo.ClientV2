@@ -3,7 +3,7 @@
           <v-container>
                <v-layout>
                     <v-flex xs8 offset-xs2>
-                         <div class="RegisterForm-div">
+                         <div class="start-div">
                          <v-text-field v-model="FName" :rules="FNameRules" label="Imię" required/>
                          <v-text-field v-model="LName" :rules="LNameRules" label="Nazwisko" required/>
                          <v-text-field v-model="Password" :rules="PasswordRules" label="Hasło" required/>
@@ -11,7 +11,7 @@
                          <v-text-field v-model="Mail" :rules="MailRules" label="Adres e-mail" required/>
                          <v-text-field v-model="Phone" :rules="PhoneRules" label="Nr telefonu"/>
 
-                              <div style="padding-top: 5%">
+                              <div>
                               <v-layout row>                              
                                    <v-flex xs1></v-flex>
                                    <v-flex xs4><v-btn block color="success" v-on:click="submit()">Stwórz Konto</v-btn></v-flex>
@@ -111,8 +111,5 @@ export default {
 </script>
 
 <style>
-     .RegisterForm-div{
-               padding: 5%;
-               font-family: 'Play', sans-serif;
-          }
+
 </style>

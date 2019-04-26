@@ -1,24 +1,27 @@
 <template>
-    <v-container>
-        <v-layout>            
-            <v-flex xs8 offset-xs2>  
-                <div class="TournamentFinder-div">              
-                <v-text-field v-model="IdToFind" label="Id szukanego turnieju" required/>
+    <v-form ref="form" v-model="valid">
+        <v-container>
+            <v-layout>            
+                <v-flex xs8 offset-xs2>  
+                    <div class="start-div">              
+                    <v-text-field v-model="IdToFind" label="Id szukanego turnieju" required/>
 
-                    <v-flex xs6 offset-xs3>
-                        <div style="padding-top:5%">
-                            <v-btn block color="success" v-on:click="Find()">Szukaj</v-btn>
-                        </div>
-                    </v-flex>
-                </div>
-            </v-flex>           
-        </v-layout>
-    </v-container>
+                        <v-flex xs6 offset-xs3>
+                            <div class="start-buttons-div">
+                                <v-btn block color="success" v-on:click="Find()">Szukaj</v-btn>
+                            </div>
+                        </v-flex>
+                    </div>
+                </v-flex>           
+            </v-layout>
+        </v-container>
+    </v-form>
 </template>
 
 <script>
 export default {
     name: "TournamentFinder",
+    valid: false,
     idToFind: '',
     data(){
         return{
@@ -34,8 +37,5 @@ export default {
 </script>
 
 <style>
-    .TournamentFinder-div{
-            padding: 4%;
-            font-family: 'Play', sans-serif;
-        }
+
 </style>

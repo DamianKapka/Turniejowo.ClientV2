@@ -3,12 +3,12 @@
           <v-container>
                <v-layout>
                     <v-flex xs8 offset-xs2>
-                         <div class="LoginForm-div">
+                         <div class="start-div">
                          <v-text-field v-model="Login" :rules="LoginRules" label="Adres e-mail"/>
                          <v-text-field v-model="Password" label="Password"/>
 
                          <v-flex xs6 offset-xs3>
-                              <div style="padding-top:5%">
+                              <div class="start-buttons-div">
                                    <v-btn block color="success" v-on:click="Authenticate()">Zaloguj</v-btn>
                               </div>
                          </v-flex>
@@ -48,8 +48,5 @@ export default {
 </script>
 
 <style>
-     .LoginForm-div{
-          padding: 5%;
-          font-family: 'Play', sans-serif;
-     }
+
 </style>

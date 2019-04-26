@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style>
+<style >
     a{
         text-decoration: none;
     }
@@ -68,4 +68,12 @@ export default {
         z-index: 999;
     }
 
+    .start-div{
+        padding: 5%;
+        font-family: 'Play', sans-serif;
+    }
+
+    .start-buttons-div{
+        padding-top: 5%;
+    }
 </style>
