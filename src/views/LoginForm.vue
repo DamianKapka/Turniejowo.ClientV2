@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
      name: 'LoginForm',
      data(){
@@ -41,7 +43,18 @@ export default {
      },
      methods:{
           Authenticate(){
-               alert('authenticate');
+               axios.post('https://localhost:5001/api/user/authenticate',this.Model())
+               .then(response => {
+                    alert('Logged in successfully!');
+               })
+               .catch(error => {
+                    if(error.response.status == 401){
+                         alert('Credentials invalid');
+                    }
+                    else{
+                        alert(error.response.data); 
+                    }
+               })
           }
      }
 }

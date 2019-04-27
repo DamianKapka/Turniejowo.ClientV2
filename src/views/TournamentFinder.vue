@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: "TournamentFinder",
     idToFind: '',
@@ -30,7 +32,16 @@ export default {
     },
     methods:{
         Find(){
-            alert('Find');
+            axios.get('https://localhost:5001/api/tournament/' + this.IdToFind)
+            .then(response => console.log(response.data))
+            .catch(error => {
+                if(error.response.status == 404){
+                    alert('Turniej o takim ID nie istnieje')
+                }
+                else{
+                    alert(error.response.data);
+                }
+            })
         }
     }
 }

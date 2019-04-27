@@ -71,7 +71,6 @@ export default {
           },
           Model: function(){
                return{
-               Login: this.Mail,
                Email: this.Mail,
                Password: this.Password,
                FullName: this.FullName(),
@@ -101,7 +100,7 @@ export default {
                               alert('Podany adres e-mail istnieje w bazie danych');
                          }
                          else{
-                              alert(error.response.data)
+                              alert(error.response.data);
                          }
                     })                   
                }
