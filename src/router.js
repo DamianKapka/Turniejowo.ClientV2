@@ -7,6 +7,7 @@ import Start from "@/views/Start";
 import LoginForm from "@/views/LoginForm";
 import RegisterForm from "@/views/RegisterForm";
 import TournamentFinder from "@/views/TournamentFinder";
+import TournamentInfo from "@/views/TournamentInfo";
 
 Vue.use(Router);
 
@@ -48,6 +49,16 @@ export default new Router({
           component: TournamentFinder
         }
       ]
+    },
+    {
+      path: "/tournament",
+      redirect: "/start/find",
+      name: "tournament"
+    },
+    {
+      path: "/tournament/:id",
+      name: "TournamentById",
+      component: TournamentInfo
     },
     {
       path: "*",

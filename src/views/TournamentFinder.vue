@@ -33,7 +33,9 @@ export default {
     methods:{
         Find(){
             axios.get('https://localhost:5001/api/tournament/' + this.IdToFind)
-            .then(response => console.log(response.data))
+            .then(response => {
+                this.$router.push('/tournament/' +  this.IdToFind);
+            })
             .catch(error => {
                 if(error.response.status == 404){
                     alert('Turniej o takim ID nie istnieje')
