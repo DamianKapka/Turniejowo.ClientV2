@@ -7,7 +7,12 @@ import Start from "@/views/Start";
 import LoginForm from "@/views/LoginForm";
 import RegisterForm from "@/views/RegisterForm";
 import TournamentFinder from "@/views/TournamentFinder";
-import TournamentInfo from "@/views/TournamentInfo";
+import TournamentHub from "@/views/TournamentHub";
+import TournamentInfo from "@/views/TournamentHub/TournamentInfo";
+import TournamentParticipants from "@/views/TournamentHub/TournamentParticipants";
+import TournamentStats from "@/views/TournamentHub/TournamentStats";
+import TournamentTable from "@/views/TournamentHub/TournamentTable";
+
 
 Vue.use(Router);
 
@@ -57,8 +62,31 @@ export default new Router({
     },
     {
       path: "/tournament/:id",
+      redirect: "tournament/:id/info",
       name: "TournamentById",
-      component: TournamentInfo
+      component: TournamentHub,
+      children: [
+        {
+          path: "info",
+          name: "info",
+          component: TournamentInfo
+        },
+        {
+          path: "participants",
+          name: "participants",
+          component: TournamentParticipants
+        },
+        {
+          path: "stats",
+          name: "stats",
+          component: TournamentStats
+        },
+        {
+          path: "table",
+          name: "table",
+          component: TournamentTable
+        }
+      ]
     },
     {
       path: "*",
