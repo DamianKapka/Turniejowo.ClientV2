@@ -1,12 +1,48 @@
 <template>
-    <div>
-    <h1> Info </h1>
-    </div>
+    <v-data-table :items="TournamentInfo" class="elevation-7" :hide-actions="true">
+        <template v-slot:items="item">
+            <td>{{item.item.key}}</td>
+            <td>{{item.item.value}}</td>
+        </template>
+    </v-data-table>
 </template>
 
 <script>
-export default {
+import axios from 'axios'
 
+export default {
+    name: "TournamentInfo",
+    data(){
+        return{
+            TournamentInfo : [
+                {key:"Nazwa", value:''},
+                {key:"Dyscyplina", value:''},
+                {key:"Data rozpoczecia", value:''},
+                {key:"Liczba drużyn", value:''},
+                {key:"Liczba zapisanych drużyn", value:''},
+                {key:"Wpisowe", value:''},
+                {key:"Lokalizacja", value:''},
+                {key:"Organizator", value:''},
+                {key:"Kontakt z organizatorem", value:''},
+            ],
+        }
+    },
+    created() {
+      axios.get("https://localhost:5001/api/tournament/" + this.$route.params.id)
+      .then(response => {
+            console.log(response.data)
+            this.TournamentInfo[0].value = response.data["name"];
+            this.TournamentInfo[1].value = response.data["disipline"];
+            this.TournamentInfo[2].value = response.data["date"].slice(0,10);
+            this.TournamentInfo[3].value = response.data["amountOfTeams"];
+            this.TournamentInfo[4].value = response.data["disipline"];
+            this.TournamentInfo[5].value = response.data["entryFee"];
+            this.TournamentInfo[6].value = response.data["localization"];
+            this.TournamentInfo[7].value = response.data["creator"];
+            this.TournamentInfo[8].value = response.data["creator"];
+        })
+      .catch(error => alert("Nie można załadować infomacji o turnieju\n" + error.data));
+    },
 }
 </script>
 
