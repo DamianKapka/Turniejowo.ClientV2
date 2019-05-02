@@ -28,21 +28,43 @@ export default {
         }
     },
     created() {
-      axios.get("https://localhost:5001/api/tournament/" + this.$route.params.id)
+      axios.get(`https://localhost:5001/api/tournament/${this.$route.params.id}`)
       .then(response => {
-            console.log(response.data)
+            console.log(response.data["disciplineId"])
             this.TournamentInfo[0].value = response.data["name"];
-            this.TournamentInfo[1].value = response.data["disipline"];
+            this.TournamentInfo[1].value = this.GetDisciplineById(response.data["disciplineId"]);
             this.TournamentInfo[2].value = response.data["date"].slice(0,10);
             this.TournamentInfo[3].value = response.data["amountOfTeams"];
-            this.TournamentInfo[4].value = response.data["disipline"];
             this.TournamentInfo[5].value = response.data["entryFee"];
             this.TournamentInfo[6].value = response.data["localization"];
-            this.TournamentInfo[7].value = response.data["creator"];
-            this.TournamentInfo[8].value = response.data["creator"];
+
+            return axios.get(`https://localhost:5001/api/user/${response.data["creatorId"]}`)
         })
-      .catch(error => alert("Nie można załadować infomacji o turnieju\n" + error.data));
+        .then(response => {
+            this.TournamentInfo[7].value = response.data["fullName"],
+            this.TournamentInfo[8].value = `${response.data["email"]}\r\n${response.data["phone"]}`
+
+            return axios.get(`https://localhost:5001/api/tournament/${this.$route.params.id}/teams`)
+        })
+        .then(response => {
+            this.TournamentInfo[4].value = response.data.length
+        })
+      .catch(error => console.log(error));
     },
+    methods: {
+        GetDisciplineById : function(id){
+            let discipline;
+
+            switch(id){
+                case 1: discipline = "Siatkówka";break;
+                case 2: discipline = "Koszykówka";break;
+                case 3: discipline = "Piłka Nożna";break;
+                default: break;
+            }
+
+            return discipline
+        }
+    },  
 }
 </script>
 
