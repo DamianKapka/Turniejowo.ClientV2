@@ -1,8 +1,8 @@
 <template>
     <v-data-table :items="TournamentInfo" class="elevation-7" :hide-actions="true">
         <template v-slot:items="item">
-            <td>{{item.item.key}}</td>
-            <td>{{item.item.value}}</td>
+            <td class="text-xs-left">{{item.item.key}}</td>
+            <td class="text-xs-right">{{item.item.value}}</td>
         </template>
     </v-data-table>
 </template>
@@ -30,7 +30,6 @@ export default {
     created() {
       axios.get(`https://localhost:5001/api/tournament/${this.$route.params.id}`)
       .then(response => {
-            console.log(response.data["disciplineId"])
             this.TournamentInfo[0].value = response.data["name"];
             this.TournamentInfo[1].value = this.GetDisciplineById(response.data["disciplineId"]);
             this.TournamentInfo[2].value = response.data["date"].slice(0,10);
