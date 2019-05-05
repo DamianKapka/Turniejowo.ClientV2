@@ -1,5 +1,5 @@
 <template>
-    <v-data-table :headers="TableHeaders" :items="Test" :hide-actions="true" class="elevation-7">
+    <v-data-table :headers="TableHeaders" :items="Players" :hide-actions="true" class="elevation-7">
         <template v-slot:items="item">
             <td class="text-xs-center">{{item.index+1}}</td>
             <td class="text-xs-center">{{item.item.teamName}}</td>
@@ -12,9 +12,9 @@
                             </div>
                         </template>
                         <v-list>
-                            <v-list-tile v-for="item in item.item.players" :key="item">
+                            <v-list-tile v-for="item in item.item.players" :key="item.PlayerId">
                                 <v-list-tile-content>
-                                    {{item}}
+                                    <span>{{item.fName}} {{item.lName}}</span>
                                 </v-list-tile-content>
                             </v-list-tile>
                         </v-list>
@@ -32,48 +32,30 @@ export default {
     name:"TournamentParticipants",
     data() {
         return {
-            Response: '',
+            Players: [],
             TableHeaders:[
                 {text:"Nr",value:"number",sortable:false,align:"center"},
                 {text:"Drużyna",value:"team",sortable:false,align:"center"},
                 {text:"Zawodnicy",value:"players",sortable:false,align:"center"}
             ],
-            Test: [
-                {
-                    teamName: "6A", 
-                    players:[
-                    "Damian Kapka",
-                    "Mateusz Szkopiak",
-                    "Karol Ociepa",
-                    "Karol Majchrzak"
-                    ]
-                },
-                {
-                    teamName: "6B",
-                    players:[
-                    "Mateusz Kruś",
-                    "Mikołaj Tomczyk",
-                    "Damian Siupka"
-                    ]
-                },
-                {
-                    teamName: "6C",
-                    players:[
-                    "Waldemar Sarnecki",
-                    "Karol Sikora",
-                    ]
-                }
-            ]
         }
     },
     methods: {
         
     },
     created() {
-        axios.get(`https://localhost:5001/api/tournament/${this.$route.params.id}/players`)
-        .then(response => this.Response = response.data)
-        .catch(error => console.log(error))
-        
+        axios.get(`https://localhost:5001/api/tournament/${this.$route.params.id}/players?groupedbyteam=true`)
+        .then(response => {
+            let playersTemp = [];
+
+            Object.keys(response.data)
+                .forEach(function eachKey(key) { 
+                    playersTemp.push({teamName: key, players: response.data[key]})
+            });
+
+            this.Players = playersTemp;
+        })
+        .catch(error => console.log(error))       
     },
 }
 </script>
