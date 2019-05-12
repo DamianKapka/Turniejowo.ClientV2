@@ -50,7 +50,9 @@ export default {
       })
       .then(response => {
         this.TournamentInfo[7].value = response.data["fullName"];
-        this.TournamentInfo[8].value = `${response.data["email"]}\r\n${response.data["phone"]}`;
+        this.TournamentInfo[8].value = `${response.data["email"]}\r\n${
+          response.data["phone"]
+        }`;
 
         return axios.get(
           `https://localhost:5001/api/tournament/${this.$route.params.id}/teams`
