@@ -13,7 +13,6 @@ import TournamentParticipants from "@/views/TournamentHub/TournamentParticipants
 import TournamentStats from "@/views/TournamentHub/TournamentStats";
 import TournamentTable from "@/views/TournamentHub/TournamentTable";
 
-
 Vue.use(Router);
 
 export default new Router({
@@ -28,7 +27,7 @@ export default new Router({
         {
           path: "",
           name: "LandingPage",
-          component: LandingPage,
+          component: LandingPage
         }
       ]
     },

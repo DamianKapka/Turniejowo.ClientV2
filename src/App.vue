@@ -1,59 +1,56 @@
 <template>
-    <v-app>
-      <v-content id="app">
-          <router-view></router-view>
-      </v-content>
-    </v-app>
+  <v-app>
+    <v-content id="app">
+      <router-view></router-view>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
 export default {
-  name: 'Index',
-  data(){
-    return{
-
-    }
+  name: "Index",
+  data() {
+    return {};
   }
-}
+};
 </script>
 
 <style <style lang="less">
-@import (css)url('https://fonts.googleapis.com/css?family=Play');
+@import (css) url("https://fonts.googleapis.com/css?family=Play");
 
-  #app { 
-    background: url("./assets/Background.jpg") no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+#app {
+  background: url("./assets/Background.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 
-    font-family: 'Play', sans-serif!important; 
-  }
- 
-  .main-card{
-      border-radius: 4px;
-      margin: 7% 0;
-      opacity: 0.9;
-  }
- 
-  .maincard-nav-card{
-      text-align: center;        
-      padding: 5%;       
-      font-size: 18px; 
-      font-weight: bold;
-      border: 2px solid wheat;
-  }
+  font-family: "Play", sans-serif !important;
+}
 
-  .lel{
-        border: 3px solid #ff9933!important;
-        padding: 5%!important;
-        background-color: #ffb984!important;
-    }
+.main-card {
+  border-radius: 4px;
+  margin: 7% 0;
+  opacity: 0.9;
+}
 
-  .maincard-nav-card:hover{
-      background-color: #ff9933;    
-      transform: scale(1.2,1.2);   
-      z-index: 999;
-  }
+.maincard-nav-card {
+  text-align: center;
+  padding: 5%;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid wheat;
+}
+
+.lel {
+  border: 3px solid #ff9933 !important;
+  padding: 5% !important;
+  background-color: #ffb984 !important;
+}
+
+.maincard-nav-card:hover {
+  background-color: #ff9933;
+  transform: scale(1.2, 1.2);
+  z-index: 999;
+}
 </style>
-
