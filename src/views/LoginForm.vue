@@ -50,7 +50,7 @@ export default {
         .post("https://localhost:5001/api/user/authenticate", this.Model())
         .then(response => {
           alert("Logged in successfully!");
-          console.log(response.data);
+          localStorage.setItem("token", response.data.token);
         })
         .catch(error => {
           if (error.response.status === 401) {
