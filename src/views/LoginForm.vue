@@ -46,19 +46,7 @@ export default {
   },
   methods: {
     Authenticate() {
-      axios
-        .post("https://localhost:5001/api/user/authenticate", this.Model())
-        .then(response => {
-          alert("Logged in successfully!");
-          localStorage.setItem("token", response.data.token);
-        })
-        .catch(error => {
-          if (error.response.status === 401) {
-            alert("Credentials invalid");
-          } else {
-            alert(error.response.data);
-          }
-        });
+      this.$store.dispatch("login",this.Model())
     }
   }
 };

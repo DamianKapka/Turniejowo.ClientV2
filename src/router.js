@@ -12,6 +12,7 @@ import TournamentInfo from "@/views/TournamentHub/TournamentInfo";
 import TournamentParticipants from "@/views/TournamentHub/TournamentParticipants";
 import TournamentStats from "@/views/TournamentHub/TournamentStats";
 import TournamentTable from "@/views/TournamentHub/TournamentTable";
+import Profile from "@/views/Profile/Profile"
 
 Vue.use(Router);
 
@@ -86,6 +87,10 @@ export default new Router({
           component: TournamentTable
         }
       ]
+    },
+    {
+      path: "/profile",
+      component: Profile
     },
     {
       path: "*",

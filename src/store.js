@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -22,16 +23,27 @@ const actions = {
     axios
       .post("https://localhost:5001/api/user/authenticate", credentials)
       .then(response => {
-        alert("Logged in successfully!");
-        localStorage.setItem("token", response.data.token);
-        commit(types.LOGIN);
+        switch (response.status) {
+          case 200: {
+            alert("Logged sucessfully");
+            localStorage.setItem("token", response.data.token);
+            commit(types.LOGIN);
+            router.push({path: "/profile"});
+            break;
+          }
+          case 401: {
+            alert("Invalid Credendiatls");
+            break;
+          }
+          case 500: {
+            alert("Server error. Cannot proceed the request");
+            break;
+          }
+          default: break;
+        }
       })
       .catch(error => {
-        if (error.response.status === 401) {
-          alert("Credentials invalid");
-        } else {
-          alert(error.response.data);
-        }
+        alert(error.response.data);
       });
   },
 
