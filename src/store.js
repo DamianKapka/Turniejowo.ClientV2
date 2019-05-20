@@ -46,9 +46,10 @@ const actions = {
         alert(error.response.data);
       });
   },
-
-  logout: function() {
-    //TODO
+  logout: function({commit}) {
+    localStorage.removeItem("token");
+    router.push({path: "/start/login"});
+    commit(types.LOGOUT);
   }
 };
 
