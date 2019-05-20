@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import router from "@/router";
 
 export default {
@@ -26,7 +27,15 @@ export default {
     }
 
     this.token = localStorage.getItem("token");
+
     this.userID = this.parseJwt(this.token);
+
+    axios
+      .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => console.log(error));
   },
   methods: {
     parseJwt(token) {
