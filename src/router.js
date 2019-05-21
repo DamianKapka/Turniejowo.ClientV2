@@ -13,6 +13,9 @@ import TournamentParticipants from "@/views/TournamentHub/TournamentParticipants
 import TournamentStats from "@/views/TournamentHub/TournamentStats";
 import TournamentTable from "@/views/TournamentHub/TournamentTable";
 import Profile from "@/views/Profile/Profile"
+import NewTournament from "@/views/Profile/NewTournament"
+import MyTournaments from "@/views/Profile/MyTournaments"
+import MyAccount from "@/views/Profile/MyAccount"
 
 Vue.use(Router);
 
@@ -90,7 +93,25 @@ export default new Router({
     },
     {
       path: "/profile",
-      component: Profile
+      component: Profile,
+      redirect: "/profile/my-tournaments",
+      children:[
+        {
+          path: "new-tournament",
+          name: "NewTournament",
+          component: NewTournament,
+        },
+        {
+          path: "my-tournaments",
+          name: "MyTournaments",
+          component: MyTournaments,
+        },
+        {
+          path: "my-account",
+          name: "MyAccount",
+          component: MyAccount,
+        }
+      ]
     },
     {
       path: "*",

@@ -1,21 +1,27 @@
 <template>
-  <v-container>
+  <v-container>  
     <v-layout row>
       <v-flex xs10 offset-xs1>
         <v-card :dark="false" class="elevation-24 main-card" Height="100%">
           <v-layout row>
             <v-flex xs3>
               <v-card :dark="false" class="elevation-7 maincard-nav-card"
+                v-bind:class="{ lel: currentPage == 'NewTournament' }"
+                @click="reroute('new-tournament')"
                 >Nowy turniej</v-card
               >
             </v-flex>
             <v-flex xs3>
               <v-card :dark="false" class="elevation-7 maincard-nav-card"
+                v-bind:class="{ lel: currentPage == 'MyTournaments' }"
+                @click="reroute('my-tournaments')"
                 >Moje turnieje</v-card
               >
             </v-flex>
             <v-flex xs3>
               <v-card :dark="false" class="elevation-7 maincard-nav-card"
+                v-bind:class="{ lel: currentPage == 'MyAccount' }"
+                @click="reroute('my-account')"
                 >Moje konto</v-card
               >
             </v-flex>
@@ -31,15 +37,16 @@
                   Wyloguj
                 </span>
                 <span v-else>
-                  Zalogowano jako <br />
                   {{ userEmail }}
                 </span>
               </v-card>
             </v-flex>
           </v-layout>
-        </v-card>
+          <router-view/> 
+        </v-card>        
       </v-flex>
-    </v-layout>
+    </v-layout>  
+     
   </v-container>
 </template>
 
@@ -51,6 +58,7 @@ export default {
   name: "Profile",
   data: function() {
     return {
+      currentPage: this.$route.name,
       userID: "",
       userEmail: "",
       LogoutButtonHovered: false
@@ -62,16 +70,20 @@ export default {
     }
 
     this.token = localStorage.getItem("token");
-
     this.userID = this.parseJwt(this.token).id;
-    this.userEmail = this.parseJwt(this.token).email;
+    this.userEmail = this.parseJwt(this.token).actor;
 
     axios
       .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
       .then(response => {
-        console.log(response);
+        
       })
-      .catch(error => console.log(error));
+      .catch(error => {});
+  },
+  watch: {
+    $route(to, from) {
+      this.currentPage = to.name;
+    }
   },
   methods: {
     parseJwt(token) {
@@ -86,10 +98,13 @@ export default {
       );
 
       const result = JSON.parse(base64);
-      return { id: result.unique_name, email: result.email };
+      return { id: result.unique_name, actor: result.actort };
     },
     logout(){
       this.$store.dispatch("logout");
+    },
+    reroute(path){
+      router.push({path: `${path}`});
     }
   }
 };
@@ -97,19 +112,10 @@ export default {
 
 <style scoped>
 .logged-as-card {
-  font-size: 12px;
-  padding: 3%;
   background-color: aquamarine;
-  overflow: hidden;
 }
 
 .logged-as-card:hover {
-  vertical-align: center;
-  font-size: 15px;
-  padding: 6%;
-  overflow: hidden;
   background-color: firebrick;
-  transform: scale(1.0, 1.0)!important;
-  transition: 0.4s;
 }
 </style>
