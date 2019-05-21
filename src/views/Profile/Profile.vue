@@ -1,26 +1,32 @@
 <template>
-  <v-container>  
+  <v-container>
     <v-layout row>
       <v-flex xs10 offset-xs1>
         <v-card :dark="false" class="elevation-24 main-card" Height="100%">
           <v-layout row>
             <v-flex xs3>
-              <v-card :dark="false" class="elevation-7 maincard-nav-card"
-                v-bind:class="{ lel: currentPage == 'NewTournament' }"
+              <v-card
+                :dark="false"
+                class="elevation-7 maincard-nav-card"
+                v-bind:class="{ lel: currentPage === 'NewTournament' }"
                 @click="reroute('new-tournament')"
                 >Nowy turniej</v-card
               >
             </v-flex>
             <v-flex xs3>
-              <v-card :dark="false" class="elevation-7 maincard-nav-card"
-                v-bind:class="{ lel: currentPage == 'MyTournaments' }"
+              <v-card
+                :dark="false"
+                class="elevation-7 maincard-nav-card"
+                v-bind:class="{ lel: currentPage === 'MyTournaments' }"
                 @click="reroute('my-tournaments')"
                 >Moje turnieje</v-card
               >
             </v-flex>
             <v-flex xs3>
-              <v-card :dark="false" class="elevation-7 maincard-nav-card"
-                v-bind:class="{ lel: currentPage == 'MyAccount' }"
+              <v-card
+                :dark="false"
+                class="elevation-7 maincard-nav-card"
+                v-bind:class="{ lel: currentPage === 'MyAccount' }"
                 @click="reroute('my-account')"
                 >Moje konto</v-card
               >
@@ -42,11 +48,10 @@
               </v-card>
             </v-flex>
           </v-layout>
-          <router-view/> 
-        </v-card>        
+          <router-view />
+        </v-card>
       </v-flex>
-    </v-layout>  
-     
+    </v-layout>
   </v-container>
 </template>
 
@@ -75,9 +80,7 @@ export default {
 
     axios
       .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
-      .then(response => {
-        
-      })
+      .then(response => {})
       .catch(error => {});
   },
   watch: {
@@ -100,11 +103,11 @@ export default {
       const result = JSON.parse(base64);
       return { id: result.unique_name, actor: result.actort };
     },
-    logout(){
+    logout() {
       this.$store.dispatch("logout");
     },
-    reroute(path){
-      router.push({path: `${path}`});
+    reroute(path) {
+      router.push({ path: `${path}` });
     }
   }
 };

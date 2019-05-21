@@ -3,19 +3,19 @@ import Router from "vue-router";
 import MainCard from "@/views/MainCard";
 import FourOFour from "@/views/FourOFour";
 import LandingPage from "@/views/LandingPage";
-import Start from "@/views/Start";
-import LoginForm from "@/views/LoginForm";
-import RegisterForm from "@/views/RegisterForm";
-import TournamentFinder from "@/views/TournamentFinder";
-import TournamentHub from "@/views/TournamentHub";
+import Start from "@/views/Start/Start";
+import LoginForm from "@/views/Start/LoginForm";
+import RegisterForm from "@/views/Start/RegisterForm";
+import TournamentFinder from "@/views/Start/TournamentFinder";
+import TournamentHub from "@/views/TournamentHub/TournamentHub";
 import TournamentInfo from "@/views/TournamentHub/TournamentInfo";
 import TournamentParticipants from "@/views/TournamentHub/TournamentParticipants";
 import TournamentStats from "@/views/TournamentHub/TournamentStats";
 import TournamentTable from "@/views/TournamentHub/TournamentTable";
-import Profile from "@/views/Profile/Profile"
-import NewTournament from "@/views/Profile/NewTournament"
-import MyTournaments from "@/views/Profile/MyTournaments"
-import MyAccount from "@/views/Profile/MyAccount"
+import Profile from "@/views/Profile/Profile";
+import NewTournament from "@/views/Profile/NewTournament";
+import MyTournaments from "@/views/Profile/MyTournaments";
+import MyAccount from "@/views/Profile/MyAccount";
 
 Vue.use(Router);
 

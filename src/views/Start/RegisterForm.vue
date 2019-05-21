@@ -9,41 +9,39 @@
               :rules="FNameRules"
               label="Imię"
               required
-            />
+            ></v-text-field>
             <v-text-field
               v-model="LName"
               :rules="LNameRules"
               label="Nazwisko"
               required
-            />
+            ></v-text-field>
             <v-text-field
               v-model="Password"
               :rules="PasswordRules"
               label="Hasło"
               required
-            />
+            ></v-text-field>
             <v-text-field
               v-model="PasswordRepeat"
               :rules="PasswordRepeatRules"
               label="Powtórz hasło"
               required
-            />
+            ></v-text-field>
             <v-text-field
               v-model="Mail"
               :rules="MailRules"
               label="Adres e-mail"
               required
-            />
+            ></v-text-field>
             <v-text-field
               v-model="Phone"
               :rules="PhoneRules"
               label="Nr telefonu"
-            />
-
+            ></v-text-field>
             <div>
               <v-layout row>
-                <v-flex xs1></v-flex>
-                <v-flex xs4
+                <v-flex xs4 offset-xs1
                   ><v-btn block color="success" v-on:click="submit()"
                     >Stwórz Konto</v-btn
                   ></v-flex
@@ -54,7 +52,6 @@
                     >Reset</v-btn
                   ></v-flex
                 >
-                <v-flex xs1></v-flex>
               </v-layout>
             </div>
           </div>
@@ -65,7 +62,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios/index";
 
 export default {
   name: "RegisterForm",
@@ -99,7 +96,7 @@ export default {
       PasswordRepeat: "",
       PasswordRepeatRules: [
         r => !!r || "Powtórz hasło",
-        r => r == this.Password || "Hasła nie są takie same"
+        r => r === this.Password || "Hasła nie są takie same"
       ],
       Mail: "",
       MailRules: [
@@ -112,6 +109,9 @@ export default {
           /^\d{3}\-\d{3}\-\d{3}$/.test(ph) ||
           "Wpisz numer telefonu w formacie 123-123-123"
       ],
+      /**
+       * @return {string}
+       */
       FullName: function() {
         return this.FName + " " + this.LName;
       },
@@ -139,7 +139,7 @@ export default {
             this.$router.replace("login");
           })
           .catch(error => {
-            if (error.response.status == 409) {
+            if (error.response.status === 409) {
               alert("Podany adres e-mail istnieje w bazie danych");
             } else {
               alert(error.response.data);
