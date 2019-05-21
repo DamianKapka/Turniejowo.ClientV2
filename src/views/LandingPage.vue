@@ -38,13 +38,11 @@
         która szybko przekieruje cię do odpowiednej storny.
       </p>
       <v-layout row>
-        <v-flex xs4></v-flex>
-        <v-flex xs4>
+        <v-flex xs4 offset-xs4>
           <router-link :to="{ path: 'start' }">
             <v-btn block color="warning">START!</v-btn>
           </router-link>
         </v-flex>
-        <v-flex xs4></v-flex>
       </v-layout>
     </div>
   </v-card-title>

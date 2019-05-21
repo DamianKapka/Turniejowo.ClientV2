@@ -7,9 +7,8 @@
             <v-text-field
               v-model="Login"
               :rules="LoginRules"
-              label="Adres e-mail"
-            />
-            <v-text-field v-model="Password" label="Password" />
+              label="Adres e-mail"></v-text-field>
+            <v-text-field v-model="Password" label="Password"></v-text-field>
 
             <v-flex xs6 offset-xs3>
               <div class="start-buttons-div">
