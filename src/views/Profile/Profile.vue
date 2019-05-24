@@ -82,11 +82,6 @@ export default {
         this.userFullName = res.actor 
       })
       .catch(error => alert(error.data));
-
-    axios
-      .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
-      .then(response => {})
-      .catch(error => {});
   },
   watch: {
     $route(to, from) {

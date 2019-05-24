@@ -135,6 +135,7 @@ export default {
     submitForm() {
       if (this.$refs.form.validate()) {
         axios.post("https://localhost:5001/api/tournament",this.Model()).then(res => console.log(res)).catch(err => console.log(err.response));
+        
       }
     },
     resetForm() {
