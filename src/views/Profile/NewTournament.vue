@@ -119,8 +119,8 @@ export default {
       Model: function() {
         return {
           Name: this.Name,
-          DisciplineId: this.Discipline,
-          CreatorId: "19",
+          DisciplineId: this.GetDisciplineId(this.Discipline),
+          CreatorId: this.$store.getters.loggedUserId,
           Date: this.StartingDate,
           AmountOfTeams: this.AmountOfTeams,
           EntryFee: this.EntryFee,
@@ -137,6 +137,14 @@ export default {
     },
     resetForm() {
       this.$refs.form.reset();
+    },
+    GetDisciplineId(discipline){
+      switch(discipline){
+        case "Piłka Nożna" : return 3;
+        case "Koszykówka" : return 2;
+        case "Siatkówka" : return 1;
+        default : return 0;
+      }
     }
   }
 };

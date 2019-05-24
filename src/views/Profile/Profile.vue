@@ -43,7 +43,7 @@
                   Wyloguj
                 </span>
                 <span v-else>
-                  {{ userEmail }}
+                  {{ userFullName }}
                 </span>
               </v-card>
             </v-flex>
@@ -58,6 +58,8 @@
 <script>
 import axios from "axios";
 import router from "@/router";
+import { all } from 'q';
+import store from "@/store";
 
 export default {
   name: "Profile",
@@ -65,7 +67,7 @@ export default {
     return {
       currentPage: this.$route.name,
       userID: "",
-      userEmail: "",
+      userFullName: "",
       LogoutButtonHovered: false
     };
   },
@@ -74,9 +76,13 @@ export default {
       router.push("/start/login");
     }
 
-    this.token = localStorage.getItem("token");
-    this.userID = this.parseJwt(this.token).id;
-    this.userEmail = this.parseJwt(this.token).actor;
+    const token = localStorage.getItem("token");
+    this.$store.dispatch("parseJwt",token)
+      .then(res => {
+        this.userID = res.id,
+        this.userFullName = res.actor 
+      })
+      .catch(error => alert(error.data));
 
     axios
       .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
@@ -89,20 +95,6 @@ export default {
     }
   },
   methods: {
-    parseJwt(token) {
-      const base64Url = token.split(".")[1];
-      const base64 = decodeURIComponent(
-        atob(base64Url)
-          .split("")
-          .map(function(c) {
-            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-          })
-          .join("")
-      );
-
-      const result = JSON.parse(base64);
-      return { id: result.unique_name, actor: result.actort };
-    },
     logout() {
       this.$store.dispatch("logout");
     },

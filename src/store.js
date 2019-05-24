@@ -11,11 +11,13 @@ const types = {
 };
 
 const state = {
-  logged: localStorage.getItem("token")
+  logged: localStorage.getItem("token"),
+  loggedUserId : ''
 };
 
 const getters = {
-  isLogged: state => state.logged
+  isLogged: state => state.logged,
+  loggedUserId : state => state.loggedUserId
 };
 
 const actions = {
@@ -50,7 +52,24 @@ const actions = {
     localStorage.removeItem("token");
     router.push({path: "/start/login"});
     commit(types.LOGOUT);
-  }
+  },
+  parseJwt({commit},token) {
+    const base64Url = token.split(".")[1];
+    const base64 = decodeURIComponent(
+      atob(base64Url)
+        .split("")
+        .map(function(c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+
+    const result = JSON.parse(base64);
+
+    state.loggedUserId = result.unique_name;
+    
+    return { id: result.unique_name, actor: result.actort };
+  },
 };
 
 const mutations = {
