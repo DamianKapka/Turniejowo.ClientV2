@@ -59,7 +59,6 @@
 import axios from "axios";
 import router from "@/router";
 import { all } from 'q';
-import store from "@/store";
 
 export default {
   name: "Profile",

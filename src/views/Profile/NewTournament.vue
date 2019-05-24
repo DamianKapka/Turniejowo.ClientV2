@@ -84,6 +84,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: "NewTournament",
   data() {
@@ -110,7 +112,7 @@ export default {
       EntryFeeRules: [
         e => !!e || "Wprowadz wpisowe do turnieju",
         e =>
-          /^[1-9]{1}[0-9]?$/.test(e.trim()) ||
+          /^[1-9]{1}[0-9]*$/.test(e.trim()) ||
           "Wpisowe musi być cyrfą wieksza od 0"
       ],
       Localization: "",
@@ -132,7 +134,7 @@ export default {
   methods: {
     submitForm() {
       if (this.$refs.form.validate()) {
-        console.log(this.Model());
+        axios.post("https://localhost:5001/api/tournament",this.Model()).then(res => console.log(res)).catch(err => console.log(err.response));
       }
     },
     resetForm() {
