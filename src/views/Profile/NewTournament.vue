@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "NewTournament",
@@ -134,19 +134,31 @@ export default {
   methods: {
     submitForm() {
       if (this.$refs.form.validate()) {
-        axios.post("https://localhost:5001/api/tournament",this.Model()).then(res => console.log(res)).catch(err => console.log(err.response));
-        
+        axios
+          .post("https://localhost:5001/api/tournament", this.Model())
+          .then(res => {
+            if (res.data.status === 201) {
+              alert("Turniej został założony");
+              this.$router.replace({ path: "/my-tournaments" });
+            }
+          })
+
+          .catch(err => console.log(err.response));
       }
     },
     resetForm() {
       this.$refs.form.reset();
     },
-    GetDisciplineId(discipline){
-      switch(discipline){
-        case "Piłka Nożna" : return 3;
-        case "Koszykówka" : return 2;
-        case "Siatkówka" : return 1;
-        default : return 0;
+    GetDisciplineId(discipline) {
+      switch (discipline) {
+        case "Piłka Nożna":
+          return 3;
+        case "Koszykówka":
+          return 2;
+        case "Siatkówka":
+          return 1;
+        default:
+          return 0;
       }
     }
   }
