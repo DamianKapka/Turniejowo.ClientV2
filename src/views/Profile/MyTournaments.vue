@@ -1,13 +1,13 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-list>
-    <template>
-      <v-list-tile v-for="tournament in userTournaments" :key="tournament.name">
-        <v-list-tile-content>
-          <TournamentOwnerInfo v-bind:tournament="tournament"></TournamentOwnerInfo>
-        </v-list-tile-content>
-      </v-list-tile>
-    </template>
-  </v-list>
+    <v-flex xs8 offset-xs2>
+    <v-list style="padding:5%">
+        <template>
+        <v-list-tile v-for="tournament in userTournaments" :key="tournament.name" >            
+            <TournamentOwnerInfo v-bind:tournament="tournament"></TournamentOwnerInfo>
+        </v-list-tile>
+        </template>
+    </v-list>
+    </v-flex>
 </template>
 
 <script>
@@ -33,7 +33,9 @@ export default {
 
         this.userTournaments = userTournamentsTemp;
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+          console.log(err)
+      });
   },
   components: {
     TournamentOwnerInfo: TournamentOwnerInfo
@@ -41,4 +43,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>
