@@ -8,6 +8,7 @@
         >
           <TournamentOwnerInfo
             v-bind:tournament="tournament"
+            @tournamentDeleted="reloadList()"
           ></TournamentOwnerInfo>
         </v-list-tile>
       </template>
@@ -35,15 +36,21 @@ export default {
       .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
       .then(res => {
         res.data.forEach(d => userTournamentsTemp.push(d));
-
         this.userTournaments = userTournamentsTemp;
       })
       .catch(err => {
+        //TODO
         console.log(err);
       });
   },
   components: {
     TournamentOwnerInfo: TournamentOwnerInfo
+  },
+  methods: {
+    reloadList() {
+      alert("dupa");
+      this.$forceUpdate();
+    }
   }
 };
 </script>
