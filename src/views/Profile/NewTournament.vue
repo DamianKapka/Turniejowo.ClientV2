@@ -137,9 +137,9 @@ export default {
         axios
           .post("https://localhost:5001/api/tournament", this.Model())
           .then(res => {
-            if (res.data.status === 201) {
+            if (res.status === 201) {
               alert("Turniej został założony");
-              this.$router.replace({ path: "/my-tournaments" });
+              this.$router.replace({ path: "/profile/my-tournaments" });
             }
           })
 
