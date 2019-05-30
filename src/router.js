@@ -16,6 +16,7 @@ import Profile from "@/views/Profile/Profile";
 import NewTournament from "@/views/Profile/NewTournament";
 import MyTournaments from "@/views/Profile/MyTournaments";
 import MyAccount from "@/views/Profile/MyAccount";
+import EditOwnTournament from "@/views/Edit/EditOwnTournament";
 
 Vue.use(Router);
 
@@ -112,6 +113,11 @@ export default new Router({
           component: MyAccount,
         }
       ]
+    },
+    {
+      path: "/profile/my-tournaments/edit/:id",
+      name: "EditOwnTournament",
+      component: EditOwnTournament
     },
     {
       path: "*",

@@ -11,7 +11,10 @@
           {{ tournament.name }}
         </v-list-tile-title>
       </v-flex>
-      <v-flex xs1 class="toi-flex toi-icon"
+      <v-flex 
+        xs1 
+        class="toi-flex toi-icon"
+        @click="EditTheTournament()"
         ><font-awesome-icon icon="edit"
       /></v-flex>
       <v-flex
@@ -35,6 +38,9 @@ export default {
   },
   mounted() {},
   methods: {
+    EditTheTournament(){
+      this.$emit("tournamentEdit",this.tournament.tournamentId)
+    },
     DeleteTheTournament() {
       if (
         confirm(`Czy napewno chcesz usunac turniej '${this.tournament.name}'?`)

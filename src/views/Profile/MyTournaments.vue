@@ -8,6 +8,7 @@
         >
           <TournamentOwnerInfo
             v-bind:tournament="tournament"
+            @tournamentEdit="redirectToTournamentEdit($event)"
             @tournamentDeleted="reloadList()"
           ></TournamentOwnerInfo>
         </v-list-tile>
@@ -30,11 +31,28 @@ export default {
   },
   created() {
     this.userID = this.$store.getters.loggedUserId;
-    let userTournamentsTemp = [];
+    this.fillUsersTournament();
+  },
+  updated(){
+    this.fillUsersTournament();
+  },
+  components: {
+    TournamentOwnerInfo: TournamentOwnerInfo
+  },
+  methods: {
+    redirectToTournamentEdit(id){
+      this.$router.push({name: "EditOwnTournament", params: {id: id}});
+    },
+    reloadList() {
+      this.$forceUpdate();
+    },
+    fillUsersTournament(){
+      let userTournamentsTemp = [];
 
-    axios
+      axios
       .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
       .then(res => {
+        console.log(res);
         res.data.forEach(d => userTournamentsTemp.push(d));
         this.userTournaments = userTournamentsTemp;
       })
@@ -42,14 +60,6 @@ export default {
         //TODO
         console.log(err);
       });
-  },
-  components: {
-    TournamentOwnerInfo: TournamentOwnerInfo
-  },
-  methods: {
-    reloadList() {
-      alert("dupa");
-      this.$forceUpdate();
     }
   }
 };
