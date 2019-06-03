@@ -12,12 +12,14 @@ const types = {
 
 const state = {
   logged: localStorage.getItem("token"),
-  loggedUserId: ""
+  loggedUserId: "",
+  currentlyEditedTournament: "",
 };
 
 const getters = {
   isLogged: state => state.logged,
-  loggedUserId: state => state.loggedUserId
+  loggedUserId: state => state.loggedUserId,
+  currentlyEditedTournament: state => state.currentlyEditedTournament
 };
 
 const actions = {

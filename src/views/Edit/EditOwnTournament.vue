@@ -5,19 +5,20 @@
         <v-card class="elevation-24 main-card">
           <v-flex xs12>
             <v-card class="tournament-header">
-            #{{tournamentId}} {{tournament.name}}
+              #{{ tournamentId }} {{ tournament.name }}
             </v-card>
           </v-flex>
-          <v-layout row>              
-              <v-flex xs3 v-for="navBar in navBarNames" v-bind:key="navBar.name">
-                <router-link :to="{ name: navBar.routerName }">
-                  <v-card class="maincard-nav-card"
-                          v-bind:class="{ lel: currentPage === navBar.routerName}"
-                  >
-                    {{navBar.name}}
-                  </v-card>
-                </router-link>
-              </v-flex>
+          <v-layout row>
+            <v-flex xs3 v-for="navBar in navBarNames" v-bind:key="navBar.name">
+              <router-link :to="{ name: navBar.routerName }">
+                <v-card
+                  class="maincard-nav-card"
+                  v-bind:class="{ lel: currentPage === navBar.routerName }"
+                >
+                  {{ navBar.name }}
+                </v-card>
+              </router-link>
+            </v-flex>
           </v-layout>
           <router-view></router-view>
         </v-card>
@@ -36,11 +37,11 @@ export default {
       tournamentId: Number,
       tournament: Object,
       currentPage: this.$route.name,
-      navBarNames:[
-        {name: "Edytuj Infofmacje ogólne", routerName: "EditGeneral"},
-        {name: "Edytuj Uczestników", routerName: "EditParticipants"},
-        {name: "Edytuj Przebieg", routerName:"EditProgress"},
-        {name: "Cofnij", routerName: "MyTournaments"},
+      navBarNames: [
+        { name: "Edytuj Infofmacje", routerName: "EditGeneral" },
+        { name: "Edytuj Uczestników", routerName: "EditParticipants" },
+        { name: "Edytuj Przebieg", routerName: "EditProgress" },
+        { name: "Cofnij", routerName: "MyTournaments" }
       ]
     };
   },
@@ -50,7 +51,8 @@ export default {
     axios
       .get(`https://localhost:5001/api/tournament/${this.tournamentId}`)
       .then(res => {
-        console.log(res.data);
+        console.log("SET");
+        this.$store.state.currentlyEditedTournament = res.data;
         this.tournament = res.data;
       })
       .catch(err => {
@@ -61,15 +63,13 @@ export default {
     $route(to, from) {
       this.currentPage = to.name;
     }
-  },
+  }
 };
 </script>
 
 <style <style scoped>
-.tournament-header{
+.tournament-header {
   text-align: center;
   font-size: 48px;
-
 }
 </style>
-></style>

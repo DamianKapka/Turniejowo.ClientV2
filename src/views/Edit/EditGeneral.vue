@@ -1,13 +1,19 @@
 <template>
-    <h1>Generalinfo</h1>
+
 </template>
 
 <script>
 export default {
-
-}
+  data() {
+    return {
+    };
+  },
+  computed: {
+    tournament: function() {
+      return this.$store.getters.currentlyEditedTournament;
+    }
+  }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
