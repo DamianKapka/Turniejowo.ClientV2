@@ -33,33 +33,32 @@ export default {
     this.userID = this.$store.getters.loggedUserId;
     this.fillUsersTournament();
   },
-  updated(){
+  updated() {
     this.fillUsersTournament();
   },
   components: {
     TournamentOwnerInfo: TournamentOwnerInfo
   },
   methods: {
-    redirectToTournamentEdit(id){
-      this.$router.push({name: "EditOwnTournament", params: {id: id}});
+    redirectToTournamentEdit(id) {
+      this.$router.push({ name: "EditOwnTournament", params: { id: id } });
     },
     reloadList() {
       this.$forceUpdate();
     },
-    fillUsersTournament(){
+    fillUsersTournament() {
       let userTournamentsTemp = [];
 
       axios
-      .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
-      .then(res => {
-        console.log(res);
-        res.data.forEach(d => userTournamentsTemp.push(d));
-        this.userTournaments = userTournamentsTemp;
-      })
-      .catch(err => {
-        //TODO
-        console.log(err);
-      });
+        .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
+        .then(res => {
+          res.data.forEach(d => userTournamentsTemp.push(d));
+          this.userTournaments = userTournamentsTemp;
+        })
+        .catch(err => {
+          //TODO
+          console.log(err);
+        });
     }
   }
 };

@@ -149,6 +149,9 @@ export default {
     resetForm() {
       this.$refs.form.reset();
     },
+    /**
+     * @return {number}
+     */
     GetDisciplineId(discipline) {
       switch (discipline) {
         case "Piłka Nożna":

@@ -12,12 +12,12 @@ const types = {
 
 const state = {
   logged: localStorage.getItem("token"),
-  loggedUserId : ''
+  loggedUserId: ""
 };
 
 const getters = {
   isLogged: state => state.logged,
-  loggedUserId : state => state.loggedUserId
+  loggedUserId: state => state.loggedUserId
 };
 
 const actions = {
@@ -30,7 +30,7 @@ const actions = {
             alert("Logged sucessfully");
             localStorage.setItem("token", response.data.token);
             commit(types.LOGIN);
-            router.push({path: "/profile"});
+            router.push({ path: "/profile" });
             break;
           }
           case 401: {
@@ -41,19 +41,20 @@ const actions = {
             alert("Server error. Cannot proceed the request");
             break;
           }
-          default: break;
+          default:
+            break;
         }
       })
       .catch(error => {
         alert(error.response.data);
       });
   },
-  logout: function({commit}) {
+  logout: function({ commit }) {
     localStorage.removeItem("token");
-    router.push({path: "/start/login"});
+    router.push({ path: "/start/login" });
     commit(types.LOGOUT);
   },
-  parseJwt({commit},token) {
+  parseJwt({ commit }, token) {
     const base64Url = token.split(".")[1];
     const base64 = decodeURIComponent(
       atob(base64Url)
@@ -67,9 +68,9 @@ const actions = {
     const result = JSON.parse(base64);
 
     state.loggedUserId = result.unique_name;
-    
+
     return { id: result.unique_name, actor: result.actort };
-  },
+  }
 };
 
 const mutations = {

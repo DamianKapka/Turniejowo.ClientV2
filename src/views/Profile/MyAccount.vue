@@ -1,13 +1,12 @@
 <template>
-    <h1>My-Account</h1>
+  <h1>My-Account</h1>
 </template>
 
 <script>
 export default {
-
-}
+  created() {
+  }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
