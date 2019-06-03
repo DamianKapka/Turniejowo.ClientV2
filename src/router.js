@@ -17,6 +17,10 @@ import NewTournament from "@/views/Profile/NewTournament";
 import MyTournaments from "@/views/Profile/MyTournaments";
 import MyAccount from "@/views/Profile/MyAccount";
 import EditOwnTournament from "@/views/Edit/EditOwnTournament";
+import EditGeneral from "@/views/Edit/EditGeneral";
+import EditParticipants from "@/views/Edit/EditParticipants";
+import EditProgress from "@/views/Edit/EditProgress";
+
 
 Vue.use(Router);
 
@@ -117,7 +121,25 @@ export default new Router({
     {
       path: "/profile/my-tournaments/edit/:id",
       name: "EditOwnTournament",
-      component: EditOwnTournament
+      redirect: "/profile/my-tournaments/edit/:id/general",
+      component: EditOwnTournament,
+      children:[
+        {
+          path: "general",
+          name: "EditGeneral",
+          component: EditGeneral,
+        },
+        {
+          path: "participants",
+          name: "EditParticipants",
+          component: EditParticipants,
+        },
+        {
+          path: "progress",
+          name: "EditProgress",
+          component: EditProgress,
+        }
+      ]
     },
     {
       path: "*",
