@@ -2,7 +2,7 @@
   <v-flex xs8 offset-xs2>
     <v-form ref="form" v-model="valid" style="padding: 5%">
       <v-text-field
-        v-model="tournament.name"
+        v-model="Name"
         label="Nazwa"
         value="xd"
         :rules="NameRules"
@@ -10,7 +10,7 @@
       ></v-text-field>
       <v-combobox
         label="Dyscyplina"
-        v-model="discipline"
+        v-model="Discipline"
         :items="DisciplineOptions"
       >
       </v-combobox>
@@ -28,7 +28,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="date"
+            v-model="StartingDate"
             label="Data rozpoczecia turnieju"
             readonly
             v-on="on"
@@ -44,7 +44,7 @@
       </v-menu>
 
       <v-text-field
-        v-model="tournament.amountOfTeams"
+        v-model="AmountOfTeams"
         label="Ilość dryżun"
         :rules="AmountOfTeamsRules"
         required
@@ -52,7 +52,7 @@
       </v-text-field>
 
       <v-text-field
-        v-model="tournament.entryFee"
+        v-model="EntryFee"
         label="Wpisowe"
         :rules="EntryFeeRules"
         required
@@ -61,7 +61,7 @@
       </v-text-field>
 
       <v-text-field
-        v-model="tournament.localization"
+        v-model="Localization"
         label="Lokazlizacja"
         :rules="LocalizationRules"
         required
@@ -96,7 +96,7 @@ export default {
           /^.{5,}$/.test(n.trim()) ||
           "Nazwa turnieju powinna zawierać conajmniej 5 znaków"
       ],
-      Discipline: "Piłka Nożna",
+      Discipline: "",
       DisciplineOptions: ["Piłka Nożna", "Koszykówka", "Siatkówka"],
       StartingDate: new Date().toISOString().substr(0, 10),
       AmountOfTeams: "",
@@ -129,27 +129,24 @@ export default {
       }
     };
   },
-  computed: {
-    tournament: function() {
-      return this.$store.getters.currentlyEditedTournament;
-    },
-    discipline: function() {
-      switch (this.$store.getters.currentlyEditedTournament.disciplineId) {
-        case 1:
-          return "Siatkówka";
-        case 2:
-          return "Koszykówka";
-        case 3:
-          return "Piłka nożna";
-        default:
-          return;
+  mounted(){
+    const tourney = this.$store.getters.currentlyEditedTournament;
+    this.Name = tourney.name;
+    this.Discipline = this.GetDisciplineById(tourney.disciplineId);
+    this.StartingDate = tourney.date.slice(0,10);
+    this.AmountOfTeams = tourney.amountOfTeams;
+    this.EntryFee = tourney.entryFee;
+    this.Localization = tourney.localization;
+  },
+  methods:{
+      GetDisciplineById(id){
+      switch(id)
+      {
+        case 1: return "Siatkówka";
+        case 2: return "Koszykówka";
+        case 3: return "Piłka Nożna";
+        default: return; 
       }
-    },
-    date: function() {
-      return this.$store.getters.currentlyEditedTournament.date.slice(
-        0,
-        10
-      );
     }
   }
 };

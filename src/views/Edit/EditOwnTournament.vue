@@ -20,7 +20,7 @@
               </router-link>
             </v-flex>
           </v-layout>
-          <router-view></router-view>
+          <router-view v-if="!isFetching"></router-view>
         </v-card>
       </v-flex>
     </v-layout>
@@ -34,6 +34,7 @@ export default {
   name: "EditOwnTournament",
   data() {
     return {
+      isFetching: true,
       tournamentId: Number,
       tournament: Object,
       currentPage: this.$route.name,
@@ -54,6 +55,7 @@ export default {
         console.log("SET");
         this.$store.state.currentlyEditedTournament = res.data;
         this.tournament = res.data;
+        this.isFetching = false;
       })
       .catch(err => {
         console.log(err);
