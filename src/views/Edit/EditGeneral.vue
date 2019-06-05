@@ -70,7 +70,7 @@
 
       <v-layout row style="margin-top: 2%;">
         <v-flex xs4 offset-xs1>
-          <v-btn block color="success" @click="submitForm()">
+          <v-btn block color="success" @click="editTourney()">
             Edytuj
           </v-btn>
         </v-flex>
@@ -85,6 +85,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
@@ -93,7 +95,7 @@ export default {
       NameRules: [
         n => !!n || "Wpisz nazwe turnieju",
         n =>
-          /^.{5,}$/.test(n.trim()) ||
+          /^.{5,}$/.test(n) ||
           "Nazwa turnieju powinna zawierać conajmniej 5 znaków"
       ],
       Discipline: "",
@@ -103,24 +105,26 @@ export default {
       AmountOfTeamsRules: [
         a => !!a || "Wprowadz ilość drużyn w turnieju",
         a =>
-          /^[1-9]{1}[0-9]?$/.test(a.trim()) ||
+          /^[1-9]{1}[0-9]?$/.test(a) ||
           "Ilośc drużym musi być cyrfą wieksza od 0"
       ],
       EntryFee: "",
       EntryFeeRules: [
         e => !!e || "Wprowadz wpisowe do turnieju",
         e =>
-          /^[1-9]{1}[0-9]*$/.test(e.trim()) ||
+          /^[1-9]{1}[0-9]*$/.test(e) ||
           "Wpisowe musi być cyrfą wieksza od 0"
       ],
       Localization: "",
       LocalizationRules: [l => !!l || "Wprowadz lokalizacje turnieju"],
-
+      TournamentId: "",
+      CreatorId: "",
       Model: function() {
         return {
+          tournamentId: this.TournamentId,
           Name: this.Name,
           DisciplineId: this.GetDisciplineId(this.Discipline),
-          CreatorId: this.$store.getters.loggedUserId,
+          CreatorId: this.CreatorId,
           Date: this.StartingDate,
           AmountOfTeams: this.AmountOfTeams,
           EntryFee: this.EntryFee,
@@ -129,8 +133,10 @@ export default {
       }
     };
   },
-  mounted(){
+  created(){
     const tourney = this.$store.getters.currentlyEditedTournament;
+    this.TournamentId = tourney.tournamentId;
+    this.CreatorId = tourney.creatorId;
     this.Name = tourney.name;
     this.Discipline = this.GetDisciplineById(tourney.disciplineId);
     this.StartingDate = tourney.date.slice(0,10);
@@ -139,15 +145,35 @@ export default {
     this.Localization = tourney.localization;
   },
   methods:{
+      GetDisciplineId(discipline){
+      switch(discipline)
+        {
+          case "Siatkówka": return 1;
+          case "Koszykówka": return 2;
+          case "Piłka Nożna": return 3;
+          default: return; 
+        }
+      },
       GetDisciplineById(id){
       switch(id)
-      {
-        case 1: return "Siatkówka";
-        case 2: return "Koszykówka";
-        case 3: return "Piłka Nożna";
-        default: return; 
+        {
+          case 1: return "Siatkówka";
+          case 2: return "Koszykówka";
+          case 3: return "Piłka Nożna";
+          default: return; 
+        }
+      },
+      editTourney(){
+        console.log(this.Model());
+        axios.put(`https://localhost:5001/api/tournament/${this.TournamentId}`,this.Model())
+        .then(res => {
+          if(res.status == 202){
+            alert("Edycja turnieju przebiegla poprawnie");
+            this.$store.currentlyEditedTournament = this.Model();            
+          }
+        })
+        .catch()
       }
-    }
   }
 };
 </script>
