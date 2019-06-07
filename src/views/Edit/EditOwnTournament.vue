@@ -20,7 +20,7 @@
               </router-link>
             </v-flex>
           </v-layout>
-          <router-view v-if="!isFetching"></router-view>
+          <router-view v-if="!isFetching" @tournamentEdited="refreshCurrentlyEditedTournament($event)"></router-view>
         </v-card>
       </v-flex>
     </v-layout>
@@ -52,7 +52,6 @@ export default {
     axios
       .get(`https://localhost:5001/api/tournament/${this.tournamentId}`)
       .then(res => {
-        console.log("SET");
         this.$store.state.currentlyEditedTournament = res.data;
         this.tournament = res.data;
         this.isFetching = false;
@@ -65,11 +64,17 @@ export default {
     $route(to, from) {
       this.currentPage = to.name;
     }
+  },
+  methods: {
+    refreshCurrentlyEditedTournament(tournament){
+
+      this.$store.state.currentlyEditedTournament = tournament;
+    }
   }
 };
 </script>
 
-<style <style scoped>
+<style scoped>
 .tournament-header {
   text-align: center;
   font-size: 48px;

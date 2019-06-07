@@ -88,6 +88,7 @@
 import axios from 'axios'
 
 export default {
+  name : "EditGeneral",
   data() {
     return {
       valid: false,
@@ -122,18 +123,18 @@ export default {
       Model: function() {
         return {
           tournamentId: this.TournamentId,
-          Name: this.Name,
-          DisciplineId: this.GetDisciplineId(this.Discipline),
-          CreatorId: this.CreatorId,
-          Date: this.StartingDate,
-          AmountOfTeams: this.AmountOfTeams,
-          EntryFee: this.EntryFee,
-          Localization: this.Localization
+          name: this.Name,
+          disciplineId: this.GetDisciplineId(this.Discipline),
+          creatorId: this.CreatorId,
+          date: this.StartingDate,
+          amountOfTeams: this.AmountOfTeams,
+          entryFee: this.EntryFee,
+          localization: this.Localization
         };
       }
     };
   },
-  created(){
+  created(){   
     const tourney = this.$store.getters.currentlyEditedTournament;
     this.TournamentId = tourney.tournamentId;
     this.CreatorId = tourney.creatorId;
@@ -164,12 +165,11 @@ export default {
         }
       },
       editTourney(){
-        console.log(this.Model());
         axios.put(`https://localhost:5001/api/tournament/${this.TournamentId}`,this.Model())
         .then(res => {
           if(res.status == 202){
             alert("Edycja turnieju przebiegla poprawnie");
-            this.$store.currentlyEditedTournament = this.Model();            
+            this.$emit("tournamentEdited",this.Model());         
           }
         })
         .catch()
