@@ -4,14 +4,18 @@
             <v-flex xs6 offset-xs3 style="padding: 5% 0">
                 <v-expansion-panel-content v-for="team in Teams" :key="team.teamName">
                     <template v-slot:header>
-                        <div>{{team.teamName}}</div>
+                        <v-card class="header-card">{{team.teamName}}</v-card>
                     </template>
-                    <v-card v-for="player in team.players" :key="player">
-                        <v-card-text>
-                            <span>{{player.fName}} {{player.lName}}</span>
-                        </v-card-text>
-                    </v-card>
+                        <v-card v-for="player in team.players" :key="player.value" class="text-xs-center elevation-3" style="padding:2%;">
+                                    {{player.fName}} {{player.lName}}
+                        </v-card>
+                    <v-text-field
+                        label="Nazwa nowego gracza"
+                    >
+                    </v-text-field>
                 </v-expansion-panel-content>
+
+                <AddNewTeam @TeamAdded="RefreshParticipantsList()"> </AddNewTeam>
             </v-flex>
         </v-layout>
     </v-expansion-panel>
@@ -19,7 +23,7 @@
 
 <script>
 import axios from 'axios';
-
+import AddNewTeam from '@/components/AddNewTeam'
 export default {
     name: "EditParticipants",
     data(){
@@ -28,9 +32,20 @@ export default {
         }
     },
     created(){
-        const id = this.$route.params.id;
 
-        axios.get(`https://localhost:5001/api/tournament/${id}/players?groupedbyteam=true`)
+
+        this.GetParticipants();
+    },
+    
+      components:{
+        'AddNewTeam' : AddNewTeam
+    },
+    methods:{
+        GetParticipants(){
+
+            const id = this.$route.params.id;
+            
+            axios.get(`https://localhost:5001/api/tournament/${id}/players?groupedbyteam=true`)
         .then(
             res => {
                 let playersTemp = [];
@@ -44,10 +59,19 @@ export default {
             }
         )
         .catch();
+        },
+
+        RefreshParticipantsList(){
+            this.GetParticipants();
+        }
     }
-}
+  }
 </script>
 
 <style>
-
+ .header-card{
+     font-size:22px;
+     font-weight: bold;
+     padding: 2% 2% 2% 5%;
+ }
 </style>

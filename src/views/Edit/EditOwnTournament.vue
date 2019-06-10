@@ -70,7 +70,7 @@ export default {
 
       this.$store.state.currentlyEditedTournament = tournament;
     }
-  }
+  },
 };
 </script>
 
