@@ -4,15 +4,12 @@
             <v-flex xs6 offset-xs3 style="padding: 5% 0">
                 <v-expansion-panel-content v-for="team in Teams" :key="team.teamName">
                     <template v-slot:header>
-                        <v-card class="header-card">{{team.teamName}}</v-card>
+                        <v-card class="header-card elevation-0">{{team.teamName}}</v-card>
                     </template>
-                        <v-card v-for="player in team.players" :key="player.value" class="text-xs-center elevation-3" style="padding:2%;">
+                        <v-card v-for="player in team.players" :key="player.value" class="text-xs-center elevation-0" style="padding:2%;">
                                     {{player.fName}} {{player.lName}}
                         </v-card>
-                    <v-text-field
-                        label="Nazwa nowego gracza"
-                    >
-                    </v-text-field>
+                    <AddNewPlayer></AddNewPlayer>
                 </v-expansion-panel-content>
 
                 <AddNewTeam @TeamAdded="RefreshParticipantsList()"> </AddNewTeam>
@@ -24,6 +21,8 @@
 <script>
 import axios from 'axios';
 import AddNewTeam from '@/components/AddNewTeam'
+import AddNewPlayer from '@/components/AddNewPlayer'
+
 export default {
     name: "EditParticipants",
     data(){
@@ -38,7 +37,8 @@ export default {
     },
     
       components:{
-        'AddNewTeam' : AddNewTeam
+        'AddNewTeam' : AddNewTeam,
+        'AddNewPlayer' : AddNewPlayer
     },
     methods:{
         GetParticipants(){

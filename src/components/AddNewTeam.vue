@@ -1,20 +1,27 @@
 <template>
-<v-form ref="form" v-model="valid">
-    <v-layout row>
-        <v-flex xs8 offset-xs1>
-            <v-text-field
-                label="Nazwa nowej drużyny"
-                v-model="TName"
-                :rules="NameRules"
-                >        
-            </v-text-field>
+<v-form ref="form" v-model="valid" class="form">    
+        <v-flex>
+        <v-card class="elevation-1" style="padding:3%">
+            <v-card-title class="card-title">
+                Dodaj nową drużynę
+            </v-card-title>
+            <v-layout row>
+            <v-flex xs8 offset-xs1>
+                <v-text-field
+                    label="Nazwa nowej drużyny"
+                    v-model="TName"
+                    :rules="NameRules"
+                    >        
+                </v-text-field>
+            </v-flex>
+            <v-flex xs1>            
+                <v-btn color="success" @click="Add()">
+                    <v-icon>add_circle</v-icon>
+                </v-btn>
+            </v-flex>
+            </v-layout>
+        </v-card>
         </v-flex>
-        <v-flex xs1>
-            <v-btn color="success" @click="Add()">
-                <v-icon>add_circle</v-icon>
-            </v-btn>
-        </v-flex>
-    </v-layout>
 </v-form>
 </template>
 
@@ -62,5 +69,13 @@ export default {
 </script>
 
 <style>
-
+    .card-title{
+        padding-left: 8%;
+        font-weight: bold;
+        font-size: 15px;
+        text-decoration: underline;
+    }
+    .form{
+        margin-top: 6%;
+    }
 </style>
