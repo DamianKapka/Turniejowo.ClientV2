@@ -7,7 +7,7 @@
         <v-layout row>
             <v-flex xs-4 offset-xs2>
             <v-text-field
-            v-bind="Name"
+            v-model="Name"
             :rules="NameRules"
             value=""
             >
@@ -27,21 +27,41 @@
 </template>
 
 <script>
+import axios from 'axios';
+import {capitalize} from '@/utils/utils.js'
+
 export default {
     name:"AddNewPlayer",
     data(){
         return{
             Name : "",
             NameRules:[
-                n => !!n || "Wprowadz nazwe gracza"
-            ]
+                n => !!n || "Wprowadz nazwe gracza",
+                n => /^\w+\ \w+$/.test(n) || "Podaj imie i nazwisko gracza, ktore sklada sie z liter rozdzielonych spacja"
+            ],
+            Model: function(){
+              
+                return{
+                    FName  : capitalize(this.Name.split(' ')[0]),
+                    LName  : capitalize(this.Name.split(' ')[1]),
+                    TeamId : this.teamId,
+                    Points : 0,
+                }
+            }
         }
     },
     methods:{
         AddPlayer(){
 
+            console.log(this.teamId);
+            // axios.post(`localhost:5001/api/player`,this.Model())
+            // .then(res => console.log(res))
+            // .catch(err => console.log(err));
         }
-    }
+    },
+    props:[
+        'teamId',
+    ]
 }
 </script>
 

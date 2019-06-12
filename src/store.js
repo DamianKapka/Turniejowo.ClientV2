@@ -72,6 +72,9 @@ const actions = {
     state.loggedUserId = result.unique_name;
 
     return { id: result.unique_name, actor: result.actort };
+  },
+  capitalize({commit}, text){
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 };
 

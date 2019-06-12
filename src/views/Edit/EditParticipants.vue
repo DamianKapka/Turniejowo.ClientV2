@@ -9,7 +9,7 @@
                         <v-card v-for="player in team.players" :key="player.value" class="text-xs-center elevation-0" style="padding:2%;">
                                     {{player.fName}} {{player.lName}}
                         </v-card>
-                    <AddNewPlayer></AddNewPlayer>
+                    <AddNewPlayer v-bind:teamId="team"></AddNewPlayer>
                 </v-expansion-panel-content>
 
                 <AddNewTeam @TeamAdded="RefreshParticipantsList()"> </AddNewTeam>
@@ -55,7 +55,6 @@ export default {
             });
 
             this.Teams = playersTemp;
-            console.log(this.Teams);
             }
         )
         .catch();
