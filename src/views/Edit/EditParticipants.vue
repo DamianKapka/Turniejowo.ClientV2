@@ -9,7 +9,7 @@
                         <v-card v-for="player in team.players" :key="player.value" class="text-xs-center elevation-0" style="padding:2%;">
                                     {{player.fName}} {{player.lName}}
                         </v-card>
-                    <AddNewPlayer v-bind:teamId="team"></AddNewPlayer>
+                    <AddNewPlayer v-bind:teamId="team.teamId" @PlayerAdded="RefreshParticipantsList()"></AddNewPlayer>
                 </v-expansion-panel-content>
 
                 <AddNewTeam @TeamAdded="RefreshParticipantsList()"> </AddNewTeam>
@@ -31,8 +31,6 @@ export default {
         }
     },
     created(){
-
-
         this.GetParticipants();
     },
     
@@ -47,16 +45,15 @@ export default {
             
             axios.get(`https://localhost:5001/api/tournament/${id}/players?groupedbyteam=true`)
         .then(
-            res => {
-                let playersTemp = [];
+            response => {
+                let teamsTemp = [];
 
-                Object.keys(res.data).forEach(function eachKey(key) {
-                playersTemp.push({ teamName: key, players: res.data[key] });
-            });
-
-            this.Teams = playersTemp;
-            }
-        )
+                response.data.forEach(element => {
+                    teamsTemp.push({teamName: element.team.name,teamId: element.team.teamId, players:element.players})
+                });
+        
+                this.Teams = teamsTemp;
+            })
         .catch();
         },
 

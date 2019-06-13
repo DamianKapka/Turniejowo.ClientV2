@@ -62,13 +62,13 @@ export default {
         }/players?groupedbyteam=true`
       )
       .then(response => {
-        let playersTemp = [];
+        let teamsTemp = [];
 
-        Object.keys(response.data).forEach(function eachKey(key) {
-          playersTemp.push({ teamName: key, players: response.data[key] });
+        response.data.forEach(element => {
+          teamsTemp.push({teamName: element.team.name, players:element.players})
         });
-
-        this.Players = playersTemp;
+        
+        this.Players = teamsTemp;
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));

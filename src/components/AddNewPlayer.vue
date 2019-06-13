@@ -44,7 +44,7 @@ export default {
                 return{
                     FName  : capitalize(this.Name.split(' ')[0]),
                     LName  : capitalize(this.Name.split(' ')[1]),
-                    TeamId : this.teamId,
+                    TeamId : this.teamId, 
                     Points : 0,
                 }
             }
@@ -52,11 +52,14 @@ export default {
     },
     methods:{
         AddPlayer(){
-
-            console.log(this.teamId);
-            // axios.post(`localhost:5001/api/player`,this.Model())
-            // .then(res => console.log(res))
-            // .catch(err => console.log(err));
+            axios.post(`https://localhost:5001/api/player`,this.Model())
+            .then(res => {
+                if(res.status == 201){
+                    alert("Gracz dodany prawidłowo");
+                    this.$emit("PlayerAdded")
+                }
+            })
+            .catch(err => console.log(err.response));
         }
     },
     props:[
