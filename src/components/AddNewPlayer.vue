@@ -1,5 +1,5 @@
 <template>
-<v-form>
+<v-form ref="form" v-model="valid" class="form">
     <v-card class="elevation-5" style="padding:4%" >
     <v-card-title class="card-title">
         Dodaj nowego zawodnika
@@ -34,6 +34,7 @@ export default {
     name:"AddNewPlayer",
     data(){
         return{
+            valid : false,
             Name : "",
             NameRules:[
                 n => !!n || "Wprowadz nazwe gracza",
