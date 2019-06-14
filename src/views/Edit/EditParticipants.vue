@@ -1,73 +1,86 @@
-<template>
-    <v-expansion-panel expand>
-        <v-layout row>
-            <v-flex xs6 offset-xs3 style="padding: 5% 0">
-                <v-expansion-panel-content v-for="team in Teams" :key="team.teamName">
-                    <template v-slot:header>
-                        <v-card class="header-card elevation-0">{{team.teamName}}</v-card>
-                    </template>
-                        <v-card v-for="player in team.players" :key="player.value" class="text-xs-center elevation-0" style="padding:2%;">
-                                    {{player.fName}} {{player.lName}}
-                        </v-card>
-                    <AddNewPlayer v-bind:teamId="team.teamId" @PlayerAdded="RefreshParticipantsList()"></AddNewPlayer>
-                </v-expansion-panel-content>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  <v-expansion-panel expand>
+    <v-layout row>
+      <v-flex xs6 offset-xs3 style="padding: 5% 0">
+        <v-expansion-panel-content v-for="team in Teams" :key="team.teamName">
+          <template v-slot:header>
+            <v-card class="header-card elevation-0">{{ team.teamName }}</v-card>
+          </template>
+          <v-card
+            v-for="player in team.players"
+            :key="player.value"
+            class="text-xs-center elevation-0"
+            style="padding:2%;"
+          >
+            {{ player.fName }} {{ player.lName }}
+          </v-card>
+          <AddNewPlayer
+            v-bind:teamId="team.teamId"
+            @PlayerAdded="RefreshParticipantsList()"
+          ></AddNewPlayer>
+        </v-expansion-panel-content>
 
-                <AddNewTeam @TeamAdded="RefreshParticipantsList()"> </AddNewTeam>
-            </v-flex>
-        </v-layout>
-    </v-expansion-panel>
+        <AddNewTeam @TeamAdded="RefreshParticipantsList()"> </AddNewTeam>
+      </v-flex>
+    </v-layout>
+  </v-expansion-panel>
 </template>
 
 <script>
-import axios from 'axios';
-import AddNewTeam from '@/components/AddNewTeam'
-import AddNewPlayer from '@/components/AddNewPlayer'
+import axios from "axios";
+import AddNewTeam from "@/components/AddNewTeam";
+import AddNewPlayer from "@/components/AddNewPlayer";
 
 export default {
-    name: "EditParticipants",
-    data(){
-        return{
-            Teams: []
-        }
-    },
-    created(){
-        this.GetParticipants();
-    },
-    
-      components:{
-        'AddNewTeam' : AddNewTeam,
-        'AddNewPlayer' : AddNewPlayer
-    },
-    methods:{
-        GetParticipants(){
+  name: "EditParticipants",
+  data() {
+    return {
+      Teams: []
+    };
+  },
+  created() {
+    this.GetParticipants();
+  },
 
-            const id = this.$route.params.id;
-            
-            axios.get(`https://localhost:5001/api/tournament/${id}/players?groupedbyteam=true`)
-        .then(
-            response => {
-                let teamsTemp = [];
+  components: {
+    AddNewTeam: AddNewTeam,
+    AddNewPlayer: AddNewPlayer
+  },
+  methods: {
+    GetParticipants() {
+      const id = this.$route.params.id;
 
-                response.data.forEach(element => {
-                    teamsTemp.push({teamName: element.team.name,teamId: element.team.teamId, players:element.players})
-                });
-        
-                this.Teams = teamsTemp;
-            })
+      axios
+        .get(
+          `https://localhost:5001/api/tournament/${id}/players?groupedbyteam=true`
+        )
+        .then(response => {
+          let teamsTemp = [];
+
+          response.data.forEach(element => {
+            teamsTemp.push({
+              teamName: element.team.name,
+              teamId: element.team.teamId,
+              players: element.players
+            });
+          });
+
+          this.Teams = teamsTemp;
+        })
         .catch();
-        },
+    },
 
-        RefreshParticipantsList(){
-            this.GetParticipants();
-        }
+    RefreshParticipantsList() {
+      this.GetParticipants();
     }
   }
+};
 </script>
 
 <style>
- .header-card{
-     font-size:22px;
-     font-weight: bold;
-     padding: 2% 2% 2% 5%;
- }
+.header-card {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 2% 2% 2% 5%;
+}
 </style>

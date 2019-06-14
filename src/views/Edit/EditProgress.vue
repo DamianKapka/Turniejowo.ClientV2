@@ -1,91 +1,130 @@
-
 <template>
-    <v-flex xs8 offset-xs2 style="padding:5%">
-        <v-data-table
-            :headers="TableHeaders"
-            :items="matches"
-            hide-actions
-            class="elevation-3"           
-            >
-            <template v-slot:items="item">
-                <tr>
-                    <td class="text-xs-center">{{item.item.teamOne}}</td>
-                    <td class="text-xs-center">{{item.item.teamTwo}}</td>
-                    <td class="text-xs-center">{{item.item.teamOneScore}} : {{item.item.teamTwoScore}} </td>
-                </tr>
-            </template>            
-        </v-data-table>
-            <v-card>
-                <v-card-text>
-                    Dodaj wynik
-                </v-card-text>
-            <v-form ref="form" v-model="valid"> 
-                <v-layout row>
-                    <v-flex xs3 offset-xs1>
-                        <v-combobox
-                            label="Drużyna A"
-                        >
-                        </v-combobox>
-                    </v-flex>
-                    <v-flex xs3 offset-xs1>
-                        <v-combobox
-                            label="Drużyna B"
-                        >
-                        </v-combobox>
-                    </v-flex>
-                    <v-flex xs2 offset-xs1>
-                        <v-text-field
-                            label="Wynik">
-                            
-                        </v-text-field>
-                    </v-flex>
-                    <v-flex xs1>
-                        <v-btn
-                            class="block" 
-                        >                            
-                        </v-btn>
-                    </v-flex>
-                </v-layout>
-            </v-form>
-        </v-card>
-    </v-flex>
+  <v-flex xs10 offset-xs1 style="padding:5%">
+    <v-data-table
+      :headers="TableHeaders"
+      :items="matches"
+      hide-actions
+      class="elevation-0"
+    >
+      <template v-slot:items="item">
+        <tr>
+          <td class="text-xs-center">{{ item.item.teamOne }}</td>
+          <td class="text-xs-center">{{ item.item.teamTwo }}</td>
+          <td class="text-xs-center">
+            {{ item.item.teamOneScore }} : {{ item.item.teamTwoScore }}
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
+    <v-card class="elevation-0 new-result-main-card">
+      <v-card-text class="new-result-main-card-text">
+        Dodaj nowy wynik
+      </v-card-text>
+      <v-form ref="form" v-model="valid">
+        <v-layout row>
+          <v-flex xs6 offset-xs1>
+            <v-combobox :items="TeamsNames" label="Drużyna A"> </v-combobox>
+          </v-flex>
+          <v-flex xs2 offset-xs2>
+            <v-text-field label="Wynik A"> </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs6 offset-xs1>
+            <v-combobox :items="TeamsNames" label="Drużyna B"></v-combobox>
+          </v-flex>
+          <v-flex xs2 offset-xs2>
+            <v-text-field label="Wynik B"> </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs4 offset-xs4>
+            <v-btn color="success" block>Dodaj Wynik</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-form>
+    </v-card>
+  </v-flex>
 </template>
 
 <script>
+import axios from "axios";
 
 export default {
-    name: "EditProgress",
-    data(){
-        return{
-            TableHeaders:[
-                { text: "Druzyna A", value: "A", sortable: false, align: "center" },
-                { text: "Druzyna B", value: "B", sortable: false, align: "center" },
-                { text: "Wynik", value: "W", sortable: false, align: "center" },
-            ],
-            matches: [
-                {
-                    teamOne : "6A",
-                    teamTwo : "6B",
-                    teamOneScore : "3",
-                    teamTwoScore : "2"
-                },
-                {
-                    teamOne : "6A",
-                    teamTwo : "6C",
-                    teamOneScore : "3",
-                    teamTwoScore : "0"
-                }
-            ]
+  name: "EditProgress",
+  data() {
+    return {
+      valid: false,
+      TableHeaders: [
+        { text: "Druzyna A", value: "A", sortable: false, align: "center" },
+        { text: "Druzyna B", value: "B", sortable: false, align: "center" },
+        { text: "Wynik", value: "W", sortable: false, align: "center" }
+      ],
+      matches: [
+        {
+          teamOne: "6A",
+          teamTwo: "6B",
+          teamOneScore: "3",
+          teamTwoScore: "2"
+        },
+        {
+          teamOne: "6A",
+          teamTwo: "6C",
+          teamOneScore: "3",
+          teamTwoScore: "0"
         }
-    },
-    methods: {
-        AddTeam(team){
-            matches.push(team);
-        }
+      ],
+      Teams: []
+    };
+  },
+  created() {
+    axios
+      .get(
+        `https://localhost:5001/api/tournament/${this.$route.params.id}/teams`
+      )
+      .then(res => {
+        res.data.forEach(element => {
+          this.Teams.push(element);
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  methods: {
+    AddTeam(team) {
+      this.matches.push(team);
     }
-}
+  },
+  computed: {
+    TeamsNames: function() {
+      let teamNames = [];
+      this.Teams.forEach(element => {
+        teamNames.push(element.name);
+      });
+      return teamNames;
+    }
+  }
+};
 </script>
 
-<style>
+<style scoped>
+.new-result-form-card {
+  font-size: 14px;
+  text-align: center;
+  text-decoration: underline;
+  padding: 1%;
+}
+
+.new-result-main-card {
+  border: 1px solid black;
+  margin-top: 3%;
+}
+
+.new-result-main-card-text {
+  font-size: 16px;
+  text-decoration: underline;
+  text-align: center;
+}
 
 </style>
