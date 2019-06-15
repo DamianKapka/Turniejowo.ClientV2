@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-flex xs10 offset-xs1 style="padding:5%">
     <v-data-table
       :headers="TableHeaders"
@@ -23,23 +23,35 @@
       <v-form ref="form" v-model="valid">
         <v-layout row>
           <v-flex xs6 offset-xs1>
-            <v-combobox :items="TeamsNames" label="Drużyna A"> </v-combobox>
+            <v-combobox
+              v-model="TeamAName"
+              :items="TeamsNames"
+              label="Drużyna A"
+            >
+            </v-combobox>
           </v-flex>
           <v-flex xs2 offset-xs2>
-            <v-text-field label="Wynik A"> </v-text-field>
+            <v-text-field v-model="TeamAScore" label="Wynik A">
+            </v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row>
           <v-flex xs6 offset-xs1>
-            <v-combobox :items="TeamsNames" label="Drużyna B"></v-combobox>
+            <v-combobox
+              v-model="TeamBName"
+              :items="TeamsNames"
+              label="Drużyna B"
+            ></v-combobox>
           </v-flex>
           <v-flex xs2 offset-xs2>
-            <v-text-field label="Wynik B"> </v-text-field>
+            <v-text-field v-model="TeamBScore" label="Wynik B"> </v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row>
           <v-flex xs4 offset-xs4>
-            <v-btn color="success" block>Dodaj Wynik</v-btn>
+            <v-btn color="success" block @click="AddResult()"
+              >Dodaj Wynik</v-btn
+            >
           </v-flex>
         </v-layout>
       </v-form>
@@ -61,20 +73,12 @@ export default {
         { text: "Wynik", value: "W", sortable: false, align: "center" }
       ],
       matches: [
-        {
-          teamOne: "6A",
-          teamTwo: "6B",
-          teamOneScore: "3",
-          teamTwoScore: "2"
-        },
-        {
-          teamOne: "6A",
-          teamTwo: "6C",
-          teamOneScore: "3",
-          teamTwoScore: "0"
-        }
       ],
-      Teams: []
+      Teams: [],
+      TeamAName: "",
+      TeamBName: "",
+      TeamAScore: "",
+      TeamBScore: ""
     };
   },
   created() {
@@ -88,12 +92,18 @@ export default {
         });
       })
       .catch(err => {
+        // eslint-disable-next-line no-console
         console.log(err);
       });
   },
   methods: {
-    AddTeam(team) {
-      this.matches.push(team);
+    AddResult() {
+      this.matches.push({
+        teamOne: this.TeamAName,
+        teamTwo: this.TeamBName,
+        teamOneScore: this.TeamAScore,
+        teamTwoScore: this.TeamBScore
+      });
     }
   },
   computed: {
@@ -126,5 +136,4 @@ export default {
   text-decoration: underline;
   text-align: center;
 }
-
 </style>
