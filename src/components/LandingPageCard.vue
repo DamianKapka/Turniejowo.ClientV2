@@ -50,7 +50,7 @@
 
 <script>
 export default {
-  name: "LandingPage"
+  name: "LandingPageCard"
 };
 </script>
 

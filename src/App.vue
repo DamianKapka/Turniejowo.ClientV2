@@ -15,7 +15,7 @@ export default {
 };
 </script>
 
-<style <style lang="less">
+<style lang="less">
 @import (css) url("https://fonts.googleapis.com/css?family=Play");
 
 #app {
@@ -24,7 +24,6 @@ export default {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-
   font-family: "Play", sans-serif !important;
 }
 
@@ -42,15 +41,15 @@ export default {
   border: 2px solid wheat;
 }
 
-.lel {
-  border: 3px solid #ff9933 !important;
-  padding: 5% !important;
-  background-color: #ffb984 !important;
-}
-
 .maincard-nav-card:hover {
   background-color: #ff9933;
   transform: scale(1.2, 1.2);
   z-index: 999;
+}
+
+.lel {
+  border: 3px solid #ff9933 !important;
+  padding: 5% !important;
+  background-color: #ffb984 !important;
 }
 </style>

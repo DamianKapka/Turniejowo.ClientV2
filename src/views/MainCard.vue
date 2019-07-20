@@ -2,16 +2,20 @@
   <v-container>
     <v-layout row>
       <v-card :dark="false" class="elevation-24 main-card" Height="100%">
-        <router-view></router-view>
+        <LandingPageCard></LandingPageCard>
       </v-card>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import LandingPageCard from "@/components/LandingPageCard";
+
 export default {
   name: "MainCard",
-  components: {}
+  components: {
+    LandingPageCard: LandingPageCard
+  }
 };
 </script>
 

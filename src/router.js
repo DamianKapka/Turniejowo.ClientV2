@@ -2,7 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 import MainCard from "@/views/MainCard";
 import FourOFour from "@/views/FourOFour";
-import LandingPage from "@/views/LandingPage";
 import Start from "@/views/Start/Start";
 import LoginForm from "@/views/Start/LoginForm";
 import RegisterForm from "@/views/Start/RegisterForm";
@@ -21,7 +20,6 @@ import EditGeneral from "@/views/Edit/EditGeneral";
 import EditParticipants from "@/views/Edit/EditParticipants";
 import EditProgress from "@/views/Edit/EditProgress";
 
-
 Vue.use(Router);
 
 export default new Router({
@@ -32,13 +30,6 @@ export default new Router({
       path: "/",
       name: "MainCard",
       component: MainCard,
-      children: [
-        {
-          path: "",
-          name: "LandingPage",
-          component: LandingPage
-        }
-      ]
     },
     {
       path: "/start",
