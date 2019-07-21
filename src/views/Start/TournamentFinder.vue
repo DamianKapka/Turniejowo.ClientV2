@@ -3,19 +3,15 @@
     <v-container>
       <v-layout>
         <v-flex xs8 offset-xs2>
-          <div class="start-div">
-            <v-text-field
-              v-model="IdToFind"
-              label="Id szukanego turnieju"
-              required
-            />
+          <v-text-field
+            v-model="IdToFind"
+            label="Id szukanego turnieju"
+            required
+          ></v-text-field>
 
-            <v-flex xs6 offset-xs3>
-              <div class="start-buttons-div">
-                <v-btn block color="success" v-on:click="Find()">Szukaj</v-btn>
-              </div>
-            </v-flex>
-          </div>
+          <v-flex xs6 offset-xs3>
+            <ConfirmButton Message="SZUKAJ" @clicked="Find()"></ConfirmButton>
+          </v-flex>
         </v-flex>
       </v-layout>
     </v-container>
@@ -24,6 +20,7 @@
 
 <script>
 import axios from "axios/index";
+import ConfirmButton from "@/components/ConfirmButton";
 
 export default {
   name: "TournamentFinder",
@@ -49,6 +46,9 @@ export default {
           }
         });
     }
+  },
+  components: {
+    ConfirmButton: ConfirmButton
   }
 };
 </script>
