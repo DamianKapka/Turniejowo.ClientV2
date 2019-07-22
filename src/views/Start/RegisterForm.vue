@@ -101,12 +101,12 @@ export default {
       Mail: "",
       MailRules: [
         m => !!m || "Wprowadź adres e-mail",
-        m => /^.+\@\w+\.\w+$/.test(m) || "Format adresu email niepoprawny"
+        m => /^.+@\w+\.\w+$/.test(m) || "Format adresu email niepoprawny"
       ],
       Phone: "",
       PhoneRules: [
         ph =>
-          /^\d{3}\-\d{3}\-\d{3}$/.test(ph) ||
+          /^\d{3}-\d{3}-\d{3}$/.test(ph) ||
           "Wpisz numer telefonu w formacie 123-123-123"
       ],
       /**
@@ -133,17 +133,34 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         axios
-          .post("https://localhost:5001/api/user", this.Model())
+          .post("http://78.47.36.35:7000/api/user", this.Model())
           .then(response => {
-            alert("Konto założone poprawnie!");
-            this.$router.replace("login");
+            switch (response.status) {
+              case 201: {
+                alert("Konto założone poprawnie");
+                this.$router.push({ name: "login" });
+                break;
+              }
+              case 409: {
+                alert("Podany adres e-mail istnieje już w bazie danych");
+                break;
+              }
+              case 400: {
+                alert("Nie można przetworzyć żądania");
+                break;
+              }
+              case 500: {
+                alert("Wewnętrzny błąd servera");
+                break;
+              }
+              default: {
+                break;
+              }
+            }
           })
           .catch(error => {
-            if (error.response.status === 409) {
-              alert("Podany adres e-mail istnieje w bazie danych");
-            } else {
-              alert(error.response.data);
-            }
+            // eslint-disable-next-line no-console
+            console.log(error);
           });
       }
     }

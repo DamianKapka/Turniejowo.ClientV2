@@ -49,19 +49,7 @@ export default {
 </script>
 
 <style>
-/*a {*/
-/*  text-decoration: none;*/
-/*}*/
-
-/*.start-div {*/
-/*  padding: 5%;*/
-/*}*/
-
-/*.start-buttons-div {*/
-/*  padding-top: 5%;*/
-/*}*/
-
-/*.start-div v-btn {*/
-/*  font-weight: bold;*/
-/*}*/
+.v-form {
+  padding: 4% 0;
+}
 </style>
