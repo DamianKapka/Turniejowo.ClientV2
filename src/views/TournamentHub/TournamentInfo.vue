@@ -13,6 +13,7 @@
 
 <script>
 import axios from "axios";
+import { GetDisciplineById } from "@/utils/utils.js";
 
 export default {
   name: "TournamentInfo",
@@ -33,10 +34,12 @@ export default {
   },
   created() {
     axios
-      .get(`https://localhost:5001/api/tournament/${this.$route.params.id}`)
+      .get(
+        `${this.$store.getters.apiUrl}/api/tournament/${this.$route.params.id}`
+      )
       .then(response => {
         this.TournamentInfo[0].value = response.data["name"];
-        this.TournamentInfo[1].value = this.GetDisciplineById(
+        this.TournamentInfo[1].value = GetDisciplineById(
           response.data["disciplineId"]
         );
         this.TournamentInfo[2].value = response.data["date"].slice(0, 10);
@@ -45,7 +48,7 @@ export default {
         this.TournamentInfo[6].value = response.data["localization"];
 
         return axios.get(
-          `https://localhost:5001/api/user/${response.data["creatorId"]}`
+          `${this.$store.getters.apiUrl}/api/user/${response.data["creatorId"]}`
         );
       })
       .then(response => {
@@ -55,7 +58,9 @@ export default {
         }`;
 
         return axios.get(
-          `https://localhost:5001/api/tournament/${this.$route.params.id}/teams`
+          `${this.$store.getters.apiUrl}/api/tournament/${
+            this.$route.params.id
+          }/teams`
         );
       })
       .then(response => {
@@ -63,27 +68,6 @@ export default {
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));
-  },
-  methods: {
-    GetDisciplineById: function(id) {
-      let discipline;
-
-      switch (id) {
-        case 1:
-          discipline = "Siatkówka";
-          break;
-        case 2:
-          discipline = "Koszykówka";
-          break;
-        case 3:
-          discipline = "Piłka Nożna";
-          break;
-        default:
-          break;
-      }
-
-      return discipline;
-    }
   }
 };
 </script>
