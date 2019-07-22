@@ -14,33 +14,35 @@ const state = {
   logged: localStorage.getItem("token"),
   loggedUserId: "",
   currentlyEditedTournament: "",
+  apiUrl: "http://78.47.36.35:7000"
 };
 
 const getters = {
   isLogged: state => state.logged,
   loggedUserId: state => state.loggedUserId,
-  currentlyEditedTournament: state => state.currentlyEditedTournament
+  currentlyEditedTournament: state => state.currentlyEditedTournament,
+  apiUrl: state => state.apiUrl
 };
 
 const actions = {
   login: function({ commit }, credentials) {
     axios
-      .post("https://localhost:5001/api/user/authenticate", credentials)
+      .post(`${getters.apiUrl}/api/user/authenticate`, credentials)
       .then(response => {
         switch (response.status) {
           case 200: {
-            alert("Logged sucessfully");
+            alert("Zalogowano!");
             localStorage.setItem("token", response.data.token);
             commit(types.LOGIN);
             router.push({ path: "/profile" });
             break;
           }
           case 401: {
-            alert("Invalid Credendiatls");
+            alert("Nieprawidłowe dane");
             break;
           }
           case 500: {
-            alert("Server error. Cannot proceed the request");
+            alert("Błąd servera");
             break;
           }
           default:
@@ -51,6 +53,7 @@ const actions = {
         alert(error.response.data);
       });
   },
+
   logout: function({ commit }) {
     localStorage.removeItem("token");
     router.push({ path: "/start/login" });
@@ -73,9 +76,6 @@ const actions = {
 
     return { id: result.unique_name, actor: result.actort };
   },
-  capitalize({commit}, text){
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  }
 };
 
 const mutations = {

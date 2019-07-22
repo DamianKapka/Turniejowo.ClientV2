@@ -134,7 +134,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         axios
-          .post("http://78.47.36.35:7000/api/user", this.Model())
+          .post(`${this.$store.getters.apiUrl}/api/user`, this.Model())
           .then(response => {
             switch (response.status) {
               case 201: {
