@@ -34,7 +34,7 @@ export default {
   methods: {
     Find() {
       axios
-        .get("https://localhost:5001/api/tournament/" + this.IdToFind)
+        .get("http://78.47.36.35:7000/api/tournament/" + this.IdToFind)
         .then(response => {
           this.$router.push("/tournament/" + this.IdToFind);
         })
