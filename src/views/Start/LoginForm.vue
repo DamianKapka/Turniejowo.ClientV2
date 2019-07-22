@@ -3,21 +3,14 @@
     <v-container>
       <v-layout>
         <v-flex xs8 offset-xs2>
-          <div class="start-div">
             <v-text-field
               v-model="Login"
               :rules="LoginRules"
               label="Adres e-mail"></v-text-field>
             <v-text-field v-model="Password" label="Password"></v-text-field>
-
             <v-flex xs6 offset-xs3>
-              <div class="start-buttons-div">
-                <v-btn block color="success" v-on:click="Authenticate()"
-                  >Zaloguj</v-btn
-                >
-              </div>
+              <ConfirmButton Message="ZALOGUJ" @clicked="Authenticate()"> </ConfirmButton>
             </v-flex>
-          </div>
         </v-flex>
       </v-layout>
     </v-container>
@@ -26,6 +19,7 @@
 
 <script>
 import axios from "axios/index";
+import ConfirmButton from '@/components/ConfirmButton'
 
 export default {
   name: "LoginForm",
@@ -47,6 +41,9 @@ export default {
     Authenticate() {
       this.$store.dispatch("login",this.Model())
     }
+  },
+  components:{
+    ConfirmButton: ConfirmButton
   }
 };
 </script>

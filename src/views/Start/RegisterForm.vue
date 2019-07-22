@@ -42,15 +42,14 @@
             <div>
               <v-layout row>
                 <v-flex xs4 offset-xs1
-                  ><v-btn block color="success" v-on:click="submit()"
-                    >Stwórz Konto</v-btn
+                  ><ConfirmButton Message="STWÓRZ KONTO" @clicked="submit()"></ConfirmButton
                   ></v-flex
                 >
                 <v-flex xs2></v-flex>
                 <v-flex xs4
-                  ><v-btn block color="warning" v-on:click="reset()"
-                    >Reset</v-btn
-                  ></v-flex
+                  >
+                  <ResetButton Message="RESET" @clicked="reset()"></ResetButton>
+                  </v-flex
                 >
               </v-layout>
             </div>
@@ -63,6 +62,8 @@
 
 <script>
 import axios from "axios/index";
+import ConfirmButton from '@/components/ConfirmButton';
+import ResetButton from '@/components/ResetButton'
 
 export default {
   name: "RegisterForm",
@@ -147,6 +148,10 @@ export default {
           });
       }
     }
+  },
+  components:{
+    ConfirmButton: ConfirmButton,
+    ResetButton: ResetButton
   }
 };
 </script>

@@ -6,7 +6,7 @@
           <v-layout row>
             <v-flex xs4>
               <NavBarCard
-                LabelInfo="LOGIN"
+                LabelInfo="ZALOGUJ"
                 ActiveClass="login"
                 RouterLink="login"
               ></NavBarCard>

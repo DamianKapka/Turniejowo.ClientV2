@@ -33,7 +33,7 @@ export default {
   },
   created() {
     axios
-      .get(`http://78.47.36.35:7000/api/tournament/${this.$route.params.id}`)
+      .get(`https://localhost:5001/api/tournament/${this.$route.params.id}`)
       .then(response => {
         this.TournamentInfo[0].value = response.data["name"];
         this.TournamentInfo[1].value = this.GetDisciplineById(
