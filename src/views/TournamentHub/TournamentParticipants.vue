@@ -22,7 +22,7 @@
                 :key="item.PlayerId"
               >
                 <v-list-tile-content>
-                  <span>{{ item.fName }} {{ item.lName }}</span>
+                  {{ item.fName }} {{ item.lName }}
                 </v-list-tile-content>
               </v-list-tile>
             </v-list>
@@ -42,8 +42,18 @@ export default {
     return {
       Players: [],
       TableHeaders: [
-        { text: "Nr", value: "number", sortable: false, align: "center" },
-        { text: "Drużyna", value: "team", sortable: false, align: "center" },
+        { 
+          text: "Nr", 
+          value: "number", 
+          sortable: false, 
+          align: "center" 
+        },
+        { 
+          text: "Drużyna", 
+          value: "team", 
+          sortable: false, 
+          align: "center" 
+        },
         {
           text: "Zawodnicy",
           value: "players",
@@ -57,18 +67,14 @@ export default {
   created() {
     axios
       .get(
-        `https://localhost:5001/api/tournament/${
+        `${this.$store.getters.apiUrl}/api/tournament/${
           this.$route.params.id
         }/players?groupedbyteam=true`
       )
       .then(response => {
-        let teamsTemp = [];
-
         response.data.forEach(element => {
-          teamsTemp.push({teamName: element.team.name, players:element.players})
+          this.Players.push({teamName: element.team.name, players:element.players})
         });
-        
-        this.Players = teamsTemp;
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));
@@ -78,7 +84,7 @@ export default {
 
 <style>
 .v-list__tile__content {
-  font-size: 12px;
-  text-align: -webkit-center;
+  font-size: 14px;
+  align-items: center;
 }
 </style>
