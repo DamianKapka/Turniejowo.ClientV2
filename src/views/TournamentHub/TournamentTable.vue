@@ -5,11 +5,21 @@
     :hide-actions="true"
   >
     <template v-slot:items="item">
-      <td class="text-xs-center">{{item.index+1}}</td>
-      <td class="text-xs-center">{{item.item.name}}</td>
-      <td class="text-xs-center">{{item.item.wins}}</td>
-      <td class="text-xs-center">{{item.item.loses}}</td>
-      <td class="text-xs-center">{{item.item.points}}</td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.index + 1 }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.name }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.wins }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.loses }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.points }}
+      </td>
     </template>
   </v-data-table>
 </template>
@@ -24,10 +34,10 @@ export default {
       tableEntries: [],
       tableHeaders: [
         { text: "Miejsce", value: "place", align: "center", sortable: false },
-        { text: "Drużyna", value: "team", align: "center", sortable: false},
-        { text: "Zwyciestwa", value: "wins", align: "center", sortable: false},
-        { text: "Porazki", value: "loses", align: "center", sortable: false},
-        { text: "Pynkty", value: "points", align: "center", sortable: false},
+        { text: "Drużyna", value: "team", align: "center", sortable: false },
+        { text: "Zwyciestwa", value: "wins", align: "center", sortable: false },
+        { text: "Porazki", value: "loses", align: "center", sortable: false },
+        { text: "Pynkty", value: "points", align: "center", sortable: false }
       ]
     };
   },
@@ -36,12 +46,30 @@ export default {
       return array.sort((a, b) =>
         a.points > b.points ? -1 : b.points > a.points ? 1 : 0
       );
+    },
+    getMedalColor: function(index) {
+      switch (index) {
+        case 1: {
+          return "gold";
+        }
+        case 2: {
+          return "silver";
+        }
+        case 3: {
+          return "bronze";
+        }
+        default: {
+          return;
+        }
+      }
     }
   },
   created() {
     axios
       .get(
-        `https://localhost:5001/api/tournament/${this.$route.params.id}/teams`
+        `${this.$store.getters.apiUrl}/api/tournament/${
+          this.$route.params.id
+        }/teams`
       )
       .then(response => {
         // eslint-disable-next-line no-console

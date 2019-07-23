@@ -21,3 +21,4 @@ export function GetDisciplineById(id) {
 
   return discipline;
 }
+

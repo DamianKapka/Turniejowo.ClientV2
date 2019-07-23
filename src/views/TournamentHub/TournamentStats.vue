@@ -89,14 +89,4 @@ export default {
 };
 </script>
 
-<style>
-.gold {
-  background-color: gold;
-}
-.silver {
-  background-color: silver;
-}
-.bronze {
-  background-color: saddlebrown;
-}
-</style>
+<style></style>

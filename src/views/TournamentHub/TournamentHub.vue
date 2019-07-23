@@ -51,4 +51,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.gold {
+  background-color: gold;
+}
+.silver {
+  background-color: silver;
+}
+.bronze {
+  background-color: saddlebrown;
+}
+</style>
