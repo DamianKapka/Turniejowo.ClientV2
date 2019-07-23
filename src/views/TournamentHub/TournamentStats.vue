@@ -7,9 +7,18 @@
     v-bind:pagination.sync="Pagination"
   >
     <template v-slot:items="item">
-      <td class="text-xs-center">{{ item.item.name }}</td>
-      <td class="text-xs-center">{{ item.item.team }}</td>
-      <td class="text-xs-center">{{ item.item.points }}</td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.index + 1 }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.name }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.team }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.points }}
+      </td>
     </template>
   </v-data-table>
 </template>
@@ -22,6 +31,12 @@ export default {
   data() {
     return {
       TableHeaders: [
+        {
+          text: "Miejsce",
+          value: "position",
+          sortable: false,
+          align: "center"
+        },
         { text: "Gracz", value: "player", sortable: false, align: "center" },
         { text: "Drużyna", value: "team", sortable: false, align: "center" },
         { text: "Punkty", value: "points", sortable: true, align: "center" }
@@ -37,25 +52,51 @@ export default {
   created() {
     axios
       .get(
-        `https://localhost:5001/api/tournament/${this.$route.params.id}/players`
+        `${this.$store.getters.apiUrl}/api/tournament/${
+          this.$route.params.id
+        }/players`
       )
       .then(response => {
-        let statisticsTemp = [];
-
         response.data.forEach(element => {
-          statisticsTemp.push({
+          this.Statistics.push({
             name: `${element.fName} ${element.lName}`,
             team: element.team.name,
             points: element.points
           });
         });
-
-        this.Statistics = statisticsTemp;
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));
+  },
+  methods: {
+    getMedalColor: function(index) {
+      switch (index) {
+        case 1: {
+          return "gold";
+        }
+        case 2: {
+          return "silver";
+        }
+        case 3: {
+          return "bronze";
+        }
+        default: {
+          return;
+        }
+      }
+    }
   }
 };
 </script>
 
-<style></style>
+<style>
+.gold {
+  background-color: gold;
+}
+.silver {
+  background-color: silver;
+}
+.bronze {
+  background-color: saddlebrown;
+}
+</style>
