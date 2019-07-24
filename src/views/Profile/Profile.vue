@@ -5,31 +5,25 @@
         <v-card :dark="false" class="elevation-24 main-card" Height="100%">
           <v-layout row>
             <v-flex xs3>
-              <v-card
-                :dark="false"
-                class="elevation-7 maincard-nav-card"
-                v-bind:class="{ lel: currentPage === 'NewTournament' }"
-                @click="reroute('new-tournament')"
-                >Nowy turniej</v-card
-              >
+              <NavBarCard
+                LabelInfo="Nowy Turniej"
+                ActiveClass="NewTournament"
+                RouterLink="new-tournament"
+              ></NavBarCard>
             </v-flex>
             <v-flex xs3>
-              <v-card
-                :dark="false"
-                class="elevation-7 maincard-nav-card"
-                v-bind:class="{ lel: currentPage === 'MyTournaments' }"
-                @click="reroute('my-tournaments')"
-                >Moje turnieje</v-card
-              >
+              <NavBarCard
+                LabelInfo="Moje Turnieje"
+                ActiveClass="MyTournaments"
+                RouterLink="my-tournaments"
+              ></NavBarCard>
             </v-flex>
             <v-flex xs3>
-              <v-card
-                :dark="false"
-                class="elevation-7 maincard-nav-card"
-                v-bind:class="{ lel: currentPage === 'MyAccount' }"
-                @click="reroute('my-account')"
-                >Moje konto</v-card
-              >
+              <NavBarCard
+                LabelInfo="Moje konto"
+                ActiveClass="MyAccount"
+                RouterLink="my-account"
+              ></NavBarCard>
             </v-flex>
             <v-flex xs3>
               <v-card
@@ -56,15 +50,17 @@
 </template>
 
 <script>
-import axios from "axios";
 import router from "@/router";
-import { all } from 'q';
+import NavBarCard from "../../components/NavBarCard";
+import { parseJwt } from "@/utils/utils.js";
 
 export default {
   name: "Profile",
-  data: function() {
+  components: {
+    NavBarCard: NavBarCard
+  },
+  data() {
     return {
-      currentPage: this.$route.name,
       userID: "",
       userFullName: "",
       LogoutButtonHovered: false
@@ -74,26 +70,16 @@ export default {
     if (!localStorage.getItem("token")) {
       router.push("/start/login");
     }
-
-    const token = localStorage.getItem("token");
-    this.$store.dispatch("parseJwt",token)
-      .then(res => {
-        this.userID = res.id,
-        this.userFullName = res.actor 
-      })
-      .catch(error => alert(error.data));
   },
-  watch: {
-    $route(to, from) {
-      this.currentPage = to.name;
-    }
+  mounted() {
+    const token = localStorage.getItem("token");
+    const parsedToken = parseJwt(token);
+    this.userID = parsedToken.id;
+    this.userFullName = parsedToken.actor;
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
-    },
-    reroute(path) {
-      router.push({ path: `${path}` });
     }
   }
 };

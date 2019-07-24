@@ -12,14 +12,12 @@ const types = {
 
 const state = {
   logged: localStorage.getItem("token"),
-  loggedUserId: "",
   currentlyEditedTournament: "",
   apiUrl: "http://78.47.36.35:7000"
 };
 
 const getters = {
   isLogged: state => state.logged,
-  loggedUserId: state => state.loggedUserId,
   currentlyEditedTournament: state => state.currentlyEditedTournament,
   apiUrl: state => state.apiUrl
 };
@@ -58,23 +56,6 @@ const actions = {
     localStorage.removeItem("token");
     router.push({ path: "/start/login" });
     commit(types.LOGOUT);
-  },
-  parseJwt({ commit }, token) {
-    const base64Url = token.split(".")[1];
-    const base64 = decodeURIComponent(
-      atob(base64Url)
-        .split("")
-        .map(function(c) {
-          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join("")
-    );
-
-    const result = JSON.parse(base64);
-
-    state.loggedUserId = result.unique_name;
-
-    return { id: result.unique_name, actor: result.actort };
   },
 };
 
