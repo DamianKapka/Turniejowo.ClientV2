@@ -27,7 +27,7 @@ const getters = {
 const actions = {
   login: function({ commit }, credentials) {
     axios
-      .post(`${getters.apiUrl}/api/user/authenticate`, credentials)
+      .post(`${this.getters.apiUrl}/api/user/authenticate`, credentials)
       .then(response => {
         switch (response.status) {
           case 200: {

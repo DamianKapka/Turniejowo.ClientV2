@@ -56,7 +56,7 @@ export default {
           this.userTournaments = userTournamentsTemp;
         })
         .catch(err => {
-          //TODO
+          // eslint-disable-next-line no-console
           console.log(err);
         });
     }
