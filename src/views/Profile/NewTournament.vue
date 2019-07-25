@@ -85,6 +85,7 @@
 
 <script>
 import axios from "axios";
+import { GetDisciplineId } from '@/utils/utils.js'
 
 export default {
   name: "NewTournament",
@@ -112,8 +113,8 @@ export default {
       EntryFeeRules: [
         e => !!e || "Wprowadz wpisowe do turnieju",
         e =>
-          /^[1-9]{1}[0-9]*$/.test(e.trim()) ||
-          "Wpisowe musi być cyrfą wieksza od 0"
+          /^[0-9]{1}[0-9]*$/.test(e.trim()) ||
+          "Wpisowe musi być cyrfą wieksza lub równa 0"
       ],
       Localization: "",
       LocalizationRules: [l => !!l || "Wprowadz lokalizacje turnieju"],
@@ -121,8 +122,8 @@ export default {
       Model: function() {
         return {
           Name: this.Name,
-          DisciplineId: this.GetDisciplineId(this.Discipline),
-          CreatorId: this.$store.getters.loggedUserId,
+          DisciplineId: GetDisciplineId(this.Discipline),
+          CreatorId: this.$store.getters.currentlyLoggedUserId,
           Date: this.StartingDate,
           AmountOfTeams: this.AmountOfTeams,
           EntryFee: this.EntryFee,
@@ -134,8 +135,9 @@ export default {
   methods: {
     submitForm() {
       if (this.$refs.form.validate()) {
+        console.log(this.Model());
         axios
-          .post("https://localhost:5001/api/tournament", this.Model())
+          .post(`${this.$store.getters.apiUrl}/api/tournament`, this.Model())
           .then(res => {
             if (res.status === 201) {
               alert("Turniej został założony");
@@ -149,21 +151,6 @@ export default {
     resetForm() {
       this.$refs.form.reset();
     },
-    /**
-     * @return {number}
-     */
-    GetDisciplineId(discipline) {
-      switch (discipline) {
-        case "Piłka Nożna":
-          return 3;
-        case "Koszykówka":
-          return 2;
-        case "Siatkówka":
-          return 1;
-        default:
-          return 0;
-      }
-    }
   }
 };
 </script>

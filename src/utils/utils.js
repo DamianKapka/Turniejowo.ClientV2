@@ -22,6 +22,19 @@ export function GetDisciplineById(id) {
   return discipline;
 }
 
+export function GetDisciplineId(discipline) {
+  switch (discipline) {
+    case "Piłka Nożna":
+      return 3;
+    case "Koszykówka":
+      return 2;
+    case "Siatkówka":
+      return 1;
+    default:
+      return 0;
+  }
+}
+
 export function parseJwt(token) {
   const base64Url = token.split(".")[1];
   const base64 = decodeURIComponent(
