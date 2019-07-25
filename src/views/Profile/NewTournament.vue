@@ -135,13 +135,15 @@ export default {
   methods: {
     submitForm() {
       if (this.$refs.form.validate()) {
-        console.log(this.Model());
         axios
           .post(`${this.$store.getters.apiUrl}/api/tournament`, this.Model())
           .then(res => {
             if (res.status === 201) {
               alert("Turniej został założony");
               this.$router.replace({ path: "/profile/my-tournaments" });
+            }
+            else{
+              alert("Nie udało się załóżyć turnieju.")
             }
           })
 
