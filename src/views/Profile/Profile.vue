@@ -74,7 +74,6 @@ export default {
   mounted() {
     const token = localStorage.getItem("token");
     const parsedToken = parseJwt(token);
-    this.$store.state.currentlyLoggedUserId = parsedToken.id;
     this.userID = parsedToken.id;
     this.userFullName = parsedToken.actor;
   },

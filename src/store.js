@@ -58,7 +58,7 @@ const actions = {
     localStorage.removeItem("token");
     router.push({ path: "/start/login" });
     commit(types.LOGOUT);
-  },
+  }
 };
 
 const mutations = {

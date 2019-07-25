@@ -36,7 +36,7 @@ export default {
   mounted() {},
   methods: {
     EditTheTournament() {
-      this.$emit("tournamentEdit", this.tournament.tournamentId);
+      this.$router.push({ name: "EditOwnTournament", params: { id: this.tournament.tournamentId} });
     },
     DeleteTheTournament() {
       if (
@@ -44,7 +44,7 @@ export default {
       ) {
         axios
           .delete(
-            `https://localhost:5001/api/tournament/${
+            `${this.$store.getters.apiUrl}/api/tournament/${
               this.tournament.tournamentId
             }`
           )
@@ -52,6 +52,8 @@ export default {
             if (res.status === 202) {
               alert("Turniej usunięty prawidłowo");
               this.$emit("tournamentDeleted");
+            } else {
+              alert("Nie można usunac turnieju");
             }
           })
           .catch(err => console.log(err.response));

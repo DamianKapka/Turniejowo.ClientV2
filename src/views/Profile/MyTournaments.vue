@@ -8,7 +8,6 @@
         >
           <TournamentOwnerInfo
             v-bind:tournament="tournament"
-            @tournamentEdit="redirectToTournamentEdit($event)"
             @tournamentDeleted="reloadList()"
           ></TournamentOwnerInfo>
         </v-list-tile>
@@ -20,6 +19,7 @@
 <script>
 import axios from "axios";
 import TournamentOwnerInfo from "@/components/TournamentOwnerInfo";
+import { getLoggedUserId } from "../../utils/utils";
 
 export default {
   name: "MyTournaments",
@@ -29,31 +29,26 @@ export default {
       userTournaments: []
     };
   },
-  created() {
-    this.userID = this.$store.getters.loggedUserId;
+  mounted() {
+    this.userID = getLoggedUserId();
     this.fillUsersTournament();
   },
-  updated() {
-    this.fillUsersTournament();
-  },
+
   components: {
     TournamentOwnerInfo: TournamentOwnerInfo
   },
   methods: {
-    redirectToTournamentEdit(id) {
-      this.$router.push({ name: "EditOwnTournament", params: { id: id } });
-    },
     reloadList() {
-      this.$forceUpdate();
+      this.userTournaments = [];
+      this.fillUsersTournament();
     },
     fillUsersTournament() {
-      let userTournamentsTemp = [];
-
       axios
-        .get(`https://localhost:5001/api/user/${this.userID}/tournaments`)
+        .get(
+          `${this.$store.getters.apiUrl}/api/user/${this.userID}/tournaments`
+        )
         .then(res => {
-          res.data.forEach(d => userTournamentsTemp.push(d));
-          this.userTournaments = userTournamentsTemp;
+          res.data.forEach(d => this.userTournaments.push(d));
         })
         .catch(err => {
           // eslint-disable-next-line no-console

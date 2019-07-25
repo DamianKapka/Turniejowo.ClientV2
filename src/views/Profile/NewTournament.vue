@@ -85,7 +85,8 @@
 
 <script>
 import axios from "axios";
-import { GetDisciplineId } from '@/utils/utils.js'
+import { GetDisciplineId } from "@/utils/utils.js";
+import { getLoggedUserId } from "../../utils/utils";
 
 export default {
   name: "NewTournament",
@@ -123,7 +124,7 @@ export default {
         return {
           Name: this.Name,
           DisciplineId: GetDisciplineId(this.Discipline),
-          CreatorId: this.$store.getters.currentlyLoggedUserId,
+          CreatorId: getLoggedUserId(),
           Date: this.StartingDate,
           AmountOfTeams: this.AmountOfTeams,
           EntryFee: this.EntryFee,
@@ -141,9 +142,8 @@ export default {
             if (res.status === 201) {
               alert("Turniej został założony");
               this.$router.replace({ path: "/profile/my-tournaments" });
-            }
-            else{
-              alert("Nie udało się załóżyć turnieju.")
+            } else {
+              alert("Nie udało się załóżyć turnieju.");
             }
           })
 
@@ -152,7 +152,7 @@ export default {
     },
     resetForm() {
       this.$refs.form.reset();
-    },
+    }
   }
 };
 </script>
