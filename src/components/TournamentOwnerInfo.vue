@@ -36,7 +36,10 @@ export default {
   mounted() {},
   methods: {
     EditTheTournament() {
-      this.$router.push({ name: "EditOwnTournament", params: { id: this.tournament.tournamentId} });
+      this.$router.push({
+        name: "EditOwnTournament",
+        params: { id: this.tournament.tournamentId }
+      });
     },
     DeleteTheTournament() {
       if (

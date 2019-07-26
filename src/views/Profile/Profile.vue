@@ -8,21 +8,21 @@
               <NavBarCard
                 LabelInfo="Nowy Turniej"
                 ActiveClass="NewTournament"
-                RouterLink="new-tournament"
+                RouterLink="NewTournament"
               ></NavBarCard>
             </v-flex>
             <v-flex xs3>
               <NavBarCard
                 LabelInfo="Moje Turnieje"
                 ActiveClass="MyTournaments"
-                RouterLink="my-tournaments"
+                RouterLink="MyTournaments"
               ></NavBarCard>
             </v-flex>
             <v-flex xs3>
               <NavBarCard
                 LabelInfo="Moje konto"
                 ActiveClass="MyAccount"
-                RouterLink="my-account"
+                RouterLink="MyAccount"
               ></NavBarCard>
             </v-flex>
             <v-flex xs3>

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ path: this.RouterLink }" replace>
+  <router-link :to="{ name: this.RouterLink }" replace>
     <v-card
       class="elevation-7 maincard-nav-card"
       v-bind:class="{ lel: currentPage === this.ActiveClass }"

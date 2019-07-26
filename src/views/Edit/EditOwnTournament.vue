@@ -9,18 +9,39 @@
             </v-card>
           </v-flex>
           <v-layout row>
-            <v-flex xs3 v-for="navBar in navBarNames" v-bind:key="navBar.name">
-              <router-link :to="{ name: navBar.routerName }">
-                <v-card
-                  class="maincard-nav-card"
-                  v-bind:class="{ lel: currentPage === navBar.routerName }"
-                >
-                  {{ navBar.name }}
-                </v-card>
-              </router-link>
-            </v-flex>
+            <v-flex xs3
+              ><NavBarCard
+                LabelInfo="Edytuj Informacje"
+                ActiveClass="EditGeneral"
+                RouterLink="EditGeneral"
+              ></NavBarCard
+            ></v-flex>
+            <v-flex xs3
+              ><NavBarCard
+                LabelInfo="Edytuj Uczestników"
+                ActiveClass="EditParticipants"
+                RouterLink="EditParticipants"
+              ></NavBarCard
+            ></v-flex>
+            <v-flex xs3
+              ><NavBarCard
+                LabelInfo="Edytuj Przebieg"
+                ActiveClass="EditProgress"
+                RouterLink="EditProgress"
+              ></NavBarCard
+            ></v-flex>
+            <v-flex xs3
+              ><NavBarCard
+                LabelInfo="Cofnij"
+                ActiveClass="MyTournaments"
+                RouterLink="MyTournaments"
+              ></NavBarCard
+            ></v-flex>
           </v-layout>
-          <router-view v-if="!isFetching" @tournamentEdited="refreshCurrentlyEditedTournament($event)"></router-view>
+          <router-view
+            v-if="!isFetching"
+            @tournamentEdited="refreshCurrentlyEditedTournament($event)"
+          ></router-view>
         </v-card>
       </v-flex>
     </v-layout>
@@ -29,28 +50,23 @@
 
 <script>
 import axios from "axios";
+import NavBarCard from "../../components/NavBarCard";
 
 export default {
   name: "EditOwnTournament",
+  components: { NavBarCard },
   data() {
     return {
       isFetching: true,
       tournamentId: Number,
-      tournament: Object,
-      currentPage: this.$route.name,
-      navBarNames: [
-        { name: "Edytuj Infofmacje", routerName: "EditGeneral" },
-        { name: "Edytuj Uczestników", routerName: "EditParticipants" },
-        { name: "Edytuj Przebieg", routerName: "EditProgress" },
-        { name: "Cofnij", routerName: "MyTournaments" }
-      ]
+      tournament: Object
     };
   },
   created() {
     this.tournamentId = this.$route.params.id;
 
     axios
-      .get(`https://localhost:5001/api/tournament/${this.tournamentId}`)
+      .get(`${this.$store.getters.apiUrl}/api/tournament/${this.tournamentId}`)
       .then(res => {
         this.$store.state.currentlyEditedTournament = res.data;
         this.tournament = res.data;
@@ -60,17 +76,11 @@ export default {
         console.log(err);
       });
   },
-  watch: {
-    $route(to, from) {
-      this.currentPage = to.name;
-    }
-  },
   methods: {
-    refreshCurrentlyEditedTournament(tournament){
-
+    refreshCurrentlyEditedTournament(tournament) {
       this.$store.state.currentlyEditedTournament = tournament;
     }
-  },
+  }
 };
 </script>
 

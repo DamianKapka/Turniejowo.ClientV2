@@ -75,7 +75,7 @@
           </v-btn>
         </v-flex>
         <v-flex xs4 offset-xs2>
-          <v-btn block color="warning" @click="resetForm()">
+          <v-btn block color="warning" @click="getTournamentInfo()">
             Przywróc
           </v-btn>
         </v-flex>
@@ -85,10 +85,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
+import { GetDisciplineById } from "../../utils/utils";
+import { GetDisciplineId } from "../../utils/utils";
 
 export default {
-  name : "EditGeneral",
+  name: "EditGeneral",
   data() {
     return {
       valid: false,
@@ -112,9 +114,7 @@ export default {
       EntryFee: "",
       EntryFeeRules: [
         e => !!e || "Wprowadz wpisowe do turnieju",
-        e =>
-          /^[1-9]{1}[0-9]*$/.test(e) ||
-          "Wpisowe musi być cyrfą wieksza od 0"
+        e => /^[1-9]{1}[0-9]*$/.test(e) || "Wpisowe musi być cyrfą wieksza od 0"
       ],
       Localization: "",
       LocalizationRules: [l => !!l || "Wprowadz lokalizacje turnieju"],
@@ -124,7 +124,7 @@ export default {
         return {
           tournamentId: this.TournamentId,
           name: this.Name,
-          disciplineId: this.GetDisciplineId(this.Discipline),
+          disciplineId: GetDisciplineId(this.Discipline),
           creatorId: this.CreatorId,
           date: this.StartingDate,
           amountOfTeams: this.AmountOfTeams,
@@ -134,46 +134,37 @@ export default {
       }
     };
   },
-  created(){   
-    const tourney = this.$store.getters.currentlyEditedTournament;
-    this.TournamentId = tourney.tournamentId;
-    this.CreatorId = tourney.creatorId;
-    this.Name = tourney.name;
-    this.Discipline = this.GetDisciplineById(tourney.disciplineId);
-    this.StartingDate = tourney.date.slice(0,10);
-    this.AmountOfTeams = tourney.amountOfTeams;
-    this.EntryFee = tourney.entryFee;
-    this.Localization = tourney.localization;
+  created() {
+    this.getTournamentInfo();
   },
-  methods:{
-      GetDisciplineId(discipline){
-      switch(discipline)
-        {
-          case "Siatkówka": return 1;
-          case "Koszykówka": return 2;
-          case "Piłka Nożna": return 3;
-          default: return; 
-        }
-      },
-      GetDisciplineById(id){
-      switch(id)
-        {
-          case 1: return "Siatkówka";
-          case 2: return "Koszykówka";
-          case 3: return "Piłka Nożna";
-          default: return; 
-        }
-      },
-      editTourney(){
-        axios.put(`https://localhost:5001/api/tournament/${this.TournamentId}`,this.Model())
+  methods: {
+    editTourney() {
+      axios
+        .put(
+          `${this.$store.getters.apiUrl}/api/tournament/${this.TournamentId}`,
+          this.Model()
+        )
         .then(res => {
-          if(res.status == 202){
+          if (res.status === 202) {
             alert("Edycja turnieju przebiegla poprawnie");
-            this.$emit("tournamentEdited",this.Model());         
+            this.$emit("tournamentEdited", this.Model());
+          } else {
+            alert("Błąd podczas próby edycji turnieju");
           }
         })
-        .catch()
-      }
+        .catch();
+    },
+    getTournamentInfo() {
+      const tourney = this.$store.getters.currentlyEditedTournament;
+      this.TournamentId = tourney.tournamentId;
+      this.CreatorId = tourney.creatorId;
+      this.Name = tourney.name;
+      this.Discipline = GetDisciplineById(tourney.disciplineId);
+      this.StartingDate = tourney.date.slice(0, 10);
+      this.AmountOfTeams = tourney.amountOfTeams;
+      this.EntryFee = tourney.entryFee;
+      this.Localization = tourney.localization;
+    }
   }
 };
 </script>
