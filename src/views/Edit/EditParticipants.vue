@@ -16,11 +16,11 @@
           </v-card>
           <AddNewPlayer
             v-bind:teamId="team.teamId"
-            @PlayerAdded="RefreshParticipantsList()"
+            @PlayerAdded="getParticipants()"
           ></AddNewPlayer>
         </v-expansion-panel-content>
 
-        <AddNewTeam @TeamAdded="RefreshParticipantsList()"> </AddNewTeam>
+        <AddNewTeam @TeamAdded="getParticipants()"> </AddNewTeam>
       </v-flex>
     </v-layout>
   </v-expansion-panel>
@@ -39,7 +39,7 @@ export default {
     };
   },
   created() {
-    this.GetParticipants();
+    this.getParticipants();
   },
 
   components: {
@@ -47,32 +47,28 @@ export default {
     AddNewPlayer: AddNewPlayer
   },
   methods: {
-    GetParticipants() {
+    getParticipants() {
       const id = this.$route.params.id;
 
       axios
         .get(
-          `https://localhost:5001/api/tournament/${id}/players?groupedbyteam=true`
+          `${
+            this.$store.getters.apiUrl
+          }/api/tournament/${id}/players?groupedbyteam=true`
         )
         .then(response => {
-          let teamsTemp = [];
+          this.Teams = [];
 
           response.data.forEach(element => {
-            teamsTemp.push({
+            this.Teams.push({
               teamName: element.team.name,
               teamId: element.team.teamId,
               players: element.players
             });
           });
-
-          this.Teams = teamsTemp;
         })
         .catch();
     },
-
-    RefreshParticipantsList() {
-      this.GetParticipants();
-    }
   }
 };
 </script>

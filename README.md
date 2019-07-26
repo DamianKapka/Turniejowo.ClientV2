@@ -39,4 +39,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
     Register => PasswordBox
     Login => PasswordBox
     store.js with vuex standards
+    Player Edit/Remove
+    Team Edit/Remove
 ```

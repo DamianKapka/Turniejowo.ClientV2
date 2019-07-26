@@ -38,7 +38,7 @@ export default {
       NameRules: [
         n => !!n || "Wprowadz nazwe gracza",
         n =>
-          /^\w+\ \w+$/.test(n) ||
+          /^\w+ \w+$/.test(n) ||
           "Podaj imie i nazwisko gracza, ktore sklada sie z liter rozdzielonych spacja"
       ],
       Model: function() {
@@ -54,11 +54,14 @@ export default {
   methods: {
     AddPlayer() {
       axios
-        .post(`https://localhost:5001/api/player`, this.Model())
+        .post(`${this.$store.getters.apiUrl}/api/player`, this.Model())
         .then(res => {
-          if (res.status == 201) {
+          if (res.status === 201) {
             alert("Gracz dodany prawidłowo");
+            this.Name = "";
             this.$emit("PlayerAdded");
+          } else {
+            alert("Próba dodania gracza nie powiadła się");
           }
         })
         .catch(err => console.log(err.response));
