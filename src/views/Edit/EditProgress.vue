@@ -2,16 +2,16 @@
   <v-flex xs10 offset-xs1 style="padding:5%">
     <v-data-table
       :headers="TableHeaders"
-      :items="matches"
+      :items="Matches"
       hide-actions
       class="elevation-0"
     >
       <template v-slot:items="item">
         <tr>
-          <td class="text-xs-center">{{ item.item.teamOne }}</td>
-          <td class="text-xs-center">{{ item.item.teamTwo }}</td>
+          <td class="text-xs-center">{{ item.item.homeTeamName }}</td>
+          <td class="text-xs-center">{{ item.item.guestTeamName }}</td>
           <td class="text-xs-center">
-            {{ item.item.teamOneScore }} : {{ item.item.teamTwoScore }}
+            {{ item.item.homeTeamPoints }} : {{ item.item.guestTeamPoints }}
           </td>
         </tr>
       </template>
@@ -31,8 +31,7 @@
             </v-combobox>
           </v-flex>
           <v-flex xs2 offset-xs2>
-            <v-text-field v-model="TeamAScore" label="Wynik A">
-            </v-text-field>
+            <v-text-field v-model="TeamAScore" label="Wynik A"> </v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -72,8 +71,7 @@ export default {
         { text: "Druzyna B", value: "B", sortable: false, align: "center" },
         { text: "Wynik", value: "W", sortable: false, align: "center" }
       ],
-      matches: [
-      ],
+      Matches: [],
       Teams: [],
       TeamAName: "",
       TeamBName: "",
@@ -84,13 +82,25 @@ export default {
   created() {
     axios
       .get(
-        `https://localhost:5001/api/tournament/${this.$route.params.id}/teams`
+        `${this.$store.getters.apiUrl}/api/tournament/${
+          this.$store.getters.currentlyEditedTournament.tournamentId
+        }/teams`
       )
       .then(res => {
         res.data.forEach(element => {
           this.Teams.push(element);
         });
+
+        return axios.get(
+          `${this.$store.getters.apiUrl}/api/tournament/${
+            this.$store.getters.currentlyEditedTournament.tournamentId
+          }/matches`
+        );
       })
+      .then(res => {
+        res.data.forEach(m => this.Matches.push(this.getMatchTeamsInfo(m)));
+      })
+
       .catch(err => {
         // eslint-disable-next-line no-console
         console.log(err);
@@ -98,12 +108,27 @@ export default {
   },
   methods: {
     AddResult() {
-      this.matches.push({
+      this.Matches.push({
         teamOne: this.TeamAName,
         teamTwo: this.TeamBName,
         teamOneScore: this.TeamAScore,
         teamTwoScore: this.TeamBScore
       });
+    },
+
+    getMatchTeamsInfo(m) {
+      const homeTeam = this.Teams.find(t => t.teamId === m.homeTeamId);
+
+      const guestTeam = this.Teams.find(t => t.teamId === m.guestTeamId);
+
+      const matchInfo = {
+        homeTeamName: homeTeam.name,
+        guestTeamName: guestTeam.name,
+        homeTeamPoints: m.homeTeamPoints,
+        guestTeamPoints: m.guestTeamPoints
+      };
+
+      return matchInfo;
     }
   },
   computed: {
