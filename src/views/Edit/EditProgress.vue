@@ -80,40 +80,20 @@ export default {
     };
   },
   created() {
-    axios
-      .get(
-        `${this.$store.getters.apiUrl}/api/tournament/${
-          this.$store.getters.currentlyEditedTournament.tournamentId
-        }/teams`
-      )
-      .then(res => {
-        res.data.forEach(element => {
-          this.Teams.push(element);
-        });
-
-        return axios.get(
-          `${this.$store.getters.apiUrl}/api/tournament/${
-            this.$store.getters.currentlyEditedTournament.tournamentId
-          }/matches`
-        );
-      })
-      .then(res => {
-        res.data.forEach(m => this.Matches.push(this.getMatchTeamsInfo(m)));
-      })
-
-      .catch(err => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-      });
+    this.getTournamentMatches();
   },
   methods: {
     AddResult() {
-      this.Matches.push({
-        teamOne: this.TeamAName,
-        teamTwo: this.TeamBName,
-        teamOneScore: this.TeamAScore,
-        teamTwoScore: this.TeamBScore
-      });
+      axios
+        .post(`${this.$store.getters.apiUrl}/api/match/`, this.Model)
+        .then(res => {
+          if (res.status === 201) {
+            alert("Mecz poprawnie dodany");
+            this.clearForm();
+            this.getTournamentMatches();
+          }
+        })
+        .catch(err => console.log(err));
     },
 
     getMatchTeamsInfo(m) {
@@ -129,6 +109,49 @@ export default {
       };
 
       return matchInfo;
+    },
+
+    findTeamIdBasedOnName(name) {
+      const team = this.Teams.find(t => t.name === name);
+      return team.teamId;
+    },
+
+    getTournamentMatches() {
+      axios
+        .get(
+          `${this.$store.getters.apiUrl}/api/tournament/${
+            this.$store.getters.currentlyEditedTournament.tournamentId
+          }/teams`
+        )
+        .then(res => {
+          this.Teams = [];
+          res.data.forEach(element => {
+            this.Teams.push(element);
+          });
+
+          return axios.get(
+            `${this.$store.getters.apiUrl}/api/tournament/${
+              this.$store.getters.currentlyEditedTournament.tournamentId
+            }/matches`
+          );
+        })
+        .then(res => {
+          this.Matches = [];
+
+          res.data.forEach(m => this.Matches.push(this.getMatchTeamsInfo(m)));
+        })
+
+        .catch(err => {
+          // eslint-disable-next-line no-console
+          console.log(err);
+        });
+    },
+
+    clearForm() {
+      this.TeamAName = "";
+      this.TeamBName = "";
+      this.TeamAScore = "";
+      this.TeamBScore = "";
     }
   },
   computed: {
@@ -138,6 +161,15 @@ export default {
         teamNames.push(element.name);
       });
       return teamNames;
+    },
+
+    Model: function() {
+      return {
+        homeTeamId: this.findTeamIdBasedOnName(this.TeamAName),
+        guestTeamId: this.findTeamIdBasedOnName(this.TeamBName),
+        homeTeamPoints: this.TeamAScore,
+        guestTeamPoints: this.TeamBScore
+      };
     }
   }
 };

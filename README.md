@@ -41,4 +41,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
     store.js with vuex standards
     Player Edit/Remove
     Team Edit/Remove
+    Form on AddResult with ValidationRules
 ```
