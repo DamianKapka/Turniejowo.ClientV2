@@ -3,6 +3,9 @@
     <v-content id="app">
       <router-view></router-view>
     </v-content>
+    <v-footer style="justify-content: center;">
+      Turniejowo.pl v0.1. Copyright &copy; 2019 Damian Kapka. All rights
+    </v-footer>
   </v-app>
 </template>
 
@@ -10,7 +13,9 @@
 export default {
   name: "Index",
   data() {
-    return {};
+    return {
+      version: 0.1
+    };
   }
 };
 </script>
