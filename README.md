@@ -42,4 +42,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
     Player Edit/Remove
     Team Edit/Remove
     Form on AddResult with ValidationRules
+    Table from API, not hardcoded
+    Back to MainPage
+    Logo with MainPage push
+    Progress from Find
+    MatchDateTime
+    Tournamend overview from Edit/MyTournaments
 ```
