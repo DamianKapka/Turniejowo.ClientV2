@@ -42,17 +42,17 @@ export default {
     return {
       Players: [],
       TableHeaders: [
-        { 
-          text: "Nr", 
-          value: "number", 
-          sortable: false, 
-          align: "center" 
+        {
+          text: "Nr",
+          value: "number",
+          sortable: false,
+          align: "center"
         },
-        { 
-          text: "Drużyna", 
-          value: "team", 
-          sortable: false, 
-          align: "center" 
+        {
+          text: "Drużyna",
+          value: "team",
+          sortable: false,
+          align: "center"
         },
         {
           text: "Zawodnicy",
@@ -73,7 +73,10 @@ export default {
       )
       .then(response => {
         response.data.forEach(element => {
-          this.Players.push({teamName: element.team.name, players:element.players})
+          this.Players.push({
+            teamName: element.team.name,
+            players: element.players
+          });
         });
       })
       // eslint-disable-next-line no-console

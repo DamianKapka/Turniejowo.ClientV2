@@ -50,9 +50,9 @@ export default {
     Add() {
       if (this.$refs.form.validate()) {
         axios
-          .post(`https://localhost:5001/api/team`, this.Model())
+          .post(`${this.$store.getters.apiUrl}/api/team`, this.Model())
           .then(res => {
-            if (res.status == 201) {
+            if (res.status === 201) {
               alert("Druzyna dodana");
               this.TName = "";
               this.$emit("TeamAdded");

@@ -14,7 +14,7 @@ const state = {
   logged: localStorage.getItem("token"),
   currentlyLoggedUserId: "",
   currentlyEditedTournament: "",
-  apiUrl: "http://localhost:7000"
+  apiUrl: "http://78.47.36.35:7000"
 };
 
 const getters = {
