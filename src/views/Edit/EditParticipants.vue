@@ -1,72 +1,54 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-data-table :headers="TableHeaders" :items="Teams" :hide-actions="true">
-    <template v-slot:items="team">
-      <td class="text-xs-center">{{ team.index + 1 }}</td>
-      <td>
-        {{ team.item.teamName }}
-      </td>
-      <td style="padding: 0">
-        <v-expansion-panel>
-          <v-expansion-panel-content>
-            <template v-slot:header>
-              <div class="text-xs-center">
-                Zawodnicy
-              </div>
-            </template>
-            <v-list>
-              <v-list-tile
-                v-for="item in team.item.players"
-                :key="item.PlayerId"
-              >
-                <v-list-tile-content>
-                  {{ item.fName }} {{ item.lName }}
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </td>
-      <td>
-        <v-layout row>
-          <v-flex xs4 class="toi-icon toi-add">
-            <font-awesome-icon icon="user-plus"></font-awesome-icon>
-          </v-flex>
-          <v-flex xs4 class="toi-icon toi-edit">
-            <font-awesome-icon icon="edit"></font-awesome-icon>
-          </v-flex>
-          <v-flex xs4 class="toi-icon toi-delete">
-            <font-awesome-icon icon="trash-alt"></font-awesome-icon>
-          </v-flex>
-        </v-layout>
-      </td>
-    </template>
-  </v-data-table>
-
-  <!--<v-expansion-panel expand>
+  <v-container>
+    <v-data-table :headers="TableHeaders" :items="Teams" :hide-actions="true">
+      <template v-slot:items="team">
+        <td class="text-xs-center">{{ team.index + 1 }}</td>
+        <td>
+          {{ team.item.teamName }}
+        </td>
+        <td style="padding: 0">
+          <v-expansion-panel>
+            <v-expansion-panel-content>
+              <template #header>
+                <div class="text-xs-center">
+                  Zawodnicy
+                </div>
+              </template>
+              <v-list>
+                <v-list-tile
+                  v-for="(item, index) in team.item.players"
+                  :key="item.PlayerId"
+                >
+                  <v-list-tile-content>
+                    {{ index + 1 }}. {{ item.fName }} {{ item.lName }}
+                  </v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </td>
+        <td>
+          <v-layout row>
+            <v-flex xs4 class="toi-icon toi-add">
+              <font-awesome-icon icon="user-plus"></font-awesome-icon>
+            </v-flex>
+            <v-flex xs4 class="toi-icon toi-edit">
+              <font-awesome-icon icon="edit"></font-awesome-icon>
+            </v-flex>
+            <v-flex xs4 class="toi-icon toi-delete">
+              <font-awesome-icon icon="trash-alt"></font-awesome-icon>
+            </v-flex>
+          </v-layout>
+        </td>
+      </template>
+    </v-data-table>
+    <v-divider></v-divider>
     <v-layout row>
-      <v-flex xs8 offset-xs2 style="padding: 3% 0">
-        <v-expansion-panel-content v-for="team in Teams" :key="team.teamName">
-          <template v-slot:header>
-            <v-card class="header-card elevation-0">{{ team.teamName }}</v-card>
-          </template>
-          <v-card
-            v-for="player in team.players"
-            :key="player.value"
-            class="text-xs-center elevation-0"
-            style="padding:2%;"
-          >
-            {{ player.fName }} {{ player.lName }}
-          </v-card>
-          <AddNewPlayer
-            v-bind:teamId="team.teamId"
-            @PlayerAdded="getParticipants()"
-          ></AddNewPlayer>
-        </v-expansion-panel-content>
-
-        <AddNewTeam @TeamAdded="getParticipants()"> </AddNewTeam>
+      <v-flex xs8 offset-xs2>
+        <AddNewTeam @TeamAdded="getParticipants()"></AddNewTeam>
       </v-flex>
     </v-layout>
-  </v-expansion-panel>-->
+  </v-container>
 </template>
 
 <script>
@@ -142,5 +124,9 @@ export default {
 
 .toi-delete {
   color: firebrick;
+}
+
+.v-divider {
+  margin-bottom: 2%;
 }
 </style>
