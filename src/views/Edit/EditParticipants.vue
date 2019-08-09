@@ -35,8 +35,11 @@
             <v-flex xs4 class="toi-icon toi-edit">
               <font-awesome-icon icon="edit"></font-awesome-icon>
             </v-flex>
-            <v-flex xs4 class="toi-icon toi-delete">
-              <font-awesome-icon icon="trash-alt"></font-awesome-icon>
+            <v-flex xs4 class="toi-icon">
+              <ThrashDeleteDialog
+                :teamName="team.item.teamName"
+                @confirmed="deleteTeam(team.item.teamId)"
+              ></ThrashDeleteDialog>
             </v-flex>
           </v-layout>
         </td>
@@ -55,6 +58,7 @@
 import axios from "axios";
 import AddNewTeam from "@/components/AddNewTeam";
 import AddNewPlayer from "@/components/AddNewPlayer";
+import ThrashDeleteDialog from "../../components/ThrashDeleteDialog";
 
 export default {
   name: "EditParticipants",
@@ -79,8 +83,9 @@ export default {
   },
 
   components: {
-    AddNewTeam: AddNewTeam,
-    AddNewPlayer: AddNewPlayer
+    AddNewTeam,
+    AddNewPlayer,
+    ThrashDeleteDialog
   },
   methods: {
     getParticipants() {
@@ -104,6 +109,27 @@ export default {
           });
         })
         .catch();
+    },
+    deleteTeam(id) {
+      axios
+        .delete(`${this.$store.getters.apiUrl}/api/team/${id}`)
+        .then(res => {
+          switch (res.status) {
+            case 202: {
+              alert("Dryżyna poprawnie usunięta");
+              this.getParticipants();
+              break;
+            }
+            case 404: {
+              alert("Drużyna o takim ID nie istnieje");
+              break;
+            }
+            default:
+              alert("Nieznany błąd przy usuwaniu");
+              break;
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 };
@@ -120,10 +146,6 @@ export default {
 
 .toi-edit {
   color: goldenrod;
-}
-
-.toi-delete {
-  color: firebrick;
 }
 
 .v-divider {
