@@ -4,7 +4,7 @@
       <template v-slot:items="team">
         <td class="text-xs-center">{{ team.index + 1 }}</td>
         <td>
-          {{ team.item.teamName }}
+          {{ team.item.team.name }}
         </td>
         <td style="padding: 0">
           <v-expansion-panel>
@@ -33,12 +33,15 @@
               <font-awesome-icon icon="user-plus"></font-awesome-icon>
             </v-flex>
             <v-flex xs4 class="toi-icon toi-edit">
-              <font-awesome-icon icon="edit"></font-awesome-icon>
+              <EditTeamDialog
+                :Team="team.item.team"
+                @edited="editTeam"
+              ></EditTeamDialog>
             </v-flex>
             <v-flex xs4 class="toi-icon">
               <ThrashDeleteDialog
-                :teamName="team.item.teamName"
-                @confirmed="deleteTeam(team.item.teamId)"
+                :teamName="team.item.team.name"
+                @confirmed="deleteTeam(team.item.team.teamId)"
               ></ThrashDeleteDialog>
             </v-flex>
           </v-layout>
@@ -59,6 +62,7 @@ import axios from "axios";
 import AddNewTeam from "@/components/AddNewTeam";
 import AddNewPlayer from "@/components/AddNewPlayer";
 import ThrashDeleteDialog from "../../components/ThrashDeleteDialog";
+import EditTeamDialog from "../../components/EditTeamDialog";
 
 export default {
   name: "EditParticipants",
@@ -83,6 +87,7 @@ export default {
   },
 
   components: {
+    EditTeamDialog,
     AddNewTeam,
     AddNewPlayer,
     ThrashDeleteDialog
@@ -101,11 +106,7 @@ export default {
           this.Teams = [];
 
           response.data.forEach(element => {
-            this.Teams.push({
-              teamName: element.team.name,
-              teamId: element.team.teamId,
-              players: element.players
-            });
+            this.Teams.push(element);
           });
         })
         .catch();
@@ -128,6 +129,33 @@ export default {
               alert("Nieznany błąd przy usuwaniu");
               break;
           }
+        })
+        .catch(err => console.log(err));
+    },
+    editTeam(team) {
+      axios
+        .put(`${this.$store.getters.apiUrl}/api/team/${team.teamId}`, team)
+        .then(res => {
+          switch (res.status) {
+            case 202: {
+              alert("Edycja powiodłą się");
+              break;
+            }
+            case 404: {
+              alert("Drużna nie istnieje w bazie danych");
+              break;
+            }
+            case 409: {
+              alert("Id teamu i Id drużyny nie zgadzają się");
+              break;
+            }
+            default: {
+              alert("Nieznany błąd");
+              break;
+            }
+          }
+
+          return this.getParticipants();
         })
         .catch(err => console.log(err));
     }
