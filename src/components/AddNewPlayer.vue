@@ -1,81 +1,39 @@
 <template>
-  <v-form ref="form" v-model="valid" class="form">
-    <v-card class="elevation-5" style="padding:4%">
-      <v-card-title class="card-title">
-        Dodaj nowego zawodnika
+  <v-dialog v-model="dialog" max-width="320">
+    <template #activator="{on}">
+      <font-awesome-icon
+        icon="user-plus"
+        style="color: limegreen"
+        v-on="on"
+      ></font-awesome-icon>
+    </template>
+    <v-card style="padding: 10%">
+      <v-card-title class="headline">
+        <font-awesome-icon
+          icon="user-plus"
+          style="margin-right: 5%"
+        ></font-awesome-icon>
+        Dodaj gracza
       </v-card-title>
-      <v-layout row>
-        <v-flex xs-4 offset-xs2>
-          <v-text-field v-model="Name" :rules="NameRules" value="">
-          </v-text-field>
-        </v-flex>
-        <v-flex xs1>
-          <v-btn
-            color="success"
-            class="block"
-            style="width:50%;"
-            @click="AddPlayer()"
-          >
-            <v-icon>add_circle</v-icon>
-          </v-btn>
-        </v-flex>
-        <v-flex xs2> </v-flex>
-      </v-layout>
+      <v-form ref="form" v-model="valid">
+        <v-text-field label="Imie i Nazwisko Gracza"> </v-text-field>
+        <v-text-field label="Drużyna"> </v-text-field>
+        <ConfirmButton Message="Dodaj"></ConfirmButton>
+      </v-form>
     </v-card>
-  </v-form>
+  </v-dialog>
 </template>
-
 <script>
-import axios from "axios";
-import { capitalize } from "@/utils/utils.js";
-
+import ConfirmButton from "./ConfirmButton";
 export default {
-  name: "AddNewPlayer",
+  components: { ConfirmButton },
+  Name: "AddNewPlayer",
   data() {
     return {
-      valid: false,
-      Name: "",
-      NameRules: [
-        n => !!n || "Wprowadz nazwe gracza",
-        n =>
-          /^\w+ \w+$/.test(n) ||
-          "Podaj imie i nazwisko gracza, ktore sklada sie z liter rozdzielonych spacja"
-      ],
-      Model: function() {
-        return {
-          FName: capitalize(this.Name.split(" ")[0]),
-          LName: capitalize(this.Name.split(" ")[1]),
-          TeamId: this.teamId,
-          Points: 0
-        };
-      }
+      dialog: false,
+      valid: false
     };
-  },
-  methods: {
-    AddPlayer() {
-      axios
-        .post(`${this.$store.getters.apiUrl}/api/player`, this.Model())
-        .then(res => {
-          if (res.status === 201) {
-            alert("Gracz dodany prawidłowo");
-            this.Name = "";
-            this.$emit("PlayerAdded");
-          } else {
-            alert("Próba dodania gracza nie powiadła się");
-          }
-        })
-        .catch(err => console.log(err.response));
-    }
-  },
-  props: ["teamId"]
+  }
 };
 </script>
-
-<style>
-.card-title {
-  padding-left: 17%;
-  font-size: 14px;
-  font-weight: bold;
-  text-decoration: underline;
-}
-</style>
+<style scoped></style>

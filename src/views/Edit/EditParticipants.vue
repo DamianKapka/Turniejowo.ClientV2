@@ -30,7 +30,7 @@
         <td>
           <v-layout row>
             <v-flex xs4 class="toi-icon toi-add">
-              <font-awesome-icon icon="user-plus"></font-awesome-icon>
+              <AddNewPlayer></AddNewPlayer>
             </v-flex>
             <v-flex xs4 class="toi-icon toi-edit">
               <EditTeamDialog
@@ -166,14 +166,6 @@ export default {
 <style>
 .toi-icon {
   text-align: center;
-}
-
-.toi-add {
-  color: limegreen;
-}
-
-.toi-edit {
-  color: goldenrod;
 }
 
 .v-divider {
