@@ -30,7 +30,10 @@
         <td>
           <v-layout row>
             <v-flex xs4 class="toi-icon toi-add">
-              <AddNewPlayer></AddNewPlayer>
+              <AddNewPlayer
+                :Team="team.item.team"
+                @playerAdded="addPlayer"
+              ></AddNewPlayer>
             </v-flex>
             <v-flex xs4 class="toi-icon toi-edit">
               <EditTeamDialog
@@ -154,8 +157,37 @@ export default {
               break;
             }
           }
-
           return this.getParticipants();
+        })
+        .catch(err => console.log(err));
+    },
+    addPlayer(player) {
+      axios
+        .post(`${this.$store.getters.apiUrl}/api/player`, player)
+        .then(res => {
+          switch (res.status) {
+            case 201: {
+              alert("Gracz dodany prawidłowo");
+              break;
+            }
+            case 404: {
+              alert("Drużyna do której próbowano dodać gracza nie istnieje");
+              break;
+            }
+            case 409: {
+              alert("Taki gracz już istnieje w tej dużynie");
+              break;
+            }
+            case 400: {
+              alert("Błedne zapytanie");
+              break;
+            }
+            default: {
+              alert("Nieznany błąd");
+              break;
+            }
+          }
+          this.getParticipants();
         })
         .catch(err => console.log(err));
     }
@@ -167,7 +199,6 @@ export default {
 .toi-icon {
   text-align: center;
 }
-
 .v-divider {
   margin-bottom: 2%;
 }
