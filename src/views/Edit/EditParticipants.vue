@@ -6,7 +6,7 @@
         <td>
           {{ team.item.team.name }}
         </td>
-        <td style="padding: 0">
+        <td style="padding: 0; min-width: 200px">
           <v-expansion-panel>
             <v-expansion-panel-content>
               <template #header>
@@ -20,7 +20,22 @@
                   :key="item.PlayerId"
                 >
                   <v-list-tile-content>
-                    {{ index + 1 }}. {{ item.fName }} {{ item.lName }}
+                    <v-layout
+                      row
+                      style="width: 100%; align-content: center;align-items: center; text-align: center"
+                    >
+                      <v-flex xs8>
+                        {{ index + 1 }}. {{ item.fName }} {{ item.lName }}
+                      </v-flex>
+                      <v-flex xs2>
+                        <EditPlayerDialog :Player="item"></EditPlayerDialog>
+                      </v-flex>
+                      <v-flex xs2>
+                        <ThrashDeletePlayerDialog
+                          :Player="item"
+                        ></ThrashDeletePlayerDialog>
+                      </v-flex>
+                    </v-layout>
                   </v-list-tile-content>
                 </v-list-tile>
               </v-list>
@@ -42,10 +57,10 @@
               ></EditTeamDialog>
             </v-flex>
             <v-flex xs4 class="toi-icon">
-              <ThrashDeleteDialog
+              <ThrashDeleteTeamDialog
                 :teamName="team.item.team.name"
                 @confirmed="deleteTeam(team.item.team.teamId)"
-              ></ThrashDeleteDialog>
+              ></ThrashDeleteTeamDialog>
             </v-flex>
           </v-layout>
         </td>
@@ -64,8 +79,10 @@
 import axios from "axios";
 import AddNewTeam from "@/components/AddNewTeam";
 import AddNewPlayer from "@/components/AddNewPlayer";
-import ThrashDeleteDialog from "../../components/ThrashDeleteDialog";
+import ThrashDeleteTeamDialog from "../../components/ThrashDeleteTeamDialog";
+import ThrashDeletePlayerDialog from "../../components/ThrashDeletePlayerDialog";
 import EditTeamDialog from "../../components/EditTeamDialog";
+import EditPlayerDialog from "../../components/EditPlayerDialog";
 
 export default {
   name: "EditParticipants",
@@ -75,12 +92,12 @@ export default {
         {
           text: "Nr",
           value: "Number",
-          sortable: true,
+          sortable: false,
           align: "center"
         },
-        { text: "Team", value: "Team", sortable: true, align: "left" },
-        { text: "Players", value: "Players", sortable: true, align: "left" },
-        { text: "Actions", value: "Actions", sortable: true, align: "left" }
+        { text: "Team", value: "Team", sortable: false, align: "left" },
+        { text: "Players", value: "Players", sortable: false, align: "left" },
+        { text: "Actions", value: "Actions", sortable: false, align: "left" }
       ],
       Teams: []
     };
@@ -93,7 +110,9 @@ export default {
     EditTeamDialog,
     AddNewTeam,
     AddNewPlayer,
-    ThrashDeleteDialog
+    ThrashDeleteTeamDialog,
+    ThrashDeletePlayerDialog,
+    EditPlayerDialog
   },
   methods: {
     getParticipants() {
