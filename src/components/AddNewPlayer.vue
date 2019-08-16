@@ -62,6 +62,7 @@ export default {
         };
 
         this.$emit('playerAdded',player);
+        this.playerFullName = "";
         this.dialog = false;
       }
     }

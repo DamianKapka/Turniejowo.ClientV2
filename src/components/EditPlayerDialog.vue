@@ -51,7 +51,7 @@ export default {
   props: ["Player"],
   methods: {
     confirm() {
-      const playerNameArray = this.Player.split(" ");
+      const playerNameArray = this.playerName.split(" ");
 
       this.Player.fName = playerNameArray[0];
       this.Player.lName = playerNameArray[1];

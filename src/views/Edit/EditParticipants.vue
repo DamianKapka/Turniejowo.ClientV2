@@ -28,11 +28,15 @@
                         {{ index + 1 }}. {{ item.fName }} {{ item.lName }}
                       </v-flex>
                       <v-flex xs2>
-                        <EditPlayerDialog :Player="item"></EditPlayerDialog>
+                        <EditPlayerDialog
+                          :Player="item"
+                          @edited="editPlayer"
+                        ></EditPlayerDialog>
                       </v-flex>
                       <v-flex xs2>
                         <ThrashDeletePlayerDialog
                           :Player="item"
+                          @confirmed="deletePlayer"
                         ></ThrashDeletePlayerDialog>
                       </v-flex>
                     </v-layout>
@@ -140,7 +144,7 @@ export default {
           switch (res.status) {
             case 202: {
               alert("Dryżyna poprawnie usunięta");
-              this.getParticipants();
+
               break;
             }
             case 404: {
@@ -151,6 +155,7 @@ export default {
               alert("Nieznany błąd przy usuwaniu");
               break;
           }
+          this.getParticipants();
         })
         .catch(err => console.log(err));
     },
@@ -180,6 +185,39 @@ export default {
         })
         .catch(err => console.log(err));
     },
+    editPlayer(player) {
+      axios
+        .put(
+          `${this.$store.getters.apiUrl}/api/player/${player.playerId}`,
+          player
+        )
+        .then(res => {
+          switch (res.status) {
+            case 202: {
+              alert("Gracz zedytowany");
+              break;
+            }
+            case 404: {
+              alert("Gracz nieodnaleziony");
+              break;
+            }
+            case 409: {
+              alert("Id gracza nie pasuje z Id gracza do usuniecia");
+              break;
+            }
+            case 400: {
+              alert("Nieprawidłowe zapytanie");
+              break;
+            }
+            default: {
+              alert("Nieznany błąd");
+              break;
+            }
+          }
+          this.getParticipants();
+        })
+        .catch(err => console.log(err));
+    },
     addPlayer(player) {
       axios
         .post(`${this.$store.getters.apiUrl}/api/player`, player)
@@ -203,6 +241,28 @@ export default {
             }
             default: {
               alert("Nieznany błąd");
+              break;
+            }
+          }
+          this.getParticipants();
+        })
+        .catch(err => console.log(err));
+    },
+    deletePlayer(playerId) {
+      axios
+        .delete(`${this.$store.getters.apiUrl}/api/player/${playerId}`)
+        .then(res => {
+          switch (res.status) {
+            case 202: {
+              alert("Gracz usuniety");
+              break;
+            }
+            case 404: {
+              alert("Gracz nie istnieje");
+              break;
+            }
+            default: {
+              alert("Nieznany bląd.");
               break;
             }
           }

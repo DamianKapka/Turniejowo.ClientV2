@@ -41,7 +41,7 @@ export default {
   props: ["Player"],
   methods: {
     confirm() {
-      this.$emit("confirmed");
+      this.$emit("confirmed",this.Player.playerId);
       this.dialog = false;
     }
   }
