@@ -87,6 +87,7 @@ import ThrashDeleteTeamDialog from "../../components/ThrashDeleteTeamDialog";
 import ThrashDeletePlayerDialog from "../../components/ThrashDeletePlayerDialog";
 import EditTeamDialog from "../../components/EditTeamDialog";
 import EditPlayerDialog from "../../components/EditPlayerDialog";
+import { mapGetters } from "vuex";
 
 export default {
   name: "EditParticipants",
@@ -109,7 +110,7 @@ export default {
   created() {
     this.getParticipants();
   },
-
+  computed: mapGetters(["apiUrl"]),
   components: {
     EditTeamDialog,
     AddNewTeam,
@@ -125,7 +126,7 @@ export default {
       axios
         .get(
           `${
-            this.$store.getters.apiUrl
+            this.apiUrl
           }/api/tournament/${id}/players?groupedbyteam=true`
         )
         .then(response => {
@@ -139,7 +140,7 @@ export default {
     },
     deleteTeam(id) {
       axios
-        .delete(`${this.$store.getters.apiUrl}/api/team/${id}`)
+        .delete(`${this.apiUrl}/api/team/${id}`)
         .then(res => {
           switch (res.status) {
             case 202: {
@@ -161,7 +162,7 @@ export default {
     },
     editTeam(team) {
       axios
-        .put(`${this.$store.getters.apiUrl}/api/team/${team.teamId}`, team)
+        .put(`${this.apiUrl}/api/team/${team.teamId}`, team)
         .then(res => {
           switch (res.status) {
             case 202: {
@@ -188,7 +189,7 @@ export default {
     editPlayer(player) {
       axios
         .put(
-          `${this.$store.getters.apiUrl}/api/player/${player.playerId}`,
+          `${this.apiUrl}/api/player/${player.playerId}`,
           player
         )
         .then(res => {
@@ -220,7 +221,7 @@ export default {
     },
     addPlayer(player) {
       axios
-        .post(`${this.$store.getters.apiUrl}/api/player`, player)
+        .post(`${this.apiUrl}/api/player`, player)
         .then(res => {
           switch (res.status) {
             case 201: {
@@ -250,7 +251,7 @@ export default {
     },
     deletePlayer(playerId) {
       axios
-        .delete(`${this.$store.getters.apiUrl}/api/player/${playerId}`)
+        .delete(`${this.apiUrl}/api/player/${playerId}`)
         .then(res => {
           switch (res.status) {
             case 202: {

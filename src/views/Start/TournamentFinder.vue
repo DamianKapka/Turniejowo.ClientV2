@@ -21,6 +21,7 @@
 <script>
 import axios from "axios/index";
 import ConfirmButton from "@/components/ConfirmButton";
+import { mapGetters } from 'vuex'
 
 export default {
   name: "TournamentFinder",
@@ -31,10 +32,11 @@ export default {
       IdToFind: ""
     };
   },
+  computed: mapGetters(["apiUrl"]),
   methods: {
     Find() {
       axios
-        .get(`${this.$store.getters.apiUrl}/api/tournament/` + this.IdToFind)
+        .get(`${this.apiUrl}/api/tournament/` + this.IdToFind)
         .then(response => {
           switch (response.status) {
             case 200: {

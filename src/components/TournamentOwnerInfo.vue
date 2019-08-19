@@ -27,12 +27,14 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "TournamentOwnerInfo",
   props: {
     tournament: Object
   },
+  computed: mapGetters(["apiUrl"]),
   mounted() {},
   methods: {
     EditTheTournament() {
@@ -47,7 +49,7 @@ export default {
       ) {
         axios
           .delete(
-            `${this.$store.getters.apiUrl}/api/tournament/${
+            `${this.apiUrl}/api/tournament/${
               this.tournament.tournamentId
             }`
           )

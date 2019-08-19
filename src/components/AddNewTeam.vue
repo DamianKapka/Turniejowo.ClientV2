@@ -27,7 +27,7 @@
 <script>
 import axios from "axios";
 import ConfirmButton from "@/components/ConfirmButton";
-
+import { mapGetters } from "vuex";
 export default {
   Name: "AddNewTeam",
   data() {
@@ -46,11 +46,12 @@ export default {
       }
     };
   },
+  computed: mapGetters(["apiUrl"]),
   methods: {
     Add() {
       if (this.$refs.form.validate()) {
         axios
-          .post(`${this.$store.getters.apiUrl}/api/team`, this.Model())
+          .post(`${this.apiUrl}/api/team`, this.Model())
           .then(res => {
             if (res.status === 201) {
               alert("Druzyna dodana");
@@ -65,7 +66,7 @@ export default {
     }
   },
   components: {
-    ConfirmButton,
+    ConfirmButton
   }
 };
 </script>

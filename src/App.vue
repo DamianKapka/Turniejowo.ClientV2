@@ -4,7 +4,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer style="justify-content: center;">
-      Turniejowo.pl v0.2 Copyright &copy; 2019 Damian Kapka. All rights reserved
+      Turniejowo.pl {{version}} Copyright &copy; 2019 Damian Kapka. All rights reserved
     </v-footer>
   </v-app>
 </template>
@@ -14,7 +14,7 @@ export default {
   name: "Index",
   data() {
     return {
-      version: 0.1
+      version: 0.3
     };
   }
 };

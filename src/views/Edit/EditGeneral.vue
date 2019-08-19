@@ -88,6 +88,7 @@
 import axios from "axios";
 import { GetDisciplineById } from "../../utils/utils";
 import { GetDisciplineId } from "../../utils/utils";
+import { mapGetters } from "vuex";
 
 export default {
   name: "EditGeneral",
@@ -140,10 +141,7 @@ export default {
   methods: {
     editTourney() {
       axios
-        .put(
-          `${this.$store.getters.apiUrl}/api/tournament/${this.TournamentId}`,
-          this.Model()
-        )
+        .put(`${this.apiUrl}/api/tournament/${this.TournamentId}`, this.Model())
         .then(res => {
           if (res.status === 202) {
             alert("Edycja turnieju przebiegla poprawnie");
@@ -155,7 +153,7 @@ export default {
         .catch();
     },
     getTournamentInfo() {
-      const tourney = this.$store.getters.currentlyEditedTournament;
+      const tourney = this.currentlyEditedTournament;
       this.TournamentId = tourney.tournamentId;
       this.CreatorId = tourney.creatorId;
       this.Name = tourney.name;
@@ -165,7 +163,8 @@ export default {
       this.EntryFee = tourney.entryFee;
       this.Localization = tourney.localization;
     }
-  }
+  },
+  computed: mapGetters(["apiUrl", "currentlyEditedTournament"])
 };
 </script>
 

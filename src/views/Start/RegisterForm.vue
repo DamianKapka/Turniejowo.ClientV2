@@ -64,6 +64,7 @@
 import axios from "axios/index";
 import ConfirmButton from "@/components/ConfirmButton";
 import ResetButton from "@/components/ResetButton";
+import { mapGetters } from 'vuex'
 
 export default {
   name: "RegisterForm",
@@ -126,7 +127,7 @@ export default {
       }
     };
   },
-  watch: {},
+  computed: mapGetters(["apiUrl"]),
   methods: {
     reset() {
       this.$refs.form.reset();
@@ -134,7 +135,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         axios
-          .post(`${this.$store.getters.apiUrl}/api/user`, this.Model())
+          .post(`${this.apiUrl}/api/user`, this.Model())
           .then(response => {
             switch (response.status) {
               case 201: {

@@ -20,6 +20,7 @@
 import axios from "axios";
 import TournamentOwnerInfo from "@/components/TournamentOwnerInfo";
 import { getLoggedUserId } from "../../utils/utils";
+import { mapGetters } from "vuex";
 
 export default {
   name: "MyTournaments",
@@ -35,7 +36,7 @@ export default {
   },
 
   components: {
-    TournamentOwnerInfo,
+    TournamentOwnerInfo
   },
   methods: {
     reloadList() {
@@ -44,9 +45,7 @@ export default {
     },
     fillUsersTournament() {
       axios
-        .get(
-          `${this.$store.getters.apiUrl}/api/user/${this.userID}/tournaments`
-        )
+        .get(`${this.apiUrl}/api/user/${this.userID}/tournaments`)
         .then(res => {
           res.data.forEach(d => this.userTournaments.push(d));
         })
@@ -55,7 +54,8 @@ export default {
           console.log(err);
         });
     }
-  }
+  },
+  computed: mapGetters(["apiUrl"])
 };
 </script>
 

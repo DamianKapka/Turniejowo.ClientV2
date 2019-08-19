@@ -87,6 +87,7 @@
 import axios from "axios";
 import { GetDisciplineId } from "@/utils/utils.js";
 import { getLoggedUserId } from "../../utils/utils";
+import { mapGetters } from "vuex";
 
 export default {
   name: "NewTournament",
@@ -133,11 +134,12 @@ export default {
       }
     };
   },
+  computed: mapGetters(["apiUrl"]),
   methods: {
     submitForm() {
       if (this.$refs.form.validate()) {
         axios
-          .post(`${this.$store.getters.apiUrl}/api/tournament`, this.Model())
+          .post(`${this.apiUrl}/api/tournament`, this.Model())
           .then(res => {
             if (res.status === 201) {
               alert("Turniej został założony");

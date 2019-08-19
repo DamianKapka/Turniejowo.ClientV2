@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import axios from "axios/index";
 import ConfirmButton from "@/components/ConfirmButton";
 
 export default {

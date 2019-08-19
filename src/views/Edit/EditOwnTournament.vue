@@ -51,6 +51,8 @@
 <script>
 import axios from "axios";
 import NavBarCard from "../../components/NavBarCard";
+import { mapGetters } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
   name: "EditOwnTournament",
@@ -62,13 +64,14 @@ export default {
       tournament: Object
     };
   },
+  computed: mapGetters(["apiUrl"]),
   created() {
     this.tournamentId = this.$route.params.id;
 
     axios
-      .get(`${this.$store.getters.apiUrl}/api/tournament/${this.tournamentId}`)
+      .get(`${this.apiUrl}/api/tournament/${this.tournamentId}`)
       .then(res => {
-        this.$store.state.currentlyEditedTournament = res.data;
+        this.mutateCurrentlyEditedTournament(res.data);
         this.tournament = res.data;
         this.isFetching = false;
       })
@@ -78,8 +81,11 @@ export default {
   },
   methods: {
     refreshCurrentlyEditedTournament(tournament) {
-      this.$store.state.currentlyEditedTournament = tournament;
-    }
+      this.mutateCurrentlyEditedTournament(tournament);
+    },
+    ...mapMutations([
+        "mutateCurrentlyEditedTournament"
+    ])
   }
 };
 </script>

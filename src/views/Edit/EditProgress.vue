@@ -60,6 +60,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "EditProgress",
@@ -85,7 +86,7 @@ export default {
   methods: {
     AddResult() {
       axios
-        .post(`${this.$store.getters.apiUrl}/api/match/`, this.Model)
+        .post(`${this.apiUrl}/api/match/`, this.Model)
         .then(res => {
           if (res.status === 201) {
             alert("Mecz poprawnie dodany");
@@ -119,7 +120,7 @@ export default {
     getTournamentMatches() {
       axios
         .get(
-          `${this.$store.getters.apiUrl}/api/tournament/${
+          `${this.apiUrl}/api/tournament/${
             this.$store.getters.currentlyEditedTournament.tournamentId
           }/teams`
         )
@@ -130,8 +131,8 @@ export default {
           });
 
           return axios.get(
-            `${this.$store.getters.apiUrl}/api/tournament/${
-              this.$store.getters.currentlyEditedTournament.tournamentId
+            `${this.apiUrl}/api/tournament/${
+              this.currentlyEditedTournament.tournamentId
             }/matches`
           );
         })
@@ -170,7 +171,8 @@ export default {
         homeTeamPoints: this.TeamAScore,
         guestTeamPoints: this.TeamBScore
       };
-    }
+    },
+    ...mapGetters(["apiUrl","currentlyEditedTournament"])
   }
 };
 </script>
