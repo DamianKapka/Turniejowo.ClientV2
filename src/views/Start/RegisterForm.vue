@@ -19,12 +19,14 @@
             <v-text-field
               v-model="Password"
               :rules="PasswordRules"
+              :type="'password'"
               label="Hasło"
               required
             ></v-text-field>
             <v-text-field
               v-model="PasswordRepeat"
               :rules="PasswordRepeatRules"
+              :type="'password'"
               label="Powtórz hasło"
               required
             ></v-text-field>
@@ -64,7 +66,7 @@
 import axios from "axios/index";
 import ConfirmButton from "@/components/ConfirmButton";
 import ResetButton from "@/components/ResetButton";
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   name: "RegisterForm",

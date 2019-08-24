@@ -36,11 +36,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### TODO
 ```
-    Register => PasswordBox
-    Login => PasswordBox
-    store.js with vuex standards
-    Player Edit/Remove
-    Team Edit/Remove
     Form on AddResult with ValidationRules
     Table from API, not hardcoded
     Back to MainPage
