@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-flex xs8 offset-xs2>
+      <v-flex xs10 offset-xs1>
         <v-card class="elevation-24 main-card">
           <v-flex xs12>
             <v-card class="tournament-header">
