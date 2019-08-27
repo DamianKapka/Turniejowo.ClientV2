@@ -1,21 +1,29 @@
 <template>
-  <v-card class="elevation-10">
+  <v-card class="elevation-10" style="margin-top: 2%;margin-bottom: 2%;">
     <v-card-title>
-      <span class="bold">24.09.2019</span>
+      <span class="bold">{{ Matches.dateTime.split("T")[0] }}</span>
     </v-card-title>
     <v-divider style="margin:0"></v-divider>
     <v-card-text>
       <v-data-table
         hide-actions
         :headers="tableHeaders"
-        :items="tableItemsDummy"
+        :items="Matches.matches"
       >
         <template v-slot:items="match">
           <tr>
-            <td class="text-xs-center">{{ match.item.startHour }}</td>
-            <td class="text-xs-center">{{ match.item.teamA }}</td>
-            <td class="text-xs-center bold">{{ match.item.teamB }}</td>
-            <td class="text-xs-center">{{ match.item.score }}</td>
+            <td class="text-xs-center">
+              {{ match.item.matchDateTime.split("T")[1].substring(0, 5) }}
+            </td>
+            <td class="text-xs-center">
+              {{ match.item.homeTeamId }}
+            </td>
+            <td class="text-xs-center">
+              {{ match.item.guestTeamId }}
+            </td>
+            <td class="text-xs-center">
+              {{ match.item.homeTeamPoints }} : {{ match.item.guestTeamPoints }}
+            </td>
           </tr>
         </template>
       </v-data-table>
@@ -24,9 +32,13 @@
 </template>
 
 <script>
+
 export default {
   name: "MatchInfo",
-  props: ["Matches", "WithAdminOptions"],
+  props: {
+    Matches: Object,
+    WithAdminOptions: Boolean
+  },
   data() {
     return {
       tableHeaders: [
@@ -56,12 +68,9 @@ export default {
           width: 150,
           sortable: false
         }
-      ],
-      tableItemsDummy: [
-        { startHour: "15:00", teamA: "XD", teamB: "XP", score: "0:5" }
       ]
     };
-  }
+  },
 };
 </script>
 

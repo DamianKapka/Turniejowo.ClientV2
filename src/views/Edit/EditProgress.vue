@@ -55,15 +55,22 @@
         </v-layout>
       </v-form>
     </v-card>
+    <MatchInfo
+      v-for="match in MatchesTest"
+      :key="match.dateTime"
+      :Matches="match"
+    ></MatchInfo>
   </v-flex>
 </template>
 
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
+import MatchInfo from "../../components/MatchInfo";
 
 export default {
   name: "EditProgress",
+  components: { MatchInfo },
   data() {
     return {
       valid: false,
@@ -73,6 +80,7 @@ export default {
         { text: "Wynik", value: "W", sortable: false, align: "center" }
       ],
       Matches: [],
+      MatchesTest: [],
       Teams: [],
       TeamAName: "",
       TeamBName: "",
@@ -82,6 +90,7 @@ export default {
   },
   created() {
     this.getTournamentMatches();
+    this.getMatchesGroupedByDate();
   },
   methods: {
     AddResult() {
@@ -121,7 +130,7 @@ export default {
       axios
         .get(
           `${this.apiUrl}/api/tournament/${
-            this.$store.getters.currentlyEditedTournament.tournamentId
+            this.currentlyEditedTournament.tournamentId
           }/teams`
         )
         .then(res => {
@@ -153,6 +162,27 @@ export default {
       this.TeamBName = "";
       this.TeamAScore = "";
       this.TeamBScore = "";
+    },
+    getMatchesGroupedByDate() {
+      axios
+        .get(
+          `${this.apiUrl}/api/tournament/${
+            this.currentlyEditedTournament.tournamentId
+          }/matches?groupedByDateTime=true`
+        )
+        .then(res => {
+          switch (res.status) {
+            case 200: {
+              res.data.forEach(d => this.MatchesTest.push(d));
+              break;
+            }
+            default: {
+              console.log("Cannot receive matches grouped by date");
+              break;
+            }
+          }
+        })
+        .catch(err => console.log(err));
     }
   },
   computed: {
@@ -172,7 +202,7 @@ export default {
         guestTeamPoints: this.TeamBScore
       };
     },
-    ...mapGetters(["apiUrl","currentlyEditedTournament"])
+    ...mapGetters(["apiUrl", "currentlyEditedTournament"])
   }
 };
 </script>
