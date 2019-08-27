@@ -16,10 +16,10 @@
               {{ match.item.matchDateTime.split("T")[1].substring(0, 5) }}
             </td>
             <td class="text-xs-center">
-              {{ match.item.homeTeamId }}
+              {{ match.item.homeTeamName }}
             </td>
             <td class="text-xs-center">
-              {{ match.item.guestTeamId }}
+              {{ match.item.guestTeamName }}
             </td>
             <td class="text-xs-center">
               {{ match.item.homeTeamPoints }} : {{ match.item.guestTeamPoints }}
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-
 export default {
   name: "MatchInfo",
   props: {
@@ -71,6 +70,9 @@ export default {
       ]
     };
   },
+  mounted() {
+    console.log(this.Matches);
+  }
 };
 </script>
 
