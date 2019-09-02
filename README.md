@@ -36,7 +36,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### TODO
 ```
-    Form on AddResult with ValidationRules
     Table from API, not hardcoded
     Back to MainPage
     Logo with MainPage push
