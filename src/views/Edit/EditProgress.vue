@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-flex xs10 offset-xs1 style="padding:5%">
-    <AddNewResult></AddNewResult>
+    <AddNewResult @ResultAdded="getMatchesGroupedByDate()"></AddNewResult>
     <v-divider></v-divider>
     <MatchInfo
       v-for="match in Matches"
@@ -18,7 +18,7 @@ import AddNewResult from "../../components/AddNewResult";
 
 export default {
   name: "EditProgress",
-  components: { MatchInfo,AddNewResult },
+  components: { MatchInfo, AddNewResult },
   data() {
     return {
       valid: false,
@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     getMatchesGroupedByDate() {
+      this.Matches = [];
       axios
         .get(
           `${this.apiUrl}/api/tournament/${

@@ -67,26 +67,29 @@
         </v-menu>
         <v-combobox
           v-model="selectedHomeTeam"
-          :items="tournamentTeams"
+          :items="tournamentTeamsNames"
           :rules="selectedHomeTeamRules"
           label="Drużyna gospodarzy"
           prepend-icon="group_add"
         ></v-combobox>
         <v-combobox
           v-model="selectedGuestTeam"
-          :items="tournamentTeams"
+          :items="tournamentTeamsNames"
           :rules="selectedGuestTeamRules"
           label="Drużyna gości"
           prepend-icon="group_add"
         ></v-combobox>
-        <ConfirmButton Message="DODAJ MECZ" @clicked="test()"></ConfirmButton>
+        <ConfirmButton Message="DODAJ MECZ" @clicked="Add()"></ConfirmButton>
       </v-form>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
 
 <script>
+import axios from "axios";
 import ConfirmButton from "./ConfirmButton";
+import { mapGetters } from "vuex";
+
 export default {
   name: "AddNewResult",
   components: { ConfirmButton },
@@ -99,38 +102,76 @@ export default {
       matchDateRules: [date => !!date || "Podaj datę meczu"],
       matchTime: null,
       matchTimeRules: [time => !!time || "Podaj godzinę meczu"],
-      tournamentTeams: ["a", "b", "c"],
+      tournamentTeams: [],
       selectedHomeTeam: null,
       selectedHomeTeamRules: [
         homeTeam => !!homeTeam || "Wybierz drużynę gospodarzy",
         homeTeam =>
-          homeTeam != this.selectedGuestTeam || "Błąd! Takie same drużyny"
+          homeTeam !== this.selectedGuestTeam || "Błąd! Takie same drużyny"
       ],
       selectedGuestTeam: null,
       selectedGuestTeamRules: [
         guestTeam => !!guestTeam || "Wybierz drużynę gospodarzy",
         guestTeam =>
-          guestTeam != this.selectedHomeTeam || "Błąd! Takie same drużyny"
+          guestTeam !== this.selectedHomeTeam || "Błąd! Takie same drużyny"
       ]
     };
+  },
+  created() {
+    this.getTournamentTeams();
   },
   computed: {
     matchModel: function() {
       return {
-        HomeTeamId: this.selectedHomeTeam,
-        GuestTeamId: this.selectedGuestTeam,
+        HomeTeamId: this.tournamentTeams.find(
+          t => t.name === this.selectedHomeTeam
+        ).teamId,
+        GuestTeamId: this.tournamentTeams.find(
+          t => t.name === this.selectedGuestTeam
+        ).teamId,
         HomeTeamPoints: 0,
         GuestTeamPoints: 0,
         IsFinished: false,
         MatchDateTime: `${this.matchDate} ${this.matchTime}`
       };
-    }
+    },
+    tournamentTeamsNames: function() {
+      return this.tournamentTeams.map(t => t.name);
+    },
+    ...mapGetters(["apiUrl", "currentlyEditedTournament"])
   },
   methods: {
-    test() {
+    getTournamentTeams() {
+      axios
+        .get(
+          `${this.apiUrl}/api/tournament/${
+            this.currentlyEditedTournament.tournamentId
+          }/teams`
+        )
+        .then(response => {
+          if (response.status === 200) {
+            response.data.forEach(d => this.tournamentTeams.push(d));
+          } else {
+            console.log("Nie można odczytać drużyn w turnieju");
+          }
+        })
+        .catch(err => console.log(err));
+    },
+    Add() {
       if (this.$refs.form.validate()) {
-        alert("valid!");
-        console.log(this.matchModel);
+        axios.post(`${this.apiUrl}/api/match`, this.matchModel).then(res => {
+          switch (res.status) {
+            case 201: {
+              alert("Mecz dodany");
+              this.$emit("ResultAdded");
+              break;
+            }
+            default: {
+              console.log(res);
+              alert("Błąd podczas dodawania meczu");
+            }
+          }
+        });
       }
     }
   }
