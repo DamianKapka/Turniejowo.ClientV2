@@ -5,11 +5,7 @@
     </v-card-title>
     <v-divider style="margin:0"></v-divider>
     <v-card-text>
-      <v-data-table
-        hide-actions
-        :headers="tableHeaders"
-        :items="Matches.matches"
-      >
+      <v-data-table hide-actions :headers="t" :items="Matches.matches">
         <template v-slot:items="match">
           <tr>
             <td class="text-xs-center">
@@ -21,8 +17,16 @@
             <td class="text-xs-center">
               {{ match.item.guestTeamName }}
             </td>
-            <td class="text-xs-center">
+            <td v-if="match.item.isFinished" class="text-xs-center">
               {{ match.item.homeTeamPoints }} : {{ match.item.guestTeamPoints }}
+            </td>
+            <td v-else class="text-xs-center">
+              - : -
+            </td>
+            <td v-if="WithAdminOptions" class="text-xs-center">
+              <UpdateResultDialog
+                :isFinished="match.item.isFinished"
+              ></UpdateResultDialog>
             </td>
           </tr>
         </template>
@@ -32,6 +36,8 @@
 </template>
 
 <script>
+import UpdateResultDialog from "./UpdateResultDialog";
+
 export default {
   name: "MatchInfo",
   props: {
@@ -39,8 +45,48 @@ export default {
     WithAdminOptions: Boolean
   },
   data() {
-    return {
-      tableHeaders: [
+    return {};
+  },
+  computed: {
+    t: function() {
+      if (this.WithAdminOptions === true) {
+        return [
+          {
+            text: "Godzina",
+            value: "startHour",
+            align: "center",
+            width: 50,
+            sortable: false
+          },
+          {
+            text: "Druzyna A",
+            value: "teamA",
+            align: "center",
+            sortable: false
+          },
+          {
+            text: "Druzyna B",
+            value: "teamB",
+            align: "center",
+            sortable: false
+          },
+          {
+            text: "Wynik",
+            value: "score",
+            align: "center",
+            width: 50,
+            sortable: false
+          },
+          {
+            text: "Akcje",
+            value: "actions",
+            align: "center",
+            width: 50,
+            sortable: false
+          }
+        ];
+      }
+      return [
         {
           text: "Godzina",
           value: "startHour",
@@ -67,9 +113,12 @@ export default {
           width: 150,
           sortable: false
         }
-      ]
-    };
+      ];
+    }
   },
+  components: {
+    UpdateResultDialog
+  }
 };
 </script>
 
