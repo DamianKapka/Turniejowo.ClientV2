@@ -25,7 +25,7 @@
             </td>
             <td v-if="WithAdminOptions" class="text-xs-center">
               <UpdateResultDialog
-                :isFinished="match.item.isFinished"
+                :match="match.item"
               ></UpdateResultDialog>
             </td>
           </tr>
