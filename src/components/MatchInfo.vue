@@ -5,7 +5,11 @@
     </v-card-title>
     <v-divider style="margin:0"></v-divider>
     <v-card-text>
-      <v-data-table hide-actions :headers="t" :items="Matches.matches">
+      <v-data-table
+        hide-actions
+        :headers="tableHeaders"
+        :items="Matches.matches"
+      >
         <template v-slot:items="match">
           <tr>
             <td class="text-xs-center">
@@ -25,6 +29,7 @@
             </td>
             <td v-if="WithAdminOptions" class="text-xs-center">
               <UpdateResultDialog
+                @updated="matchUpdated"
                 :match="match.item"
               ></UpdateResultDialog>
             </td>
@@ -48,7 +53,7 @@ export default {
     return {};
   },
   computed: {
-    t: function() {
+    tableHeaders: function() {
       if (this.WithAdminOptions === true) {
         return [
           {
@@ -118,6 +123,11 @@ export default {
   },
   components: {
     UpdateResultDialog
+  },
+  methods: {
+    matchUpdated() {
+      this.$emit("matchUpdated");
+    }
   }
 };
 </script>

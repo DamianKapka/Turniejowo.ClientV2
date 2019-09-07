@@ -44,18 +44,11 @@
         </v-layout>
       </v-form>
       <v-card-actions>
-        <v-btn
-          color="success"
-          @click="confirm()"
-          style="width: 40%;padding-left: 5%;padding-right: 5%"
+        <v-btn color="success" @click="edit()" class="button"
           ><v-icon>thumb_up</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn
-          color="error"
-          @click="cancel()"
-          style="width: 40%;padding-left: 5%;padding-right: 5%"
-        >
+        <v-btn color="error" @click="cancel()" class="button">
           <v-icon>thumb_down</v-icon>
         </v-btn>
       </v-card-actions>
@@ -87,7 +80,11 @@
             ></v-text-field>
           </v-flex>
           <v-flex xs3 offset-xs1>
-            <v-text-field label="Wynik" v-model="addHomeTeamPoints">
+            <v-text-field
+              label="Wynik"
+              v-model="addHomeTeamPoints"
+              :rules="teamPointsRules"
+            >
             </v-text-field>
           </v-flex>
         </v-layout>
@@ -100,24 +97,21 @@
             ></v-text-field>
           </v-flex>
           <v-flex xs3 offset-xs1>
-            <v-text-field label="Wynik" v-model="addGuestTeamPoints">
+            <v-text-field
+              label="Wynik"
+              v-model="addGuestTeamPoints"
+              :rules="teamPointsRules"
+            >
             </v-text-field>
           </v-flex>
         </v-layout>
       </v-form>
       <v-card-actions>
-        <v-btn
-          color="success"
-          @click="confirm()"
-          style="width: 40%;padding-left: 5%;padding-right: 5%"
+        <v-btn color="success" @click="add()" class="button"
           ><v-icon>thumb_up</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn
-          color="error"
-          @click="cancel()"
-          style="width: 40%;padding-left: 5%;padding-right: 5%"
-        >
+        <v-btn color="error" @click="cancel()" class="button">
           <v-icon>thumb_down</v-icon>
         </v-btn>
       </v-card-actions>
@@ -125,6 +119,9 @@
   </v-dialog>
 </template>
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
+
 export default {
   name: "UpdateResultDialog",
   props: ["match"],
@@ -132,11 +129,73 @@ export default {
     return {
       dialog: false,
       valid: false,
-      addHomeTeamPoints: "",
-      addGuestTeamPoints: ""
+      addHomeTeamPoints: null,
+      teamPointsRules: [
+        m => !!m || "Wprowadz wynik",
+        m => m >= 0 || "Wynik musi być wiekszy od 0",
+        m => /^\d{1,3}$/.test(m) || "Wynik musi byc liczba 0 - 999"
+      ],
+      addGuestTeamPoints: null
     };
   },
+  computed: mapGetters(["apiUrl"]),
+  methods: {
+    add() {
+      if (this.$refs.form.validate()) {
+        const dto = {
+          MatchId: this.match.matchId,
+          MatchDateTime: this.match.matchDateTime,
+          IsFinished: true,
+          HomeTeamId: this.match.homeTeamId,
+          GuestTeamId: this.match.guestTeamId,
+          HomeTeamPoints: this.addHomeTeamPoints,
+          GuestTeamPoints: this.addGuestTeamPoints
+        };
+
+        const apiUrl = `${this.apiUrl}/api/match/${this.match.matchId}`;
+
+        axios
+          .put(apiUrl, dto)
+          .then(res => {
+            switch (res.status) {
+              case 202: {
+                alert("Wynik wprowadzony");
+                this.$emit("updated");
+                break;
+              }
+              case 404: {
+                alert("Turniej nie istnieje");
+                break;
+              }
+              case 400: {
+                alert("Błędne żądanie");
+                break;
+              }
+              default: {
+                alert("Nieznany błąd podczas próby zaktualizowania wyniku");
+                break;
+              }
+            }
+
+            this.dialog = false;
+          })
+          .catch(err => console.log(err));
+      }
+    },
+    edit() {
+      alert("edit");
+    },
+    cancel() {
+      alert("cancel");
+    }
+  }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.button {
+  width: 40%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+</style>

@@ -7,6 +7,7 @@
       :key="match.dateTime"
       :Matches="match"
       :WithAdminOptions="true"
+      @matchUpdated="getMatchesGroupedByDate()"
     ></MatchInfo>
   </v-flex>
 </template>
