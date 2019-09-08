@@ -40,6 +40,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
     Back to MainPage
     Logo with MainPage push
     Progress from Find
-    MatchDateTime
     Tournamend overview from Edit/MyTournaments
 ```

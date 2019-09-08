@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-if="match.isFinished" v-model="dialog" max-width="480">
+  <v-dialog v-if="match.isFinished" persistent v-model="dialog" max-width="480">
     <template #activator="{on}">
       <font-awesome-icon
         icon="edit"
@@ -25,7 +25,11 @@
             ></v-text-field>
           </v-flex>
           <v-flex xs3 offset-xs1>
-            <v-text-field label="Wynik" v-model="match.homeTeamPoints">
+            <v-text-field
+              label="Wynik"
+              v-model="match.homeTeamPoints"
+              :rules="teamPointsRules"
+            >
             </v-text-field>
           </v-flex>
         </v-layout>
@@ -38,7 +42,11 @@
             ></v-text-field>
           </v-flex>
           <v-flex xs3 offset-xs1>
-            <v-text-field label="Wynik" v-model="match.guestTeamPoints">
+            <v-text-field
+              label="Wynik"
+              v-model="match.guestTeamPoints"
+              :rules="teamPointsRules"
+            >
             </v-text-field>
           </v-flex>
         </v-layout>
@@ -54,7 +62,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-dialog v-else v-model="dialog" max-width="480">
+  <v-dialog v-else persistent v-model="dialog" max-width="480">
     <template #activator="{on}">
       <font-awesome-icon
         icon="calendar-check"
@@ -129,6 +137,8 @@ export default {
     return {
       dialog: false,
       valid: false,
+      initialHomeTeamPoints: null,
+      initialGuestTeamPoints: null,
       addHomeTeamPoints: null,
       teamPointsRules: [
         m => !!m || "Wprowadz wynik",
@@ -137,6 +147,10 @@ export default {
       ],
       addGuestTeamPoints: null
     };
+  },
+  mounted() {
+    this.initialHomeTeamPoints = this.match.homeTeamPoints;
+    this.initialGuestTeamPoints = this.match.guestTeamPoints;
   },
   computed: mapGetters(["apiUrl"]),
   methods: {
@@ -183,10 +197,41 @@ export default {
       }
     },
     edit() {
-      alert("edit");
+      if (this.$refs.form.validate()) {
+        const apiUrl = `${this.apiUrl}/api/match/${this.match.matchId}`;
+
+        axios
+          .put(apiUrl, this.match)
+          .then(res => {
+            switch (res.status) {
+              case 202: {
+                alert("Wynik edytowany");
+                this.$emit("updated");
+                break;
+              }
+              case 404: {
+                alert("Turniej nie istnieje");
+                break;
+              }
+              case 400: {
+                alert("Błędne żądanie");
+                break;
+              }
+              default: {
+                alert("Nieznany błąd podczas próby zaktualizowania wyniku");
+                break;
+              }
+            }
+
+            this.dialog = false;
+          })
+          .catch(err => console.log(err));
+      }
     },
     cancel() {
-      alert("cancel");
+      this.match.homeTeamPoints = this.initialHomeTeamPoints;
+      this.match.guestTeamPoints = this.initialGuestTeamPoints;
+      this.dialog = false;
     }
   }
 };
