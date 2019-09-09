@@ -37,8 +37,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### TODO
 ```
     Table from API, not hardcoded
-    Back to MainPage
-    Logo with MainPage push
-    Progress from Find
     Tournamend overview from Edit/MyTournaments
 ```

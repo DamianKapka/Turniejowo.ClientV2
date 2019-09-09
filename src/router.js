@@ -11,6 +11,7 @@ import TournamentInfo from "@/views/TournamentHub/TournamentInfo";
 import TournamentParticipants from "@/views/TournamentHub/TournamentParticipants";
 import TournamentStats from "@/views/TournamentHub/TournamentStats";
 import TournamentTable from "@/views/TournamentHub/TournamentTable";
+import TournamentMatches from "@/views/TournamentHub/TournamentMatches"
 import Profile from "@/views/Profile/Profile";
 import NewTournament from "@/views/Profile/NewTournament";
 import MyTournaments from "@/views/Profile/MyTournaments";
@@ -19,7 +20,7 @@ import EditOwnTournament from "@/views/Edit/EditOwnTournament";
 import EditGeneral from "@/views/Edit/EditGeneral";
 import EditParticipants from "@/views/Edit/EditParticipants";
 import EditProgress from "@/views/Edit/EditProgress";
-import Test from "@/views/Test";
+import Test from "@//views/Test";
 
 Vue.use(Router);
 
@@ -85,6 +86,11 @@ export default new Router({
           path: "table",
           name: "table",
           component: TournamentTable
+        },
+        {
+          path: "matches",
+          name: "matches",
+          component: TournamentMatches
         }
       ]
     },

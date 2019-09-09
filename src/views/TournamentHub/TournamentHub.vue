@@ -1,35 +1,49 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-flex xs8 offset-xs2>
+      <v-flex xs10 offset-xs1>
         <v-card :dark="false" class="elevation-24 main-card" Height="100%">
           <v-layout row>
-            <v-flex xs3>
+            <v-flex xs2>
               <NavBarCard
                 LabelInfo="Ogólne"
                 ActiveClass="info"
                 RouterLink="info"
               ></NavBarCard>
             </v-flex>
-            <v-flex xs3>
+            <v-flex xs2>
               <NavBarCard
                 LabelInfo="Uczestnicy"
                 ActiveClass="participants"
                 RouterLink="participants"
               ></NavBarCard>
             </v-flex>
-            <v-flex xs3>
+            <v-flex xs2>
               <NavBarCard
                 LabelInfo="Tabela"
                 ActiveClass="table"
                 RouterLink="table"
               ></NavBarCard>
             </v-flex>
-            <v-flex xs3>
+            <v-flex xs2>
               <NavBarCard
                 LabelInfo="Statystyki"
                 ActiveClass="stats"
                 RouterLink="stats"
+              ></NavBarCard>
+            </v-flex>
+            <v-flex xs2>
+              <NavBarCard
+                LabelInfo="Mecze"
+                ActiveClass="matches"
+                RouterLink="matches"
+              ></NavBarCard>
+            </v-flex>
+            <v-flex xs2>
+              <NavBarCard
+                LabelInfo="Cofnij"
+                ActiveClass="find"
+                RouterLink="find"
               ></NavBarCard>
             </v-flex>
           </v-layout>
