@@ -11,7 +11,7 @@ import TournamentInfo from "@/views/TournamentHub/TournamentInfo";
 import TournamentParticipants from "@/views/TournamentHub/TournamentParticipants";
 import TournamentStats from "@/views/TournamentHub/TournamentStats";
 import TournamentTable from "@/views/TournamentHub/TournamentTable";
-import TournamentMatches from "@/views/TournamentHub/TournamentMatches"
+import TournamentMatches from "@/views/TournamentHub/TournamentMatches";
 import Profile from "@/views/Profile/Profile";
 import NewTournament from "@/views/Profile/NewTournament";
 import MyTournaments from "@/views/Profile/MyTournaments";
@@ -31,7 +31,7 @@ export default new Router({
     {
       path: "/",
       name: "MainCard",
-      component: MainCard,
+      component: MainCard
     },
     {
       path: "/start",
@@ -98,21 +98,21 @@ export default new Router({
       path: "/profile",
       component: Profile,
       redirect: "/profile/my-tournaments",
-      children:[
+      children: [
         {
           path: "new-tournament",
           name: "NewTournament",
-          component: NewTournament,
+          component: NewTournament
         },
         {
           path: "my-tournaments",
           name: "MyTournaments",
-          component: MyTournaments,
+          component: MyTournaments
         },
         {
           path: "my-account",
           name: "MyAccount",
-          component: MyAccount,
+          component: MyAccount
         }
       ]
     },
@@ -121,26 +121,26 @@ export default new Router({
       name: "EditOwnTournament",
       redirect: "/profile/my-tournaments/edit/:id/general",
       component: EditOwnTournament,
-      children:[
+      children: [
         {
           path: "general",
           name: "EditGeneral",
-          component: EditGeneral,
+          component: EditGeneral
         },
         {
           path: "participants",
           name: "EditParticipants",
-          component: EditParticipants,
+          component: EditParticipants
         },
         {
           path: "progress",
           name: "EditProgress",
-          component: EditProgress,
+          component: EditProgress
         }
       ]
     },
     {
-      path:"/test",
+      path: "/test",
       component: Test
     },
     {
