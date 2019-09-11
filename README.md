@@ -36,6 +36,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### TODO
 ```
-    Table from API, not hardcoded
     Tournamend overview from Edit/MyTournaments
 ```

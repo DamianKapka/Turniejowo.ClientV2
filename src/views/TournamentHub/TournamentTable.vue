@@ -9,10 +9,16 @@
         {{ item.index + 1 }}
       </td>
       <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
-        {{ item.item.name }}
+        {{ item.item.teamName }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.matches }}
       </td>
       <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
         {{ item.item.wins }}
+      </td>
+      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
+        {{ item.item.draws }}
       </td>
       <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
         {{ item.item.loses }}
@@ -33,20 +39,53 @@ export default {
     return {
       tableEntries: [],
       tableHeaders: [
-        { text: "Miejsce", value: "place", align: "center", sortable: false },
+        {
+          text: "Miejsce",
+          value: "place",
+          align: "center",
+          width: 10,
+          sortable: false
+        },
         { text: "Drużyna", value: "team", align: "center", sortable: false },
-        { text: "Zwyciestwa", value: "wins", align: "center", sortable: false },
-        { text: "Porazki", value: "loses", align: "center", sortable: false },
-        { text: "Pynkty", value: "points", align: "center", sortable: false }
+        {
+          text: "Mecze",
+          value: "matches",
+          align: "center",
+          width: 10,
+          sortable: false
+        },
+        {
+          text: "Zwyciestwa",
+          value: "wins",
+          align: "center",
+          width: 10,
+          sortable: false
+        },
+        {
+          text: "Remisy",
+          value: "draws",
+          align: "center",
+          width: 10,
+          sortable: false
+        },
+        {
+          text: "Porazki",
+          value: "loses",
+          align: "center",
+          width: 10,
+          sortable: false
+        },
+        {
+          text: "Pynkty",
+          value: "points",
+          align: "center",
+          width: 10,
+          sortable: false
+        }
       ]
     };
   },
   methods: {
-    SortAndAssign(array) {
-      return array.sort((a, b) =>
-        a.points > b.points ? -1 : b.points > a.points ? 1 : 0
-      );
-    },
     getMedalColor: function(index) {
       switch (index) {
         case 1: {
@@ -69,11 +108,14 @@ export default {
       .get(
         `${this.$store.getters.apiUrl}/api/tournament/${
           this.$route.params.id
-        }/teams`
+        }/table`
       )
       .then(response => {
-        // eslint-disable-next-line no-console
-        this.tableEntries = this.SortAndAssign(response.data);
+        if (response.status === 200) {
+          response.data.tableData.forEach(e => this.tableEntries.push(e));
+        } else if (response.status !== 200 && response.status !== 404) {
+          alert("Błąd podczas próby pobrania meczów");
+        }
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));
