@@ -41,7 +41,9 @@ export default {
           TournamentId: this.$route.params.id,
           Matches: 0,
           Wins: 0,
-          Loses: 0
+          Draws: 0,
+          Loses: 0,
+          Points: 0
         };
       }
     };
