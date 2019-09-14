@@ -1,64 +1,58 @@
 <template>
   <v-form ref="form" v-model="valid">
-    <v-container>
-      <v-layout>
-        <v-flex xs8 offset-xs2>
-          <div class="start-div">
-            <v-text-field
-              v-model="FName"
-              :rules="FNameRules"
-              label="Imię"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model="LName"
-              :rules="LNameRules"
-              label="Nazwisko"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model="Password"
-              :rules="PasswordRules"
-              :type="'password'"
-              label="Hasło"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model="PasswordRepeat"
-              :rules="PasswordRepeatRules"
-              :type="'password'"
-              label="Powtórz hasło"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model="Mail"
-              :rules="MailRules"
-              label="Adres e-mail"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model="Phone"
-              :rules="PhoneRules"
-              label="Nr telefonu"
-            ></v-text-field>
-            <div>
-              <v-layout row>
-                <v-flex xs4 offset-xs1
-                  ><ConfirmButton
-                    Message="STWÓRZ KONTO"
-                    @clicked="submit()"
-                  ></ConfirmButton
-                ></v-flex>
-                <v-flex xs2></v-flex>
-                <v-flex xs4>
-                  <ResetButton Message="RESET" @clicked="reset()"></ResetButton>
-                </v-flex>
-              </v-layout>
-            </div>
-          </div>
-        </v-flex>
-      </v-layout>
-    </v-container>
+    <v-layout>
+      <v-flex xs8 offset-xs2>
+        <v-text-field
+          v-model="FName"
+          :rules="FNameRules"
+          label="Imię"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="LName"
+          :rules="LNameRules"
+          label="Nazwisko"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="Password"
+          :rules="PasswordRules"
+          :type="'password'"
+          label="Hasło"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="PasswordRepeat"
+          :rules="PasswordRepeatRules"
+          :type="'password'"
+          label="Powtórz hasło"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="Mail"
+          :rules="MailRules"
+          label="Adres e-mail"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="Phone"
+          :rules="PhoneRules"
+          label="Nr telefonu"
+        ></v-text-field>
+        <v-layout row>
+          <v-flex xs4 offset-xs1
+            ><ConfirmButton
+              Message="STWÓRZ KONTO"
+              @clicked="submit()"
+            ></ConfirmButton
+          ></v-flex>
+          <v-flex xs2></v-flex>
+          <v-flex xs4>
+            <ResetButton Message="RESET" @clicked="reset"></ResetButton>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
   </v-form>
 </template>
 
@@ -112,24 +106,23 @@ export default {
         ph =>
           /^\d{3}-\d{3}-\d{3}$/.test(ph) ||
           "Wpisz numer telefonu w formacie 123-123-123"
-      ],
-      /**
-       * @return {string}
-       */
-      FullName: function() {
-        return this.FName + " " + this.LName;
-      },
-      Model: function() {
-        return {
-          Email: this.Mail,
-          Password: this.Password,
-          FullName: this.FullName(),
-          Phone: this.Phone
-        };
-      }
+      ]
     };
   },
-  computed: mapGetters(["apiUrl"]),
+  computed: {
+    fullName: function() {
+      return `${this.FName} ${this.LName}`;
+    },
+    model: function() {
+      return {
+        Email: this.Mail,
+        Password: this.Password,
+        FullName: this.fullName,
+        Phone: this.Phone
+      };
+    },
+    ...mapGetters(["apiUrl"])
+  },
   methods: {
     reset() {
       this.$refs.form.reset();
@@ -137,7 +130,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         axios
-          .post(`${this.apiUrl}/api/user`, this.Model())
+          .post(`${this.apiUrl}/api/user`, this.model)
           .then(response => {
             switch (response.status) {
               case 201: {
@@ -175,5 +168,3 @@ export default {
   }
 };
 </script>
-
-<style></style>

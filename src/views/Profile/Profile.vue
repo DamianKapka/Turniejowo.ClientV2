@@ -28,7 +28,7 @@
             <v-flex xs3>
               <v-card
                 :dark="false"
-                class="elevation-7 maincard-nav-card logged-as-card"
+                class="elevation-7 logged-as-card"
                 @mouseover="LogoutButtonHovered = true"
                 @mouseleave="LogoutButtonHovered = false"
                 @click="logout()"
@@ -88,9 +88,15 @@ export default {
 <style scoped>
 .logged-as-card {
   background-color: aquamarine;
+  text-align: center;
+  padding: 5%;
+  font-size: 18px;
+  font-weight: bold;
+  border: 3px solid mediumaquamarine;
 }
 
 .logged-as-card:hover {
   background-color: firebrick;
+  border: 3px solid darkred;
 }
 </style>

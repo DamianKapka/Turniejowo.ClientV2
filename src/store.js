@@ -30,7 +30,7 @@ const actions = {
             alert("Zalogowano!");
             localStorage.setItem("token", response.data.token);
             commit(types.LOGIN);
-            router.push({ path: "/profile" });
+            router.push({ name: "MyTournaments" });
             break;
           }
           case 401: {

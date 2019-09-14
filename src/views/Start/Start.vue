@@ -1,18 +1,21 @@
 <template>
-  <v-container>
-    <v-layout row>
-      <v-flex xs8 offset-xs2>
-        <v-card :dark="false" class="elevation-24 main-card" Height="100%">
-          <v-layout row>
-            <v-flex xs4 v-for="info in navBarCardInfo" :key="info.ActiveClass">
-              <NavBarCard :Message="info.LabelInfo" :LabelInfo="info.LabelInfo" :ActiveClass="info.ActiveClass" :RouterLink="info.RouterLink"></NavBarCard>
-            </v-flex>
-          </v-layout>
-          <router-view></router-view>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-layout row>
+    <v-flex xs8 offset-xs2>
+      <v-card class="elevation-18 main-card">
+        <v-layout row>
+          <v-flex xs4 v-for="info in navBarCardInfo" :key="info.ActiveClass">
+            <NavBarCard
+              :Message="info.LabelInfo"
+              :LabelInfo="info.LabelInfo"
+              :ActiveClass="info.ActiveClass"
+              :RouterLink="info.RouterLink"
+            ></NavBarCard>
+          </v-flex>
+        </v-layout>
+        <router-view></router-view>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

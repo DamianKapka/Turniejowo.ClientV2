@@ -1,25 +1,19 @@
 <template>
-  <v-form ref="form" v-model="valid">
-    <v-container>
-      <v-layout>
-        <v-flex xs8 offset-xs2>
-          <v-text-field
-            v-model="Login"
-            :rules="LoginRules"
-            label="Adres e-mail"
-          ></v-text-field>
-          <v-text-field
-            v-model="Password"
-            label="Password"
-            :type="'password'"
-          ></v-text-field>
-          <v-flex xs6 offset-xs3>
-            <ConfirmButton Message="ZALOGUJ" @clicked="Authenticate()">
-            </ConfirmButton>
-          </v-flex>
+  <v-form>
+    <v-layout>
+      <v-flex xs8 offset-xs2>
+        <v-text-field v-model="Login" label="Adres e-mail"></v-text-field>
+        <v-text-field
+          v-model="Password"
+          label="Password"
+          :type="'password'"
+        ></v-text-field>
+        <v-flex xs6 offset-xs3>
+          <ConfirmButton Message="ZALOGUJ" @clicked="Authenticate">
+          </ConfirmButton>
         </v-flex>
-      </v-layout>
-    </v-container>
+      </v-flex>
+    </v-layout>
   </v-form>
 </template>
 
@@ -30,21 +24,21 @@ export default {
   name: "LoginForm",
   data() {
     return {
-      valid: false,
       Login: "",
-      LoginRules: [],
-      Password: "",
-      Model: function() {
-        return {
-          login: this.Login,
-          password: this.Password
-        };
-      }
+      Password: ""
     };
+  },
+  computed: {
+    Model: function() {
+      return {
+        login: this.Login,
+        password: this.Password
+      };
+    }
   },
   methods: {
     Authenticate() {
-      this.$store.dispatch("login", this.Model());
+      this.$store.dispatch("login", this.Model);
     }
   },
   components: {
@@ -52,5 +46,3 @@ export default {
   }
 };
 </script>
-
-<style></style>
