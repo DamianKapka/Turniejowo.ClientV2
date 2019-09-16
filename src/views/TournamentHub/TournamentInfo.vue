@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-data-table
-    :items="TournamentInfo"
-    class="elevation-7"
+    :items="tournamentIntoDetails"
+    class="elevation-7 table"
     :hide-actions="true"
   >
     <template v-slot:items="item">
@@ -13,63 +13,60 @@
 
 <script>
 import axios from "axios";
-import { GetDisciplineById } from "@/utils/utils.js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "TournamentInfo",
   data() {
     return {
-      TournamentInfo: [
-        { key: "Nazwa", value: "" },
-        { key: "Dyscyplina", value: "" },
-        { key: "Data rozpoczecia", value: "" },
-        { key: "Liczba drużyn", value: "" },
-        { key: "Liczba zapisanych drużyn", value: "" },
-        { key: "Wpisowe", value: "" },
-        { key: "Lokalizacja", value: "" },
-        { key: "Organizator", value: "" },
-        { key: "Kontakt z organizatorem", value: "" }
-      ]
+      tournamentInfo: Object
     };
+  },
+  computed: {
+    tournamentIntoDetails: function() {
+      const details = [
+        { key: "Nazwa", value: this.tournamentInfo.name },
+        { key: "Dyscyplina", value: this.tournamentInfo.discipline },
+        {
+          key: "Data rozpoczecia",
+          value: this.tournamentInfo.date
+        },
+        { key: "Liczba drużyn", value: this.tournamentInfo.amountOfTeams },
+        {
+          key: "Liczba zapisanych drużyn",
+          value: this.tournamentInfo.amountOfSignedTeams
+        },
+        { key: "Wpisowe", value: this.tournamentInfo.entryFee },
+        { key: "Lokalizacja", value: this.tournamentInfo.localization },
+        { key: "Organizator", value: this.tournamentInfo.creatorName },
+        {
+          key: "Kontakt z organizatorem",
+          value: this.tournamentInfo.creatorContact
+        }
+      ];
+
+      return details;
+    },
+    ...mapGetters(["apiUrl"])
   },
   created() {
     axios
-      .get(
-        `${this.$store.getters.apiUrl}/api/tournament/${this.$route.params.id}`
-      )
-      .then(response => {
-        this.TournamentInfo[0].value = response.data["name"];
-        this.TournamentInfo[1].value = GetDisciplineById(
-          response.data["disciplineId"]
-        );
-        this.TournamentInfo[2].value = response.data["date"].slice(0, 10);
-        this.TournamentInfo[3].value = response.data["amountOfTeams"];
-        this.TournamentInfo[5].value = response.data["entryFee"];
-        this.TournamentInfo[6].value = response.data["localization"];
-
-        return axios.get(
-          `${this.$store.getters.apiUrl}/api/user/${response.data["creatorId"]}`
-        );
-      })
-      .then(response => {
-        this.TournamentInfo[7].value = response.data["fullName"];
-        this.TournamentInfo[8].value = `${response.data["email"]}\r\n${
-          response.data["phone"]
-        }`;
-
-        return axios.get(
-          `${this.$store.getters.apiUrl}/api/tournament/${
-            this.$route.params.id
-          }/teams`
-        );
-      })
-      .then(response => {
-        this.TournamentInfo[4].value = response.data.length;
-      })
-      // eslint-disable-next-line no-console
-      .catch(error => console.log(error));
+      .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}`)
+      .then(res => {
+        switch (res.status) {
+          case 200: {
+            this.tournamentInfo = res.data;
+            break;
+          }
+          case 404: {
+            alert("Turniej nie istnieje");
+            break;
+          }
+          default: {
+            alert("Błąd podczas próby odczytania informacji o turnieju");
+          }
+        }
+      });
   }
 };
 </script>
-
-<style></style>

@@ -33,7 +33,7 @@ export default {
       .then(res => {
         switch (res.status) {
           case 200: {
-            res.data.forEach(d => this.Matches.push(d));
+            this.Matches = res.data;
             break;
           }
           default: {
@@ -42,6 +42,7 @@ export default {
           }
         }
       })
+      // eslint-disable-next-line no-console
       .catch(err => console.log(err));
   }
 };

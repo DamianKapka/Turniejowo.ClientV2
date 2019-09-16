@@ -5,9 +5,9 @@
     :hide-actions="true"
     class="elevation-7"
   >
-    <template v-slot:items="item">
-      <td class="text-xs-center">{{ item.index + 1 }}</td>
-      <td class="text-xs-center">{{ item.item.teamName }}</td>
+    <template v-slot:items="team">
+      <td class="text-xs-center">{{ team.index + 1 }}</td>
+      <td class="text-xs-center">{{ team.item.team.name }}</td>
       <td class="text-xs-center">
         <v-expansion-panel>
           <v-expansion-panel-content>
@@ -18,11 +18,11 @@
             </template>
             <v-list>
               <v-list-tile
-                v-for="item in item.item.players"
-                :key="item.PlayerId"
+                v-for="player in team.item.players"
+                :key="player.PlayerId"
               >
                 <v-list-tile-content>
-                  {{ item.fName }} {{ item.lName }}
+                  {{ player.fName }} {{ player.lName }}
                 </v-list-tile-content>
               </v-list-tile>
             </v-list>
@@ -35,6 +35,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "TournamentParticipants",
@@ -63,21 +64,29 @@ export default {
       ]
     };
   },
-  methods: {},
+  computed: mapGetters(["apiUrl"]),
   created() {
     axios
       .get(
-        `${this.$store.getters.apiUrl}/api/tournament/${
+        `${this.apiUrl}/api/tournament/${
           this.$route.params.id
         }/players?groupedbyteam=true`
       )
       .then(response => {
-        response.data.forEach(element => {
-          this.Players.push({
-            teamName: element.team.name,
-            players: element.players
-          });
-        });
+        switch (response.status) {
+          case 200: {
+            this.Players = response.data;
+            break;
+          }
+          case 404: {
+            alert("Błąd podczas pobierania graczy.");
+            break;
+          }
+          default: {
+            alert("Nieznany błąd podczas próby pobrania graczy");
+            break;
+          }
+        }
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));
@@ -89,5 +98,6 @@ export default {
 .v-list__tile__content {
   font-size: 14px;
   align-items: center;
+  font-weight: bold;
 }
 </style>

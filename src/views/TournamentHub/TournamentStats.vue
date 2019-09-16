@@ -6,18 +6,18 @@
     :hide-actions="true"
     v-bind:pagination.sync="Pagination"
   >
-    <template v-slot:items="item">
-      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
-        {{ item.index + 1 }}
+    <template v-slot:items="team">
+      <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
+        {{ team.index + 1 }}
       </td>
-      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
-        {{ item.item.name }}
+      <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
+        {{ team.item.name }}
       </td>
-      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
-        {{ item.item.team }}
+      <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
+        {{ team.item.team }}
       </td>
-      <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">
-        {{ item.item.points }}
+      <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
+        {{ team.item.points }}
       </td>
     </template>
   </v-data-table>
@@ -25,6 +25,8 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
+import getMedalColorMixin from "../../mixins/getMedalColorMixin";
 
 export default {
   name: "TournamentStats",
@@ -49,13 +51,11 @@ export default {
       Statistics: []
     };
   },
+  computed: mapGetters(["apiUrl"]),
+  mixins: [getMedalColorMixin],
   created() {
     axios
-      .get(
-        `${this.$store.getters.apiUrl}/api/tournament/${
-          this.$route.params.id
-        }/players`
-      )
+      .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}/players`)
       .then(response => {
         response.data.forEach(element => {
           this.Statistics.push({
@@ -67,24 +67,6 @@ export default {
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));
-  },
-  methods: {
-    getMedalColor: function(index) {
-      switch (index) {
-        case 1: {
-          return "gold";
-        }
-        case 2: {
-          return "silver";
-        }
-        case 3: {
-          return "bronze";
-        }
-        default: {
-          return;
-        }
-      }
-    }
   }
 };
 </script>

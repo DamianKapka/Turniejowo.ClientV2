@@ -32,6 +32,7 @@
 
 <script>
 import axios from "axios";
+import getMedalColorMixin from "../../mixins/getMedalColorMixin";
 
 export default {
   name: "TournamentTable",
@@ -85,24 +86,7 @@ export default {
       ]
     };
   },
-  methods: {
-    getMedalColor: function(index) {
-      switch (index) {
-        case 1: {
-          return "gold";
-        }
-        case 2: {
-          return "silver";
-        }
-        case 3: {
-          return "bronze";
-        }
-        default: {
-          return;
-        }
-      }
-    }
-  },
+  mixins: [getMedalColorMixin],
   created() {
     axios
       .get(
@@ -112,8 +96,10 @@ export default {
       )
       .then(response => {
         if (response.status === 200) {
-          response.data.tableData.forEach(e => this.tableEntries.push(e));
-        } else if (response.status !== 200 && response.status !== 404) {
+          this.tableEntries = response.data.tableData;
+        } else if (response.status === 404) {
+          alert("Brak meczów dla tego turnieju");
+        } else {
           alert("Błąd podczas próby pobrania meczów");
         }
       })
