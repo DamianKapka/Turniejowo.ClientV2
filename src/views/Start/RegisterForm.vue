@@ -163,8 +163,8 @@ export default {
     }
   },
   components: {
-    ConfirmButton: ConfirmButton,
-    ResetButton: ResetButton
+    ConfirmButton,
+    ResetButton
   }
 };
 </script>

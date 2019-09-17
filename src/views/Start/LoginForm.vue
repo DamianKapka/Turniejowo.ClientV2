@@ -42,7 +42,7 @@ export default {
     }
   },
   components: {
-    ConfirmButton: ConfirmButton
+    ConfirmButton
   }
 };
 </script>

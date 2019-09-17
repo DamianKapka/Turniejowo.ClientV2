@@ -43,7 +43,7 @@ export default {
     };
   },
   components: {
-    NavBarCard: NavBarCard
+    NavBarCard
   }
 };
 </script>

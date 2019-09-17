@@ -86,8 +86,8 @@
 <script>
 import axios from "axios";
 import { GetDisciplineId } from "@/utils/utils.js";
-import { getLoggedUserId } from "../../utils/utils";
 import { mapGetters } from "vuex";
+import getLoggedUserIdMixin from "../../mixins/getLoggedUserIdMixin";
 
 export default {
   name: "NewTournament",
@@ -119,31 +119,32 @@ export default {
           "Wpisowe musi być cyrfą wieksza lub równa 0"
       ],
       Localization: "",
-      LocalizationRules: [l => !!l || "Wprowadz lokalizacje turnieju"],
-
-      Model: function() {
-        return {
-          Name: this.Name,
-          DisciplineId: GetDisciplineId(this.Discipline),
-          CreatorId: getLoggedUserId(),
-          Date: this.StartingDate,
-          AmountOfTeams: this.AmountOfTeams,
-          EntryFee: this.EntryFee,
-          Localization: this.Localization
-        };
-      }
+      LocalizationRules: [l => !!l || "Wprowadz lokalizacje turnieju"]
     };
   },
-  computed: mapGetters(["apiUrl"]),
+  computed: {
+    model: function() {
+      return {
+        Name: this.Name,
+        DisciplineId: GetDisciplineId(this.Discipline),
+        CreatorId: this.getLoggedUserId(),
+        Date: this.StartingDate,
+        AmountOfTeams: this.AmountOfTeams,
+        EntryFee: this.EntryFee,
+        Localization: this.Localization
+      };
+    },
+    ...mapGetters(["apiUrl"])
+  },
   methods: {
     submitForm() {
       if (this.$refs.form.validate()) {
         axios
-          .post(`${this.apiUrl}/api/tournament`, this.Model())
+          .post(`${this.apiUrl}/api/tournament`, this.model)
           .then(res => {
             if (res.status === 201) {
               alert("Turniej został założony");
-              this.$router.replace({ path: "/profile/my-tournaments" });
+              this.$router.push({ name: "MyTournaments" });
             } else {
               alert("Nie udało się załóżyć turnieju.");
             }
@@ -155,7 +156,8 @@ export default {
     resetForm() {
       this.$refs.form.reset();
     }
-  }
+  },
+  mixins: [getLoggedUserIdMixin]
 };
 </script>
 

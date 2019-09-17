@@ -19,8 +19,8 @@
 <script>
 import axios from "axios";
 import TournamentOwnerInfo from "@/components/TournamentOwnerInfo";
-import { getLoggedUserId } from "../../utils/utils";
 import { mapGetters } from "vuex";
+import getLoggedUserIdMixin from "../../mixins/getLoggedUserIdMixin";
 
 export default {
   name: "MyTournaments",
@@ -31,10 +31,9 @@ export default {
     };
   },
   mounted() {
-    this.userID = getLoggedUserId();
+    this.userID = this.getLoggedUserId();
     this.fillUsersTournament();
   },
-
   components: {
     TournamentOwnerInfo
   },
@@ -47,7 +46,7 @@ export default {
       axios
         .get(`${this.apiUrl}/api/user/${this.userID}/tournaments`)
         .then(res => {
-          res.data.forEach(d => this.userTournaments.push(d));
+          this.userTournaments = res.data;
         })
         .catch(err => {
           // eslint-disable-next-line no-console
@@ -55,6 +54,7 @@ export default {
         });
     }
   },
+  mixins: [getLoggedUserIdMixin],
   computed: mapGetters(["apiUrl"])
 };
 </script>
