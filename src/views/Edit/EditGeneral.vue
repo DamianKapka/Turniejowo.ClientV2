@@ -56,7 +56,6 @@
         label="Wpisowe"
         :rules="EntryFeeRules"
         required
-        a
       >
       </v-text-field>
 
@@ -70,12 +69,12 @@
 
       <v-layout row style="margin-top: 2%;">
         <v-flex xs4 offset-xs1>
-          <v-btn block color="success" @click="editTourney()">
+          <v-btn block color="success" @click="editTourney">
             Edytuj
           </v-btn>
         </v-flex>
         <v-flex xs4 offset-xs2>
-          <v-btn block color="warning" @click="getTournamentInfo()">
+          <v-btn block color="warning" @click="getTournamentInfo">
             Przywróc
           </v-btn>
         </v-flex>
@@ -86,8 +85,8 @@
 
 <script>
 import axios from "axios";
-import { GetDisciplineById } from "../../utils/utils";
-import { GetDisciplineId } from "../../utils/utils";
+import getDisciplineInfo from "../../mixins/getDisciplineInfo";
+import getLoggedUserIdMixin from "../../mixins/getLoggedUserIdMixin";
 import { mapGetters } from "vuex";
 
 export default {
@@ -120,19 +119,6 @@ export default {
       Localization: "",
       LocalizationRules: [l => !!l || "Wprowadz lokalizacje turnieju"],
       TournamentId: "",
-      CreatorId: "",
-      Model: function() {
-        return {
-          tournamentId: this.TournamentId,
-          name: this.Name,
-          disciplineId: GetDisciplineId(this.Discipline),
-          creatorId: this.CreatorId,
-          date: this.StartingDate,
-          amountOfTeams: this.AmountOfTeams,
-          entryFee: this.EntryFee,
-          localization: this.Localization
-        };
-      }
     };
   },
   created() {
@@ -141,11 +127,11 @@ export default {
   methods: {
     editTourney() {
       axios
-        .put(`${this.apiUrl}/api/tournament/${this.TournamentId}`, this.Model())
+        .put(`${this.apiUrl}/api/tournament/${this.TournamentId}`, this.model)
         .then(res => {
           if (res.status === 202) {
             alert("Edycja turnieju przebiegla poprawnie");
-            this.$emit("tournamentEdited", this.Model());
+            this.$emit("tournamentEdited", this.model);
           } else {
             alert("Błąd podczas próby edycji turnieju");
           }
@@ -155,17 +141,30 @@ export default {
     getTournamentInfo() {
       const tourney = this.currentlyEditedTournament;
       this.TournamentId = tourney.tournamentId;
-      this.CreatorId = tourney.creatorId;
+      this.CreatorId = this.getLoggedUserId();
       this.Name = tourney.name;
-      this.Discipline = GetDisciplineById(tourney.disciplineId);
+      this.Discipline = tourney.discipline;
       this.StartingDate = tourney.date.slice(0, 10);
       this.AmountOfTeams = tourney.amountOfTeams;
       this.EntryFee = tourney.entryFee;
       this.Localization = tourney.localization;
     }
   },
-  computed: mapGetters(["apiUrl", "currentlyEditedTournament"])
+  computed: {
+    model: function() {
+      return {
+        tournamentId: this.TournamentId,
+        name: this.Name,
+        disciplineId: this.getDisciplineId(this.Discipline),
+        creatorId: this.getLoggedUserId(),
+        date: this.StartingDate,
+        amountOfTeams: this.AmountOfTeams,
+        entryFee: this.EntryFee,
+        localization: this.Localization
+      };
+    },
+    ...mapGetters(["apiUrl", "currentlyEditedTournament"])
+  },
+  mixins: [getDisciplineInfo, getLoggedUserIdMixin]
 };
 </script>
-
-<style></style>

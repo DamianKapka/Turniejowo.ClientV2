@@ -20,10 +20,7 @@
                   :key="item.PlayerId"
                 >
                   <v-list-tile-content>
-                    <v-layout
-                      row
-                      style="width: 100%; align-content: center;align-items: center; text-align: center"
-                    >
+                    <v-layout row class="expansion-panel-layout">
                       <v-flex xs8>
                         {{ index + 1 }}. {{ item.fName }} {{ item.lName }}
                       </v-flex>
@@ -73,7 +70,7 @@
     <v-divider></v-divider>
     <v-layout row>
       <v-flex xs8 offset-xs2>
-        <AddNewTeam @TeamAdded="getParticipants()"></AddNewTeam>
+        <AddNewTeam @TeamAdded="getParticipants"></AddNewTeam>
       </v-flex>
     </v-layout>
   </v-container>
@@ -122,21 +119,12 @@ export default {
   methods: {
     getParticipants() {
       const id = this.$route.params.id;
-
       axios
-        .get(
-          `${
-            this.apiUrl
-          }/api/tournament/${id}/players?groupedbyteam=true`
-        )
+        .get(`${this.apiUrl}/api/tournament/${id}/players?groupedbyteam=true`)
         .then(response => {
-          this.Teams = [];
-
-          response.data.forEach(element => {
-            this.Teams.push(element);
-          });
+          this.Teams = response.data;
         })
-        .catch();
+        .catch(err => console.log(err));
     },
     deleteTeam(id) {
       axios
@@ -145,7 +133,6 @@ export default {
           switch (res.status) {
             case 202: {
               alert("Dryżyna poprawnie usunięta");
-
               break;
             }
             case 404: {
@@ -153,6 +140,7 @@ export default {
               break;
             }
             default:
+              console.log(res);
               alert("Nieznany błąd przy usuwaniu");
               break;
           }
@@ -188,10 +176,7 @@ export default {
     },
     editPlayer(player) {
       axios
-        .put(
-          `${this.apiUrl}/api/player/${player.playerId}`,
-          player
-        )
+        .put(`${this.apiUrl}/api/player/${player.playerId}`, player)
         .then(res => {
           switch (res.status) {
             case 202: {
@@ -281,5 +266,11 @@ export default {
 }
 .v-divider {
   margin-bottom: 2%;
+}
+.expansion-panel-layout {
+  width: 100%;
+  align-content: center;
+  align-items: center;
+  text-align: center;
 }
 </style>

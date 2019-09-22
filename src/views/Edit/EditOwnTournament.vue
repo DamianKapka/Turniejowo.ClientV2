@@ -1,51 +1,28 @@
 <template>
-  <v-container>
-    <v-layout row>
-      <v-flex xs10 offset-xs1>
-        <v-card class="elevation-24 main-card">
-          <v-flex xs12>
-            <v-card class="tournament-header">
-              #{{ tournamentId }} {{ tournament.name }}
-            </v-card>
+  <v-layout row>
+    <v-flex xs10 offset-xs1>
+      <v-card class="elevation-24 main-card">
+        <v-flex xs12>
+          <v-card class="tournament-header">
+            #{{ tournamentId }} {{ tournament.name }}
+          </v-card>
+        </v-flex>
+        <v-layout row>
+          <v-flex xs3 v-for="info in navBarCardInfo" :key="info.ActiveClass">
+            <NavBarCard
+              :LabelInfo="info.LabelInfo"
+              :ActiveClass="info.ActiveClass"
+              :RouterLink="info.RouterLink"
+            ></NavBarCard>
           </v-flex>
-          <v-layout row>
-            <v-flex xs3
-              ><NavBarCard
-                LabelInfo="Edytuj Informacje"
-                ActiveClass="EditGeneral"
-                RouterLink="EditGeneral"
-              ></NavBarCard
-            ></v-flex>
-            <v-flex xs3
-              ><NavBarCard
-                LabelInfo="Edytuj Uczestników"
-                ActiveClass="EditParticipants"
-                RouterLink="EditParticipants"
-              ></NavBarCard
-            ></v-flex>
-            <v-flex xs3
-              ><NavBarCard
-                LabelInfo="Edytuj Przebieg"
-                ActiveClass="EditProgress"
-                RouterLink="EditProgress"
-              ></NavBarCard
-            ></v-flex>
-            <v-flex xs3
-              ><NavBarCard
-                LabelInfo="Cofnij"
-                ActiveClass="MyTournaments"
-                RouterLink="MyTournaments"
-              ></NavBarCard
-            ></v-flex>
-          </v-layout>
-          <router-view
-            v-if="!isFetching"
-            @tournamentEdited="refreshCurrentlyEditedTournament($event)"
-          ></router-view>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+        </v-layout>
+        <router-view
+          v-if="!isFetching"
+          @tournamentEdited="refreshCurrentlyEditedTournament($event)"
+        ></router-view>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -61,7 +38,29 @@ export default {
     return {
       isFetching: true,
       tournamentId: Number,
-      tournament: Object
+      tournament: Object,
+      navBarCardInfo: [
+        {
+          LabelInfo: "Edytuj Informacje",
+          ActiveClass: "EditGeneral",
+          RouterLink: "EditGeneral"
+        },
+        {
+          LabelInfo: "Edytuj Uczestników",
+          ActiveClass: "EditParticipants",
+          RouterLink: "EditParticipants"
+        },
+        {
+          LabelInfo: "Edytuj Przebieg",
+          ActiveClass: "EditProgress",
+          RouterLink: "EditProgress"
+        },
+        {
+          LabelInfo: "Cofnij",
+          ActiveClass: "MyTournaments",
+          RouterLink: "MyTournaments"
+        }
+      ]
     };
   },
   computed: mapGetters(["apiUrl"]),
@@ -83,9 +82,7 @@ export default {
     refreshCurrentlyEditedTournament(tournament) {
       this.mutateCurrentlyEditedTournament(tournament);
     },
-    ...mapMutations([
-        "mutateCurrentlyEditedTournament"
-    ])
+    ...mapMutations(["mutateCurrentlyEditedTournament"])
   }
 };
 </script>

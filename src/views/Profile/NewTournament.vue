@@ -85,7 +85,7 @@
 
 <script>
 import axios from "axios";
-import { GetDisciplineId } from "@/utils/utils.js";
+import getDisciplineInfo from "../../mixins/getDisciplineInfo";
 import { mapGetters } from "vuex";
 import getLoggedUserIdMixin from "../../mixins/getLoggedUserIdMixin";
 
@@ -126,7 +126,7 @@ export default {
     model: function() {
       return {
         Name: this.Name,
-        DisciplineId: GetDisciplineId(this.Discipline),
+        DisciplineId: this.getDisciplineId(this.Discipline),
         CreatorId: this.getLoggedUserId(),
         Date: this.StartingDate,
         AmountOfTeams: this.AmountOfTeams,
@@ -157,7 +157,7 @@ export default {
       this.$refs.form.reset();
     }
   },
-  mixins: [getLoggedUserIdMixin]
+  mixins: [getLoggedUserIdMixin, getDisciplineInfo]
 };
 </script>
 

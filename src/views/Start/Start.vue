@@ -5,7 +5,6 @@
         <v-layout row>
           <v-flex xs4 v-for="info in navBarCardInfo" :key="info.ActiveClass">
             <NavBarCard
-              :Message="info.LabelInfo"
               :LabelInfo="info.LabelInfo"
               :ActiveClass="info.ActiveClass"
               :RouterLink="info.RouterLink"

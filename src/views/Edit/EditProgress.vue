@@ -1,13 +1,13 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-flex xs10 offset-xs1 style="padding:2%">
-    <AddNewResult @ResultAdded="getMatchesGroupedByDate()"></AddNewResult>
+    <AddNewResult @ResultAdded="getMatchesGroupedByDate"></AddNewResult>
     <v-divider></v-divider>
     <MatchInfo
       v-for="match in Matches"
       :key="match.dateTime"
       :Matches="match"
       :WithAdminOptions="true"
-      @matchUpdated="getMatchesGroupedByDate()"
+      @matchUpdated="getMatchesGroupedByDate"
     ></MatchInfo>
   </v-flex>
 </template>
@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     getMatchesGroupedByDate() {
-      this.Matches = [];
       axios
         .get(
           `${this.apiUrl}/api/tournament/${
@@ -42,7 +41,7 @@ export default {
         .then(res => {
           switch (res.status) {
             case 200: {
-              res.data.forEach(d => this.Matches.push(d));
+              this.Matches = res.data;
               break;
             }
             default: {
