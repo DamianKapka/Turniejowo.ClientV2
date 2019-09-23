@@ -15,7 +15,7 @@
                 v-model="TName"
                 :rules="NameRules"
               ></v-text-field>
-              <ConfirmButton Message="Dodaj" @clicked="Add()"></ConfirmButton>
+              <ConfirmButton Message="Dodaj" @clicked="add"></ConfirmButton>
             </v-flex>
           </v-layout>
         </v-form>
@@ -34,31 +34,48 @@ export default {
     return {
       valid: false,
       TName: "",
-      NameRules: [n => !!n || "Wpisz nazwe druzyny"],
-      Model: function() {
-        return {
-          Name: this.TName || "",
-          TournamentId: this.$route.params.id,
-          Matches: 0,
-          Wins: 0,
-          Draws: 0,
-          Loses: 0,
-          Points: 0
-        };
-      }
+      NameRules: [n => !!n || "Wpisz nazwe druzyny"]
     };
   },
-  computed: mapGetters(["apiUrl"]),
+  computed: {
+    model: function() {
+      return {
+        Name: this.TName || "",
+        TournamentId: this.$route.params.id,
+        Matches: 0,
+        Wins: 0,
+        Draws: 0,
+        Loses: 0,
+        Points: 0
+      };
+    },
+    ...mapGetters(["apiUrl"])
+  },
   methods: {
-    Add() {
+    add() {
       if (this.$refs.form.validate()) {
         axios
-          .post(`${this.apiUrl}/api/team`, this.Model())
+          .post(`${this.apiUrl}/api/team`, this.model)
           .then(res => {
-            if (res.status === 201) {
-              alert("Druzyna dodana");
-              this.TName = "";
-              this.$emit("TeamAdded");
+            switch (res.status) {
+              case 201: {
+                alert("Druzyna dodana");
+                this.TName = "";
+                this.$emit("TeamAdded");
+                break;
+              }
+              case 404: {
+                alert("Turniej do którego dużyna ma być dodana nie istnieje");
+                break;
+              }
+              case 409: {
+                alert("Taka drużyna w tym turnieju już istnieje");
+                break;
+              }
+              default: {
+                alert("Nieznany błąd podczas próby dodania druyżyny");
+                break;
+              }
             }
           })
           .catch(() => {
@@ -72,5 +89,3 @@ export default {
   }
 };
 </script>
-
-<style></style>

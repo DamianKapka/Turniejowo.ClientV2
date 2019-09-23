@@ -1,5 +1,5 @@
 <template>
-  <v-btn block color="success" @click="$emit('clicked')">{{Message}}</v-btn>
+  <v-btn block color="success" @click="$emit('clicked')">{{ Message }}</v-btn>
 </template>
 
 <script>

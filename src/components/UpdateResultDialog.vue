@@ -115,11 +115,11 @@
         </v-layout>
       </v-form>
       <v-card-actions>
-        <v-btn color="success" @click="add()" class="button"
+        <v-btn color="success" @click="add" class="button"
           ><v-icon>thumb_up</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="error" @click="cancel()" class="button">
+        <v-btn color="error" @click="cancel" class="button">
           <v-icon>thumb_down</v-icon>
         </v-btn>
       </v-card-actions>

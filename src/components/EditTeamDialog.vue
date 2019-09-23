@@ -17,11 +17,11 @@
       </v-card-title>
       <v-text-field v-model="teamName"></v-text-field>
       <v-card-actions>
-        <v-btn color="success" @click="confirm()"
+        <v-btn color="success" @click="confirm"
           ><v-icon>thumb_up</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="error" @click="cancel()"
+        <v-btn color="error" @click="cancel"
           ><v-icon>thumb_down</v-icon>
         </v-btn>
       </v-card-actions>

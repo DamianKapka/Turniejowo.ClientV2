@@ -7,11 +7,6 @@
 <script>
 export default {
   name: "ResetButton",
-  data() {
-    return {};
-  },
   props: ["Message"]
 };
 </script>
-
-<style></style>

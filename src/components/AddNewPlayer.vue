@@ -24,7 +24,7 @@
         ></v-text-field>
         <v-text-field label="Drużyna" v-model="Team.name" readonly>
         </v-text-field>
-        <ConfirmButton Message="Dodaj" @clicked="addPlayer"></ConfirmButton>
+        <ConfirmButton Message="Dodaj" @clicked="add"></ConfirmButton>
       </v-form>
     </v-card>
   </v-dialog>
@@ -50,7 +50,7 @@ export default {
   },
   props: ["Team"],
   methods: {
-    addPlayer() {
+    add() {
       if (this.$refs.form.validate()) {
         const playerFullNameArray = this.playerFullName.split(" ");
 
@@ -69,4 +69,3 @@ export default {
   }
 };
 </script>
-<style scoped></style>

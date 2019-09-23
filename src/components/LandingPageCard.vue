@@ -39,7 +39,7 @@
       </p>
       <v-layout row>
         <v-flex xs4 offset-xs4>
-          <router-link :to="{ path: 'start' }">
+          <router-link :to="{ name: 'Start' }">
             <v-btn block color="warning">START!</v-btn>
           </router-link>
         </v-flex>

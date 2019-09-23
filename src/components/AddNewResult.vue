@@ -79,7 +79,7 @@
           label="Drużyna gości"
           prepend-icon="group_add"
         ></v-combobox>
-        <ConfirmButton Message="DODAJ MECZ" @clicked="Add()"></ConfirmButton>
+        <ConfirmButton Message="DODAJ MECZ" @clicked="add"></ConfirmButton>
       </v-form>
     </v-expansion-panel-content>
   </v-expansion-panel>
@@ -149,15 +149,25 @@ export default {
           }/teams`
         )
         .then(response => {
-          if (response.status === 200) {
-            response.data.forEach(d => this.tournamentTeams.push(d));
-          } else {
-            console.log("Nie można odczytać drużyn w turnieju");
+          switch (response.status) {
+            case 200: {
+              this.tournamentTeams = response.data;
+              alert("Drużyna poprawnie dodana");
+              break;
+            }
+            case 404: {
+              alert("Jedna z drużyn tego meczu nie istnieje");
+              break;
+            }
+            default: {
+              alert("Nieznany błąd podczas dodawania meczu");
+              break;
+            }
           }
         })
         .catch(err => console.log(err));
     },
-    Add() {
+    add() {
       if (this.$refs.form.validate()) {
         axios.post(`${this.apiUrl}/api/match`, this.matchModel).then(res => {
           switch (res.status) {

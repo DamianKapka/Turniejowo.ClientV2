@@ -11,13 +11,13 @@
           {{ tournament.name }}
         </v-list-tile-title>
       </v-flex>
-      <v-flex xs1 class="toi-flex toi-icon" @click="EditTheTournament()"
+      <v-flex xs1 class="toi-flex toi-icon" @click="editTournament"
         ><font-awesome-icon icon="edit"
       /></v-flex>
       <v-flex
         xs1
         class="toi-flex toi-icon toi-delete-icon"
-        @click="DeleteTheTournament()"
+        @click="deleteTournament"
       >
         <font-awesome-icon icon="trash-alt"></font-awesome-icon>
       </v-flex>
@@ -35,23 +35,20 @@ export default {
     tournament: Object
   },
   computed: mapGetters(["apiUrl"]),
-  mounted() {},
   methods: {
-    EditTheTournament() {
+    editTournament() {
       this.$router.push({
         name: "EditOwnTournament",
         params: { id: this.tournament.tournamentId }
       });
     },
-    DeleteTheTournament() {
+    deleteTournament() {
       if (
         confirm(`Czy napewno chcesz usunac turniej '${this.tournament.name}'?`)
       ) {
         axios
           .delete(
-            `${this.apiUrl}/api/tournament/${
-              this.tournament.tournamentId
-            }`
+            `${this.apiUrl}/api/tournament/${this.tournament.tournamentId}`
           )
           .then(res => {
             if (res.status === 202) {

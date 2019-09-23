@@ -29,7 +29,7 @@
             </td>
             <td v-if="WithAdminOptions" class="text-xs-center">
               <UpdateResultDialog
-                @updated="matchUpdated"
+                @updated="$emit('matchUpdated')"
                 :match="match.item"
               ></UpdateResultDialog>
             </td>
@@ -123,11 +123,6 @@ export default {
   },
   components: {
     UpdateResultDialog
-  },
-  methods: {
-    matchUpdated() {
-      this.$emit("matchUpdated");
-    }
   }
 };
 </script>

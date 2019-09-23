@@ -9,8 +9,7 @@
     </template>
     <v-card>
       <v-card-title class="headline"
-        ><v-icon style="color: firebrick; font-size: 28px; margin-right: 5px"
-          >warning</v-icon
+        ><v-icon class="confirm-icon">warning</v-icon
         >Potwierdzenie</v-card-title
       >
       <v-card-text
@@ -18,7 +17,7 @@
         tego turnieju? Decyzja ta bedzie nieodwracalna!</v-card-text
       >
       <v-card-actions>
-        <v-btn color="success" @click="confirm()"
+        <v-btn color="success" @click="confirm"
           ><v-icon>thumb_up</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -48,4 +47,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.confirm-icon {
+  color: firebrick;
+  font-size: 28px;
+  margin-right: 5px;
+}
+</style>
