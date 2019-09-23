@@ -15,7 +15,7 @@ export default {
   name: "Index",
   data() {
     return {
-      version: 0.7
+      version: 0.8
     };
   }
 };

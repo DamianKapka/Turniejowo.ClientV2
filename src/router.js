@@ -20,7 +20,6 @@ import EditOwnTournament from "@/views/Edit/EditOwnTournament";
 import EditGeneral from "@/views/Edit/EditGeneral";
 import EditParticipants from "@/views/Edit/EditParticipants";
 import EditProgress from "@/views/Edit/EditProgress";
-import Test from "@//views/Test";
 
 Vue.use(Router);
 
@@ -138,10 +137,6 @@ export default new Router({
           component: EditProgress
         }
       ]
-    },
-    {
-      path: "/test",
-      component: Test
     },
     {
       path: "*",
