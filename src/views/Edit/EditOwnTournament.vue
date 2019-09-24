@@ -8,7 +8,7 @@
           </v-card>
         </v-flex>
         <v-layout row>
-          <v-flex xs3 v-for="info in navBarCardInfo" :key="info.ActiveClass">
+          <v-flex xs2 v-for="info in navBarCardInfo" :key="info.ActiveClass">
             <NavBarCard
               :LabelInfo="info.LabelInfo"
               :ActiveClass="info.ActiveClass"
@@ -54,6 +54,16 @@ export default {
           LabelInfo: "Edytuj Przebieg",
           ActiveClass: "EditProgress",
           RouterLink: "EditProgress"
+        },
+        {
+          LabelInfo: "Tabela",
+          ActiveClass: "AdminTable",
+          RouterLink: "AdminTable"
+        },
+        {
+          LabelInfo: "Statystyki",
+          ActiveClass: "AdminStatistics",
+          RouterLink: "AdminStatistics"
         },
         {
           LabelInfo: "Cofnij",

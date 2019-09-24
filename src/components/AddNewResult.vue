@@ -152,11 +152,10 @@ export default {
           switch (response.status) {
             case 200: {
               this.tournamentTeams = response.data;
-              alert("Drużyna poprawnie dodana");
               break;
             }
             case 404: {
-              alert("Jedna z drużyn tego meczu nie istnieje");
+              alert("Brak drużyn dla tego turnieju");
               break;
             }
             default: {

@@ -3,7 +3,7 @@
     :headers="TableHeaders"
     :items="Players"
     :hide-actions="true"
-    class="elevation-7"
+    class="elevation-7 table"
   >
     <template v-slot:items="team">
       <td class="text-xs-center">{{ team.index + 1 }}</td>

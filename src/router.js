@@ -132,9 +132,19 @@ export default new Router({
           component: EditParticipants
         },
         {
+          path: "table",
+          name: "AdminTable",
+          component: TournamentTable
+        },
+        {
           path: "progress",
           name: "EditProgress",
           component: EditProgress
+        },
+        {
+          path: "statistics",
+          name: "AdminStatistics",
+          component: TournamentStats
         }
       ]
     },

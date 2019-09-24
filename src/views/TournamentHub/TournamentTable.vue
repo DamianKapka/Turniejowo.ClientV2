@@ -3,6 +3,7 @@
     :headers="tableHeaders"
     :items="tableEntries"
     :hide-actions="true"
+    class="elevation-7 table"
   >
     <template v-slot:items="item">
       <td class="text-xs-center" v-bind:class="getMedalColor(item.index + 1)">

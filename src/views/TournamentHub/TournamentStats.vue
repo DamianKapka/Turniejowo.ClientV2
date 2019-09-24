@@ -2,7 +2,7 @@
   <v-data-table
     :headers="TableHeaders"
     :items="Statistics"
-    class="elevation-7"
+    class="elevation-7 table"
     :hide-actions="true"
     v-bind:pagination.sync="Pagination"
   >
