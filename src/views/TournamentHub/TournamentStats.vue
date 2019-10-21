@@ -11,13 +11,13 @@
         {{ team.index + 1 }}
       </td>
       <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
-        {{ team.item.name }}
+        {{ team.item.player.fName }} {{ team.item.player.lName }}
       </td>
       <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
-        {{ team.item.team }}
+        {{ team.item.player.teamName }}
       </td>
       <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
-        {{ team.item.points }}
+        {{ team.item.pointsQty }}
       </td>
     </template>
   </v-data-table>
@@ -41,7 +41,7 @@ export default {
         },
         { text: "Gracz", value: "player", sortable: false, align: "center" },
         { text: "Drużyna", value: "team", sortable: false, align: "center" },
-        { text: "Punkty", value: "points", sortable: true, align: "center" }
+        { text: "Punkty", value: "points", sortable: false, align: "center" }
       ],
       Pagination: {
         descending: true,
@@ -55,15 +55,9 @@ export default {
   mixins: [getMedalColorMixin],
   created() {
     axios
-      .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}/players`)
+      .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}/points`)
       .then(response => {
-        response.data.forEach(element => {
-          this.Statistics.push({
-            name: `${element.fName} ${element.lName}`,
-            team: element.team.name,
-            points: element.points
-          });
-        });
+        this.Statistics = response.data.content;
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));
