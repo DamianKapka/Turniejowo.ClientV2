@@ -33,6 +33,10 @@
                 :match="match.item"
               ></UpdateResultDialog>
             </td>
+            <td v-else class="text-xs-center">
+              <MatchDetailsDialog :match="match.item">
+              </MatchDetailsDialog>
+            </td>
           </tr>
         </template>
       </v-data-table>
@@ -42,6 +46,7 @@
 
 <script>
 import UpdateResultDialog from "./UpdateResultDialog";
+import MatchDetailsDialog from "./MatchDetailsDialog";
 
 export default {
   name: "MatchInfo",
@@ -88,7 +93,7 @@ export default {
             align: "center",
             width: 50,
             sortable: false
-          }
+          },
         ];
       }
       return [
@@ -117,12 +122,20 @@ export default {
           align: "center",
           width: 150,
           sortable: false
+        },
+        {
+          text: "Szczegóły",
+          value: "score",
+          align: "center",
+          width: 150,
+          sortable: false
         }
       ];
     }
   },
   components: {
-    UpdateResultDialog
+    UpdateResultDialog,
+    MatchDetailsDialog
   }
 };
 </script>
