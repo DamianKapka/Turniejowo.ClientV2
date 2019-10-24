@@ -33,6 +33,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from 'vuex';
 import getMedalColorMixin from "../../mixins/getMedalColorMixin";
 
 export default {
@@ -87,11 +88,12 @@ export default {
       ]
     };
   },
+  computed:mapGetters(["apiUrl"]),
   mixins: [getMedalColorMixin],
   created() {
     axios
       .get(
-        `${this.$store.getters.apiUrl}/api/tournament/${
+        `${this.apiUrl}/api/tournament/${
           this.$route.params.id
         }/table`
       )

@@ -43,27 +43,74 @@
           </v-card>
         </v-flex>
       </v-layout>
-
+      <v-layout row>
+          <v-flex xs6 v-for="matchScore in matchScores" :key="matchScore.pointsQty">
+              <v-data-table :headers="matchScoreTableHeaders" :items="matchScore" :hide-actions="true">
+                  <template v-slot:items="score">
+                    <tr>
+                        <td class="text-xs-center bold">{{score.item.player.fName}} {{score.item.player.lName}}</td>
+                        <td class="text-xs-center bold">{{score.item.pointsQty}}</td>
+                    </tr>
+                  </template>
+              </v-data-table>
+          </v-flex>
+      </v-layout>
     </v-container>
   </v-dialog>
 </template>
 
 <script>
+import axios from 'axios';
+import {mapGetters} from 'vuex';
+
 export default {
   name: "MatchDetailsDialog",
   data() {
     return {
-      dialog: false
+        dialog: false,
+        matchScoreTableHeaders:[
+            {text:"Gracz",value:"Player",align:"center",sortable:"false"},
+            {text:"Punkty",value:"pointsQty",align:"center",sortable:"false"}
+        ],
+        matchScores:[
+            [],
+            []
+       ]
     };
   },
   props: {
     match: Object
   },
+  created(){
+      this.getMatchPoints(this.match.matchId);
+  },
   computed: {
     matchDateFormatted: function() {
       return this.match.matchDateTime.replace("T", " ");
+    },
+    ...mapGetters(["apiUrl"])
+  },
+    methods:{
+        getMatchPoints: function (matchId) {
+            axios.get(`${this.apiUrl}/api/match/${matchId}/points`)
+                .then(response => {
+                    if(response.status === 200){
+                        response.data.forEach(d => {
+                            if(d.player.teamId === this.match.homeTeamId){
+                                this.matchScores[0].push(d);
+                            }
+                            else if (d.player.teamId === this.match.guestTeamId){
+                                this.matchScores[1].push(d);
+                            }
+                        })
+                    }
+                    else{
+                        alert("Nie udało się zdobyć informacji na temat punktów w meczu")
+                    }
+                })
+                .catch(err => console.log(err));
+        }
     }
-  }
 };
 </script>
 
