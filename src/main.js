@@ -5,7 +5,7 @@ import router from "./router";
 import store from "./store";
 import axios from "axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import {faEdit, faGlobe, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +15,8 @@ library.add(faEdit);
 library.add(faTrashAlt);
 library.add(faUserPlus);
 library.add(faCalendarCheck);
+library.add(faGlobe);
+library.add(faPlus)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

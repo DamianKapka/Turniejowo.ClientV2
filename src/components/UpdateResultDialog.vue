@@ -1,68 +1,93 @@
 <template>
-  <v-dialog v-if="match.isFinished" persistent v-model="dialog" max-width="480">
-    <template #activator="{on}">
-      <font-awesome-icon
-        icon="edit"
-        style="color: goldenrod"
-        v-on="on"
-      ></font-awesome-icon>
-    </template>
-    <v-card style="padding: 10%">
-      <v-card-title class="headline">
-        <font-awesome-icon
-          icon="edit"
-          style="margin-right: 5%"
-        ></font-awesome-icon>
-        Edycja wyniku
-      </v-card-title>
-      <v-form ref="form" v-model="valid" style="padding: 5%">
-        <v-layout row>
-          <v-flex xs8>
-            <v-text-field
-              readonly
-              v-model="match.homeTeamName"
-              label="Drużyna gospodarzy"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs3 offset-xs1>
-            <v-text-field
-              label="Wynik"
-              v-model="match.homeTeamPoints"
-              :rules="teamPointsRules"
-            >
-            </v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs8>
-            <v-text-field
-              readonly
-              v-model="match.guestTeamName"
-              label="Drużyna gości"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs3 offset-xs1>
-            <v-text-field
-              label="Wynik"
-              v-model="match.guestTeamPoints"
-              :rules="teamPointsRules"
-            >
-            </v-text-field>
-          </v-flex>
-        </v-layout>
-      </v-form>
-      <v-card-actions>
-        <v-btn color="success" @click="edit()" class="button"
-          ><v-icon>thumb_up</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="error" @click="cancel()" class="button">
-          <v-icon>thumb_down</v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-  <v-dialog v-else persistent v-model="dialog" max-width="480">
+  <v-layout row v-if="match.isFinished">
+    <v-flex xs6>
+      <v-dialog
+        v-if="match.isFinished"
+        persistent
+        v-model="dialogDefault"
+        max-width="480"
+      >
+        <template #activator="{on}">
+          <font-awesome-icon
+            icon="edit"
+            style="color: goldenrod"
+            v-on="on"
+          ></font-awesome-icon>
+        </template>
+        <v-card style="padding: 10%">
+          <v-card-title class="headline">
+            <font-awesome-icon
+              icon="edit"
+              style="margin-right: 5%"
+            ></font-awesome-icon>
+            Edycja wyniku
+          </v-card-title>
+          <v-form ref="form" v-model="valid" style="padding: 5%">
+            <v-layout row>
+              <v-flex xs8>
+                <v-text-field
+                  readonly
+                  v-model="match.homeTeamName"
+                  label="Drużyna gospodarzy"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs3 offset-xs1>
+                <v-text-field
+                  label="Wynik"
+                  v-model="match.homeTeamPoints"
+                  :rules="teamPointsRules"
+                >
+                </v-text-field>
+              </v-flex>
+            </v-layout>
+            <v-layout row>
+              <v-flex xs8>
+                <v-text-field
+                  readonly
+                  v-model="match.guestTeamName"
+                  label="Drużyna gości"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs3 offset-xs1>
+                <v-text-field
+                  label="Wynik"
+                  v-model="match.guestTeamPoints"
+                  :rules="teamPointsRules"
+                >
+                </v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-form>
+          <v-card-actions>
+            <v-btn color="success" @click="edit()" class="button"
+              ><v-icon>thumb_up</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="error" @click="cancel()" class="button">
+              <v-icon>thumb_down</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-flex>
+    <v-flex xs6>
+      <v-dialog v-model="dialogPoints" max-width="480">
+        <template #activator="{on}">
+          <font-awesome-icon
+            icon="plus"
+            style="color: green"
+            v-on="on"
+          ></font-awesome-icon>
+        </template>
+        <v-card>
+          <v-card-title class="headline">
+            DODAWANIE GOLI/PUNKTÓW
+          </v-card-title>
+        </v-card>
+      </v-dialog>
+    </v-flex>
+  </v-layout>
+  <v-dialog v-else persistent v-model="dialogDefault" max-width="480">
     <template #activator="{on}">
       <font-awesome-icon
         icon="calendar-check"
@@ -135,7 +160,8 @@ export default {
   props: ["match"],
   data() {
     return {
-      dialog: false,
+      dialogDefault: false,
+      dialogPoints: false,
       valid: false,
       initialHomeTeamPoints: null,
       initialGuestTeamPoints: null,
@@ -149,8 +175,7 @@ export default {
     };
   },
   mounted() {
-    this.initialHomeTeamPoints = this.match.homeTeamPoints;
-    this.initialGuestTeamPoints = this.match.guestTeamPoints;
+    this.savePointsState();
   },
   computed: mapGetters(["apiUrl"]),
   methods: {
@@ -191,7 +216,8 @@ export default {
               }
             }
 
-            this.dialog = false;
+            this.savePointsState();
+            this.dialogDefault = false;
           })
           .catch(err => console.log(err));
       }
@@ -223,7 +249,8 @@ export default {
               }
             }
 
-            this.dialog = false;
+            this.savePointsState();
+            this.dialogDefault = false;
           })
           .catch(err => console.log(err));
       }
@@ -231,7 +258,11 @@ export default {
     cancel() {
       this.match.homeTeamPoints = this.initialHomeTeamPoints;
       this.match.guestTeamPoints = this.initialGuestTeamPoints;
-      this.dialog = false;
+      this.dialogDefault = false;
+    },
+    savePointsState() {
+      this.initialHomeTeamPoints = this.match.homeTeamPoints;
+      this.initialGuestTeamPoints = this.match.guestTeamPoints;
     }
   }
 };

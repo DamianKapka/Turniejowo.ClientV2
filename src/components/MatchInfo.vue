@@ -84,14 +84,14 @@ export default {
             text: "Wynik",
             value: "score",
             align: "center",
-            width: 50,
+            width: 90,
             sortable: false
           },
           {
             text: "Akcje",
             value: "actions",
             align: "center",
-            width: 50,
+            width: 100,
             sortable: false
           },
         ];
