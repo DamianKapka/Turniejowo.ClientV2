@@ -143,7 +143,7 @@ export default {
       this.TournamentId = tourney.tournamentId;
       this.CreatorId = this.getLoggedUserId();
       this.Name = tourney.name;
-      this.Discipline = tourney.discipline;
+      this.Discipline = this.getDisciplineById(tourney.disciplineId);
       this.StartingDate = tourney.date.slice(0, 10);
       this.AmountOfTeams = tourney.amountOfTeams;
       this.EntryFee = tourney.entryFee;
