@@ -34,7 +34,7 @@
               ></UpdateResultDialog>
             </td>
             <td v-else class="text-xs-center">
-              <MatchDetailsDialog :match="match.item">
+              <MatchDetailsDialog :match="match.item" :withAdminOptions="false">
               </MatchDetailsDialog>
             </td>
           </tr>
@@ -93,7 +93,7 @@ export default {
             align: "center",
             width: 100,
             sortable: false
-          },
+          }
         ];
       }
       return [

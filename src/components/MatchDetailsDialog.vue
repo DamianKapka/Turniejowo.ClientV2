@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="dialog" max-width="700">
     <template v-slot:activator="{ on }">
-      <v-icon v-on="on">
+      <v-icon v-if="withAdminOptions" v-on="on" color="green" size="22">
+        settings_applications
+      </v-icon>
+      <v-icon v-else v-on="on" size="22">
         search
       </v-icon>
     </template>
@@ -39,50 +42,102 @@
       <v-layout row>
         <v-flex xs12>
           <v-card class="pa-2 match-scorers-head" tile>
-              Zdobywcy punktów
+            Zdobywcy punktów
           </v-card>
         </v-flex>
       </v-layout>
       <v-layout row>
-          <v-flex xs6 v-for="matchScore in matchScores" :key="matchScore.pointsQty">
-              <v-data-table :headers="matchScoreTableHeaders" :items="matchScore" :hide-actions="true">
-                  <template v-slot:items="score">
-                    <tr>
-                        <td class="text-xs-center bold">{{score.item.player.fName}} {{score.item.player.lName}}</td>
-                        <td class="text-xs-center bold">{{score.item.pointsQty}}</td>
-                    </tr>
-                  </template>
-              </v-data-table>
-          </v-flex>
+        <v-flex
+          xs6
+          v-for="matchScore in matchScores"
+          :key="matchScore.pointsQty"
+        >
+          <v-data-table
+            :headers="matchScoreTableHeaders"
+            :items="matchScore"
+            :hide-actions="true"
+          >
+            <template v-slot:items="score">
+              <tr>
+                <td class="text-xs-center bold">
+                  {{ score.item.player.fName }} {{ score.item.player.lName }}
+                </td>
+                <td class="text-xs-center bold">{{ score.item.pointsQty }}</td>
+              </tr>
+            </template>
+          </v-data-table>
+        </v-flex>
+      </v-layout>
+      <v-layout v-if="withAdminOptions" row>
+        <v-flex xs12>
+          <v-expansion-panel>
+            <v-expansion-panel-content hide-actions="true" class="pa-0">
+              <template #header style="padding: 0">
+                <v-card
+                  class="pa-3 match-scorers-options"
+                  tile
+                  style="background-color: #96e697"
+                >
+                  <v-icon color="green" size="20">add_box</v-icon>
+                  DODAJ PUNKTUJĄCYCH GRACZY
+                  <v-icon color="green" size="20">add_box</v-icon>
+                </v-card>
+              </template>
+              <AddPointsForm>
+
+              </AddPointsForm>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-flex>
+      </v-layout>
+      <v-layout v-if="withAdminOptions" row>
+        <v-flex xs12>
+          <v-card
+            class="pa-3 match-scorers-options"
+            tile
+            style="background-color: #ffba8a"
+          >
+            <v-icon color="red" size="20">undo</v-icon>
+            RESETUJ PUNKTY
+            <v-icon color="red" size="20">undo</v-icon>
+          </v-card>
+        </v-flex>
       </v-layout>
     </v-container>
   </v-dialog>
 </template>
 
 <script>
-import axios from 'axios';
-import {mapGetters} from 'vuex';
+import axios from "axios";
+import { mapGetters } from "vuex";
+import AddPointsForm from "./AddPointsForm";
 
 export default {
   name: "MatchDetailsDialog",
   data() {
     return {
-        dialog: false,
-        matchScoreTableHeaders:[
-            {text:"Gracz",value:"Player",align:"center",sortable:"false"},
-            {text:"Punkty",value:"pointsQty",align:"center",sortable:"false"}
-        ],
-        matchScores:[
-            [],
-            []
-       ]
+      dialog: false,
+      matchScoreTableHeaders: [
+        { text: "Gracz", value: "Player", align: "center", sortable: "false" },
+        {
+          text: "Punkty",
+          value: "pointsQty",
+          align: "center",
+          sortable: "false"
+        }
+      ],
+      matchScores: [[], []]
     };
   },
   props: {
-    match: Object
+    match: Object,
+    withAdminOptions: Boolean
   },
-  created(){
-      this.getMatchPoints(this.match.matchId);
+  created() {
+    this.getMatchPoints(this.match.matchId);
+  },
+  components: {
+      AddPointsForm
   },
   computed: {
     matchDateFormatted: function() {
@@ -90,27 +145,26 @@ export default {
     },
     ...mapGetters(["apiUrl"])
   },
-    methods:{
-        getMatchPoints: function (matchId) {
-            axios.get(`${this.apiUrl}/api/match/${matchId}/points`)
-                .then(response => {
-                    if(response.status === 200){
-                        response.data.forEach(d => {
-                            if(d.player.teamId === this.match.homeTeamId){
-                                this.matchScores[0].push(d);
-                            }
-                            else if (d.player.teamId === this.match.guestTeamId){
-                                this.matchScores[1].push(d);
-                            }
-                        })
-                    }
-                    else{
-                        alert("Nie udało się zdobyć informacji na temat punktów w meczu")
-                    }
-                })
-                .catch(err => console.log(err));
-        }
+  methods: {
+    getMatchPoints: function(matchId) {
+      axios
+        .get(`${this.apiUrl}/api/match/${matchId}/points`)
+        .then(response => {
+          if (response.status === 200) {
+            response.data.forEach(d => {
+              if (d.player.teamId === this.match.homeTeamId) {
+                this.matchScores[0].push(d);
+              } else if (d.player.teamId === this.match.guestTeamId) {
+                this.matchScores[1].push(d);
+              }
+            });
+          } else {
+            alert("Nie udało się zdobyć informacji na temat punktów w meczu");
+          }
+        })
+        .catch(err => console.log(err));
     }
+  }
 };
 </script>
 
@@ -134,5 +188,15 @@ export default {
   .match-dateTime();
   font-size: 16px;
   text-decoration: underline;
+}
+
+.match-scorers-options {
+  .match-scorers-head();
+  text-decoration: none;
+  letter-spacing: 1.2px;
+}
+
+.v-expansion-panel__header{
+  padding: 0 !important;
 }
 </style>

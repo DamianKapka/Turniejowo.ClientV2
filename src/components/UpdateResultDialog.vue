@@ -8,11 +8,9 @@
         max-width="480"
       >
         <template #activator="{on}">
-          <font-awesome-icon
-            icon="edit"
-            style="color: goldenrod"
-            v-on="on"
-          ></font-awesome-icon>
+          <v-icon v-on="on" color="orange" size="22">
+            edit
+          </v-icon>
         </template>
         <v-card style="padding: 10%">
           <v-card-title class="headline">
@@ -71,20 +69,8 @@
       </v-dialog>
     </v-flex>
     <v-flex xs6>
-      <v-dialog v-model="dialogPoints" max-width="480">
-        <template #activator="{on}">
-          <font-awesome-icon
-            icon="plus"
-            style="color: green"
-            v-on="on"
-          ></font-awesome-icon>
-        </template>
-        <v-card>
-          <v-card-title class="headline">
-            DODAWANIE GOLI/PUNKTÓW
-          </v-card-title>
-        </v-card>
-      </v-dialog>
+      <MatchDetailsDialog :match="match" :withAdminOptions="true">
+      </MatchDetailsDialog>
     </v-flex>
   </v-layout>
   <v-dialog v-else persistent v-model="dialogDefault" max-width="480">
@@ -154,6 +140,7 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
+import MatchDetailsDialog from "./MatchDetailsDialog";
 
 export default {
   name: "UpdateResultDialog",
@@ -178,6 +165,9 @@ export default {
     this.savePointsState();
   },
   computed: mapGetters(["apiUrl"]),
+  components: {
+    MatchDetailsDialog
+  },
   methods: {
     add() {
       if (this.$refs.form.validate()) {
