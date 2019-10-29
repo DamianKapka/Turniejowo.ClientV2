@@ -71,7 +71,7 @@
       <v-layout v-if="withAdminOptions" row>
         <v-flex xs12>
           <v-expansion-panel>
-            <v-expansion-panel-content hide-actions="true" class="pa-0">
+            <v-expansion-panel-content :hide-actions=true class="pa-0">
               <template #header style="padding: 0">
                 <v-card
                   class="pa-3 match-scorers-options"
@@ -83,7 +83,7 @@
                   <v-icon color="green" size="20">add_box</v-icon>
                 </v-card>
               </template>
-              <AddPointsForm>
+              <AddPointsForm :match="match">
 
               </AddPointsForm>
             </v-expansion-panel-content>
