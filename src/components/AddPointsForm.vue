@@ -1,28 +1,42 @@
 <template>
-  <v-form v-model="valid" class="form pa-3">
+  <v-form ref="form" v-model="valid" class="form pa-3">
     <v-layout row>
       <v-flex xs5 class="pa-1">
         <v-combobox
           v-model="chosenTeam"
           :items="matchTeams"
+          :rules="chosenTeamRules"
           placeholder="Wybierz drużyne"
           label="Drużyna"
+          item-text="name"
+          return-object
+          required
         ></v-combobox>
       </v-flex>
       <v-flex xs5 class="pa-1">
         <v-combobox
           v-model="chosenPlayer"
           :items="chosenTeamPlayers"
-          item-text="fName"
+          :rules="chosenPlayerRules"
           label="Gracz"
           return-object
-        ></v-combobox>
+          required
+        >
+          <template slot="item" slot-scope="data">
+          {{ data.item.fName }} {{ data.item.lName }}
+          </template>
+          <template slot="selection" slot-scope="data">
+            {{ data.item.fName }} {{ data.item.lName }}
+          </template>
+        </v-combobox>
       </v-flex>
       <v-flex xs2 class="pa-1">
-        <v-text-field></v-text-field>
+        <v-text-field v-model="points" :rules="pointsRules" type="number" required>
+
+        </v-text-field>
       </v-flex>
     </v-layout>
-    <ConfirmButton Message="DODAJ" class="pa-2" style="margin-left: 30%; width: 40%;"></ConfirmButton>
+    <ConfirmButton Message="DODAJ" class="pa-2" style="margin-left: 30%; width: 40%;" @clicked="add"></ConfirmButton>
   </v-form>
 </template>
 
@@ -38,15 +52,27 @@ export default {
       valid: true,
       chosenTeam:"",
       chosenTeamPlayers:[],
+      chosenTeamRules:[
+        t => !!t || "Wybierz drużynę"
+      ],
       chosenPlayer:"",
-      matchTeams:[this.match.homeTeamName,this.match.guestTeamName],
+      chosenPlayerRules:[
+        p => !!p || "Wybierz gracza"
+      ],
+      matchTeams:[{id:this.match.homeTeamId,name:this.match.homeTeamName},{id:this.match.guestTeamId,name:this.match.guestTeamName}],
       homeTeamPlayers:[],
       guestTeamPlayers:[],
+      points:"",
+      pointsRules:[
+        p => !!p || "Wpisz liczbę punktów",
+        p => /^[0-9]{1,2}$/.test(p) || "Punkty muszą być liczbą 1-99",
+        p => p > 0 || "Punkty muszą być liczbą 1-99"
+      ]
     };
   },
   watch:{
     chosenTeam: function (val) {
-      if(val === this.match.homeTeamName){
+      if(val.name === this.match.homeTeamName){
         this.chosenTeamPlayers = this.homeTeamPlayers;
       }
       else{
@@ -56,7 +82,17 @@ export default {
       this.chosenPlayer = this.chosenTeamPlayers[0];
     }
   },
-  computed: mapGetters(["apiUrl", "currentlyEditedTournament"]),
+  computed: {
+    requestModel: function () {
+      return{
+        matchId: this.match.matchId,
+        playerId: this.chosenPlayer.playerId,
+        tournamentId: this.currentlyEditedTournament.tournamentId,
+        pointsQty: this.points
+      }
+    },
+    ...mapGetters(["apiUrl", "currentlyEditedTournament"])
+  },
   mounted(){
     this.getMatchPlayers();
   },
@@ -79,6 +115,16 @@ export default {
         }
       }).catch(err => console.log(err));
     },
+    add(){
+      if(this.$refs.form.validate()){
+        axios.post(`${this.apiUrl}/api/points`,[this.requestModel]).then(response => {
+          if(response.status === 202){
+            alert("Punkty poprawnie dodane");
+          }
+          console.log(response)
+        }).catch(err => console.log(err));
+      }
+    }
   },
   props:{
     match: Object
