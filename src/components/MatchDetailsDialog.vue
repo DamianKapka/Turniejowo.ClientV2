@@ -71,20 +71,20 @@
       <v-layout v-if="withAdminOptions" row>
         <v-flex xs12>
           <v-expansion-panel>
-            <v-expansion-panel-content :hide-actions=true class="pa-0">
+            <v-expansion-panel-content :hide-actions="true" class="pa-0">
               <template #header style="padding: 0">
                 <v-card
                   class="pa-3 match-scorers-options"
                   tile
                   style="background-color: #96e697"
+                  @added="getMatchPoints(matchId)"
                 >
                   <v-icon color="green" size="20">add_box</v-icon>
                   DODAJ PUNKTUJĄCYCH GRACZY
                   <v-icon color="green" size="20">add_box</v-icon>
                 </v-card>
               </template>
-              <AddPointsForm :match="match">
-
+              <AddPointsForm :match="match" @added="onPointsAdded($event)">
               </AddPointsForm>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -137,7 +137,7 @@ export default {
     this.getMatchPoints(this.match.matchId);
   },
   components: {
-      AddPointsForm
+    AddPointsForm
   },
   computed: {
     matchDateFormatted: function() {
@@ -163,6 +163,10 @@ export default {
           }
         })
         .catch(err => console.log(err));
+    },
+    onPointsAdded: function(event) {
+      this.matchScores = [[], []];
+      this.getMatchPoints(event);
     }
   }
 };
@@ -196,7 +200,7 @@ export default {
   letter-spacing: 1.2px;
 }
 
-.v-expansion-panel__header{
+.v-expansion-panel__header {
   padding: 0 !important;
 }
 </style>

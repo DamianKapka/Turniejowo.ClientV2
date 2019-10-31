@@ -23,7 +23,7 @@
           required
         >
           <template slot="item" slot-scope="data">
-          {{ data.item.fName }} {{ data.item.lName }}
+            {{ data.item.fName }} {{ data.item.lName }}
           </template>
           <template slot="selection" slot-scope="data">
             {{ data.item.fName }} {{ data.item.lName }}
@@ -31,51 +31,58 @@
         </v-combobox>
       </v-flex>
       <v-flex xs2 class="pa-1">
-        <v-text-field v-model="points" :rules="pointsRules" type="number" required>
-
+        <v-text-field
+          v-model="points"
+          :rules="pointsRules"
+          type="number"
+          required
+        >
         </v-text-field>
       </v-flex>
     </v-layout>
-    <ConfirmButton Message="DODAJ" class="pa-2" style="margin-left: 30%; width: 40%;" @clicked="add"></ConfirmButton>
+    <ConfirmButton
+      Message="DODAJ"
+      class="pa-2"
+      style="margin-left: 30%; width: 40%;"
+      @clicked="add"
+    ></ConfirmButton>
   </v-form>
 </template>
 
 <script>
 import ConfirmButton from "./ConfirmButton";
-import axios from 'axios'
-import { mapGetters } from 'vuex'
+import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AddPointsForm",
   data() {
     return {
       valid: true,
-      chosenTeam:"",
-      chosenTeamPlayers:[],
-      chosenTeamRules:[
-        t => !!t || "Wybierz drużynę"
+      chosenTeam: "",
+      chosenTeamPlayers: [],
+      chosenTeamRules: [t => !!t || "Wybierz drużynę"],
+      chosenPlayer: "",
+      chosenPlayerRules: [p => !!p || "Wybierz gracza"],
+      matchTeams: [
+        { id: this.match.homeTeamId, name: this.match.homeTeamName },
+        { id: this.match.guestTeamId, name: this.match.guestTeamName }
       ],
-      chosenPlayer:"",
-      chosenPlayerRules:[
-        p => !!p || "Wybierz gracza"
-      ],
-      matchTeams:[{id:this.match.homeTeamId,name:this.match.homeTeamName},{id:this.match.guestTeamId,name:this.match.guestTeamName}],
-      homeTeamPlayers:[],
-      guestTeamPlayers:[],
-      points:"",
-      pointsRules:[
+      homeTeamPlayers: [],
+      guestTeamPlayers: [],
+      points: "",
+      pointsRules: [
         p => !!p || "Wpisz liczbę punktów",
         p => /^[0-9]{1,2}$/.test(p) || "Punkty muszą być liczbą 1-99",
         p => p > 0 || "Punkty muszą być liczbą 1-99"
       ]
     };
   },
-  watch:{
-    chosenTeam: function (val) {
-      if(val.name === this.match.homeTeamName){
+  watch: {
+    chosenTeam: function(val) {
+      if (val.name === this.match.homeTeamName) {
         this.chosenTeamPlayers = this.homeTeamPlayers;
-      }
-      else{
+      } else {
         this.chosenTeamPlayers = this.guestTeamPlayers;
       }
 
@@ -83,50 +90,58 @@ export default {
     }
   },
   computed: {
-    requestModel: function () {
-      return{
+    requestModel: function() {
+      return {
         matchId: this.match.matchId,
         playerId: this.chosenPlayer.playerId,
         tournamentId: this.currentlyEditedTournament.tournamentId,
         pointsQty: this.points
-      }
+      };
     },
     ...mapGetters(["apiUrl", "currentlyEditedTournament"])
   },
-  mounted(){
+  mounted() {
     this.getMatchPlayers();
   },
-  methods:{
-    getMatchPlayers: function(){
-      axios.get(`${this.apiUrl}/api/team/${this.match.homeTeamId}/players`).then(response => {
-        if(response.status === 200){
-          this.homeTeamPlayers = response.data;
-          return axios.get(`${this.apiUrl}/api/team/${this.match.guestTeamId}/players`)
-        }
-        else{
-          alert("Wystąpił problem z pobranie, graczy występujących w meczu");
-        }
-      }).then(response => {
-        if(response.status === 200){
-          this.guestTeamPlayers = response.data;
-        }
-        else{
-          alert("Wystąpił problem z pobranie, graczy występujących w meczu");
-        }
-      }).catch(err => console.log(err));
-    },
-    add(){
-      if(this.$refs.form.validate()){
-        axios.post(`${this.apiUrl}/api/points`,[this.requestModel]).then(response => {
-          if(response.status === 202){
-            alert("Punkty poprawnie dodane");
+  methods: {
+    getMatchPlayers: function() {
+      axios
+        .get(`${this.apiUrl}/api/team/${this.match.homeTeamId}/players`)
+        .then(response => {
+          if (response.status === 200) {
+            this.homeTeamPlayers = response.data;
+            return axios.get(
+              `${this.apiUrl}/api/team/${this.match.guestTeamId}/players`
+            );
+          } else {
+            alert("Wystąpił problem z pobranie, graczy występujących w meczu");
           }
-          console.log(response)
-        }).catch(err => console.log(err));
+        })
+        .then(response => {
+          if (response.status === 200) {
+            this.guestTeamPlayers = response.data;
+          } else {
+            alert("Wystąpił problem z pobranie, graczy występujących w meczu");
+          }
+        })
+        .catch(err => console.log(err));
+    },
+    add() {
+      if (this.$refs.form.validate()) {
+        axios
+          .post(`${this.apiUrl}/api/points`, [this.requestModel])
+          .then(response => {
+            if (response.status === 202) {
+              alert("Punkty poprawnie dodane");
+              this.$emit("added", this.match.matchId);
+            }
+            console.log(response);
+          })
+          .catch(err => console.log(err));
       }
     }
   },
-  props:{
+  props: {
     match: Object
   },
   components: {
