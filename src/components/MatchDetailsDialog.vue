@@ -92,14 +92,17 @@
       </v-layout>
       <v-layout v-if="withAdminOptions" row>
         <v-flex xs12>
-          <v-card
-            class="pa-3 match-scorers-options"
-            tile
-            style="background-color: #ffba8a"
-          >
-            <v-icon color="red" size="20">undo</v-icon>
-            RESETUJ PUNKTY
-            <v-icon color="red" size="20">undo</v-icon>
+          <v-card class="pa-1" color="#ffba8a">
+            <v-btn
+              block
+              class="match-scorers-options elevation-0"
+              color="#ffba8a"
+              @click="onResetButtonClicked"
+            >
+              <v-icon color="red" size="20">undo</v-icon>
+              RESETUJ PUNKTY
+              <v-icon color="red" size="20">undo</v-icon>
+            </v-btn>
           </v-card>
         </v-flex>
       </v-layout>
@@ -167,6 +170,29 @@ export default {
     onPointsAdded: function(event) {
       this.matchScores = [[], []];
       this.getMatchPoints(event);
+    },
+    onResetButtonClicked: function() {
+      if (confirm("Czy napewno chcesz zresetować punkty graczy w tym meczu?")) {
+        axios
+          .delete(`${this.apiUrl}/api/points/${this.match.matchId}`)
+          .then(response => {
+            if (response.status === 202) {
+              alert("Poprawnie zresetowano punkty graczy dla tego meczu");
+              this.matchScores = [[], []];
+            } else if (response.status === 404) {
+              alert("Mecz dla istnieje.");
+            } else if (response.status === 403) {
+              alert("Przekroczono pulę punktów.");
+            } else if (response.status === 409) {
+              alert("Podany gracz widnieje już w tabeli punktów tego meczu");
+            } else {
+              alert(
+                "Nieznany błąd podczas próby usuniecia punktów graczy dla tego meczu"
+              );
+            }
+          })
+          .catch(err => console.log(err));
+      }
     }
   }
 };

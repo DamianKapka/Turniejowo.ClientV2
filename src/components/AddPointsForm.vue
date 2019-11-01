@@ -135,7 +135,6 @@ export default {
               alert("Punkty poprawnie dodane");
               this.$emit("added", this.match.matchId);
             }
-            console.log(response);
           })
           .catch(err => console.log(err));
       }
