@@ -134,6 +134,16 @@ export default {
             if (response.status === 202) {
               alert("Punkty poprawnie dodane");
               this.$emit("added", this.match.matchId);
+            } else if (response.status === 406) {
+              alert("Przekroczono pulę punktów.");
+            } else if (response.status === 409) {
+              alert("Podany gracz widnieje już w tabeli punktów tego meczu");
+            } else if (response.status === 404) {
+              alert("Mecz dla istnieje.");
+            } else {
+              alert(
+                "Nieznany błąd podczas próby usuniecia punktów graczy dla tego meczu"
+              );
             }
           })
           .catch(err => console.log(err));

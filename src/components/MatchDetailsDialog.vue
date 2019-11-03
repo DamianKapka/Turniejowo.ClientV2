@@ -181,10 +181,6 @@ export default {
               this.matchScores = [[], []];
             } else if (response.status === 404) {
               alert("Mecz dla istnieje.");
-            } else if (response.status === 403) {
-              alert("Przekroczono pulę punktów.");
-            } else if (response.status === 409) {
-              alert("Podany gracz widnieje już w tabeli punktów tego meczu");
             } else {
               alert(
                 "Nieznany błąd podczas próby usuniecia punktów graczy dla tego meczu"
