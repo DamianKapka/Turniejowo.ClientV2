@@ -47,7 +47,6 @@ export default {
       axios
         .delete(`${this.apiUrl}/api/team/${this.Team.teamId}`)
         .then(res => {
-            console.log(res);
           switch (res.status) {
             case 202: {
               alert("Dryżyna poprawnie usunięta");

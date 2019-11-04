@@ -59,7 +59,7 @@
             </v-flex>
             <v-flex xs4 class="toi-icon">
               <ThrashDeleteTeamDialog
-                :team="team.item.team"
+                :Team="team.item.team"
                 @confirmed="getParticipants"
               ></ThrashDeleteTeamDialog>
             </v-flex>
