@@ -13,7 +13,7 @@
         >Potwierdzenie</v-card-title
       >
       <v-card-text
-        >Czy napewno chcesz usunąc drużynę <strong>{{ teamName }}</strong> z
+        >Czy napewno chcesz usunąc drużynę <strong>{{ Team.name }}</strong> z
         tego turnieju? Decyzja ta bedzie nieodwracalna!</v-card-text
       >
       <v-card-actions>
@@ -30,6 +30,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
+
 export default {
   name: "ThrashDeleteDialog",
   data() {
@@ -37,11 +40,31 @@ export default {
       dialog: false
     };
   },
-  props: ["teamName"],
+  props: ["Team"],
+  computed: mapGetters(["apiUrl"]),
   methods: {
     confirm() {
-      this.$emit("confirmed");
-      this.dialog = false;
+      axios
+        .delete(`${this.apiUrl}/api/team/${this.Team.teamId}`)
+        .then(res => {
+            console.log(res);
+          switch (res.status) {
+            case 202: {
+              alert("Dryżyna poprawnie usunięta");
+              this.$emit("confirmed");
+              this.dialog = false;
+              break;
+            }
+            case 404: {
+              alert("Drużyna o takim ID nie istnieje");
+              break;
+            }
+            default:
+              alert("Nieznany błąd przy usuwaniu");
+              break;
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 };

@@ -15,7 +15,7 @@
               class="elevation-7 logged-as-card"
               @mouseover="LogoutButtonHovered = true"
               @mouseleave="LogoutButtonHovered = false"
-              @click="logout()"
+              @click="logout"
             >
               <span v-if="LogoutButtonHovered">
                 Wyloguj

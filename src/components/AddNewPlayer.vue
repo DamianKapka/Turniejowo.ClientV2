@@ -30,15 +30,16 @@
   </v-dialog>
 </template>
 <script>
+import axios from "axios";
 import ConfirmButton from "./ConfirmButton";
+import { mapGetters } from "vuex";
 
 export default {
-  components: { ConfirmButton },
   Name: "AddNewPlayer",
   data() {
     return {
       dialog: false,
-      valid: false,
+      valid: true,
       playerFullName: "",
       playerFullNameRules: [
         p => !!p || "Wpisz Imie i Nazwisko gracza",
@@ -49,6 +50,8 @@ export default {
     };
   },
   props: ["Team"],
+  components: { ConfirmButton },
+  computed: mapGetters(["apiUrl"]),
   methods: {
     add() {
       if (this.$refs.form.validate()) {
@@ -61,9 +64,36 @@ export default {
           points: 0
         };
 
-        this.$emit('playerAdded',player);
-        this.playerFullName = "";
-        this.dialog = false;
+        axios
+          .post(`${this.apiUrl}/api/player`, player)
+          .then(res => {
+            switch (res.status) {
+              case 201: {
+                alert("Gracz dodany prawidłowo");
+                this.$emit("playerAdded");
+                this.dialog = false;
+                break;
+              }
+              case 404: {
+                alert("Drużyna do której próbowano dodać gracza nie istnieje");
+                break;
+              }
+              case 409: {
+                alert("Taki gracz już istnieje w tej dużynie");
+                break;
+              }
+              case 400: {
+                alert("Błedne zapytanie");
+                break;
+              }
+              default: {
+                alert("Nieznany błąd");
+                break;
+              }
+            }
+            this.playerFullName = "";
+          })
+          .catch(err => console.log(err));
       }
     }
   }

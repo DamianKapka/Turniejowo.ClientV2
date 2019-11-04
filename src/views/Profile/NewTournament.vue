@@ -108,14 +108,14 @@ export default {
       AmountOfTeamsRules: [
         a => !!a || "Wprowadz ilość drużyn w turnieju",
         a =>
-          /^[1-9]{1}[0-9]?$/.test(a.trim()) ||
+          /^[1-9][0-9]?$/.test(a.trim()) ||
           "Ilośc drużym musi być cyrfą wieksza od 0"
       ],
       EntryFee: "",
       EntryFeeRules: [
         e => !!e || "Wprowadz wpisowe do turnieju",
         e =>
-          /^[0-9]{1}[0-9]*$/.test(e.trim()) ||
+          /^[0-9][0-9]*$/.test(e.trim()) ||
           "Wpisowe musi być cyrfą wieksza lub równa 0"
       ],
       Localization: "",

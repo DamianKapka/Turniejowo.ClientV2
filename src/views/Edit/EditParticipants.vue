@@ -27,13 +27,13 @@
                       <v-flex xs2>
                         <EditPlayerDialog
                           :Player="item"
-                          @edited="editPlayer"
+                          @edited="getParticipants"
                         ></EditPlayerDialog>
                       </v-flex>
                       <v-flex xs2>
                         <ThrashDeletePlayerDialog
                           :Player="item"
-                          @confirmed="deletePlayer"
+                          @deleted="getParticipants"
                         ></ThrashDeletePlayerDialog>
                       </v-flex>
                     </v-layout>
@@ -48,19 +48,19 @@
             <v-flex xs4 class="toi-icon toi-add">
               <AddNewPlayer
                 :Team="team.item.team"
-                @playerAdded="addPlayer"
+                @playerAdded="getParticipants"
               ></AddNewPlayer>
             </v-flex>
             <v-flex xs4 class="toi-icon toi-edit">
               <EditTeamDialog
                 :Team="team.item.team"
-                @edited="editTeam"
+                @edited="getParticipants"
               ></EditTeamDialog>
             </v-flex>
             <v-flex xs4 class="toi-icon">
               <ThrashDeleteTeamDialog
-                :teamName="team.item.team.name"
-                @confirmed="deleteTeam(team.item.team.teamId)"
+                :team="team.item.team"
+                @confirmed="getParticipants"
               ></ThrashDeleteTeamDialog>
             </v-flex>
           </v-layout>
@@ -78,8 +78,8 @@
 
 <script>
 import axios from "axios";
-import AddNewTeam from "@/components/AddNewTeam";
-import AddNewPlayer from "@/components/AddNewPlayer";
+import AddNewTeam from "../../components/AddNewTeam";
+import AddNewPlayer from "../../components/AddNewPlayer";
 import ThrashDeleteTeamDialog from "../../components/ThrashDeleteTeamDialog";
 import ThrashDeletePlayerDialog from "../../components/ThrashDeletePlayerDialog";
 import EditTeamDialog from "../../components/EditTeamDialog";
@@ -126,136 +126,6 @@ export default {
         })
         .catch(err => console.log(err));
     },
-    deleteTeam(id) {
-      axios
-        .delete(`${this.apiUrl}/api/team/${id}`)
-        .then(res => {
-          switch (res.status) {
-            case 202: {
-              alert("Dryżyna poprawnie usunięta");
-              break;
-            }
-            case 404: {
-              alert("Drużyna o takim ID nie istnieje");
-              break;
-            }
-            default:
-              console.log(res);
-              alert("Nieznany błąd przy usuwaniu");
-              break;
-          }
-          this.getParticipants();
-        })
-        .catch(err => console.log(err));
-    },
-    editTeam(team) {
-      axios
-        .put(`${this.apiUrl}/api/team/${team.teamId}`, team)
-        .then(res => {
-          switch (res.status) {
-            case 202: {
-              alert("Edycja powiodłą się");
-              break;
-            }
-            case 404: {
-              alert("Drużna nie istnieje w bazie danych");
-              break;
-            }
-            case 409: {
-              alert("Id teamu i Id drużyny nie zgadzają się");
-              break;
-            }
-            default: {
-              alert("Nieznany błąd");
-              break;
-            }
-          }
-          return this.getParticipants();
-        })
-        .catch(err => console.log(err));
-    },
-    editPlayer(player) {
-      axios
-        .put(`${this.apiUrl}/api/player/${player.playerId}`, player)
-        .then(res => {
-          switch (res.status) {
-            case 202: {
-              alert("Gracz zedytowany");
-              break;
-            }
-            case 404: {
-              alert("Gracz nieodnaleziony");
-              break;
-            }
-            case 409: {
-              alert("Id gracza nie pasuje z Id gracza do usuniecia");
-              break;
-            }
-            case 400: {
-              alert("Nieprawidłowe zapytanie");
-              break;
-            }
-            default: {
-              alert("Nieznany błąd");
-              break;
-            }
-          }
-          this.getParticipants();
-        })
-        .catch(err => console.log(err));
-    },
-    addPlayer(player) {
-      axios
-        .post(`${this.apiUrl}/api/player`, player)
-        .then(res => {
-          switch (res.status) {
-            case 201: {
-              alert("Gracz dodany prawidłowo");
-              break;
-            }
-            case 404: {
-              alert("Drużyna do której próbowano dodać gracza nie istnieje");
-              break;
-            }
-            case 409: {
-              alert("Taki gracz już istnieje w tej dużynie");
-              break;
-            }
-            case 400: {
-              alert("Błedne zapytanie");
-              break;
-            }
-            default: {
-              alert("Nieznany błąd");
-              break;
-            }
-          }
-          this.getParticipants();
-        })
-        .catch(err => console.log(err));
-    },
-    deletePlayer(playerId) {
-      axios
-        .delete(`${this.apiUrl}/api/player/${playerId}`)
-        .then(res => {
-          switch (res.status) {
-            case 202: {
-              alert("Gracz usuniety");
-              break;
-            }
-            case 404: {
-              alert("Gracz nie istnieje");
-              break;
-            }
-            default: {
-              alert("Nieznany bląd.");
-              break;
-            }
-          }
-          this.getParticipants();
-        })
-        .catch(err => console.log(err));
-    }
   }
 };
 </script>

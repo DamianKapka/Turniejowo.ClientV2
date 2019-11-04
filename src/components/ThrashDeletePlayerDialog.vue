@@ -31,6 +31,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
+
 export default {
   name: "ThrashDeleteDialog",
   data() {
@@ -41,10 +44,30 @@ export default {
   props: ["Player"],
   methods: {
     confirm() {
-      this.$emit("confirmed", this.Player.playerId);
+      axios
+        .delete(`${this.apiUrl}/api/player/${this.Player.playerId}`)
+        .then(res => {
+          switch (res.status) {
+            case 202: {
+              alert("Gracz usuniety");
+              this.$emit("deleted");
+              break;
+            }
+            case 404: {
+              alert("Gracz nie istnieje");
+              break;
+            }
+            default: {
+              alert("Nieznany bląd.");
+              break;
+            }
+          }
+        })
+        .catch(err => console.log(err));
       this.dialog = false;
     }
-  }
+  },
+  computed: mapGetters(["apiUrl"])
 };
 </script>
 <style scoped>

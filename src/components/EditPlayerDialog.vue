@@ -15,24 +15,29 @@
         ></font-awesome-icon>
         Edycja gracza
       </v-card-title>
-      <v-text-field
-        v-model="playerName"
-        :rules="playerNameRules"
-      ></v-text-field>
-      <v-card-actions>
-        <v-btn color="success" @click="confirm"
-          ><v-icon>thumb_up</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="error" @click="cancel"
-          ><v-icon>thumb_down</v-icon>
-        </v-btn>
-      </v-card-actions>
+      <v-form v-model="valid" ref="form">
+        <v-text-field
+          v-model="playerName"
+          :rules="playerNameRules"
+        ></v-text-field>
+        <v-card-actions>
+          <v-btn color="success" @click="confirm"
+            ><v-icon>thumb_up</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="error" @click="cancel"
+            ><v-icon>thumb_down</v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-form>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
+
 export default {
   name: "EditPlayerDialog",
   data() {
@@ -49,14 +54,46 @@ export default {
     };
   },
   props: ["Player"],
+  computed: mapGetters(["apiUrl"]),
   methods: {
     confirm() {
-      const playerNameArray = this.playerName.split(" ");
+      if (this.$refs.form.validate()) {
+        const playerNameArray = this.playerName.split(" ");
 
-      this.Player.fName = playerNameArray[0];
-      this.Player.lName = playerNameArray[1];
-      this.$emit("edited", this.Player);
-      this.dialog = false;
+        this.Player.fName = playerNameArray[0];
+        this.Player.lName = playerNameArray[1];
+
+        axios
+          .put(`${this.apiUrl}/api/player/${this.Player.playerId}`, this.Player)
+          .then(res => {
+            switch (res.status) {
+              case 202: {
+                alert("Gracz zedytowany");
+                this.$emit("edited");
+                break;
+              }
+              case 404: {
+                alert("Gracz nieodnaleziony");
+                break;
+              }
+              case 409: {
+                alert("Id gracza nie pasuje z Id gracza do usuniecia");
+                break;
+              }
+              case 400: {
+                alert("Nieprawidłowe zapytanie");
+                break;
+              }
+              default: {
+                alert("Nieznany błąd");
+                break;
+              }
+            }
+          })
+          .catch(err => console.log(err));
+
+        this.dialog = false;
+      }
     },
     cancel() {
       this.playerName = `${this.Player.fName} ${this.Player.lName}`;

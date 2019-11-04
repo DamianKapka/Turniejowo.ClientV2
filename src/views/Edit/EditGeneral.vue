@@ -108,7 +108,7 @@ export default {
       AmountOfTeamsRules: [
         a => !!a || "Wprowadz ilość drużyn w turnieju",
         a =>
-          /^[1-9]{1}[0-9]?$/.test(a) ||
+          /^[1-9][0-9]?$/.test(a) ||
           "Ilośc drużym musi być cyrfą wieksza od 0"
       ],
       EntryFee: "",
