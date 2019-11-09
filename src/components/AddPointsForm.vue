@@ -129,7 +129,7 @@ export default {
     add() {
       if (this.$refs.form.validate()) {
         axios
-          .post(`${this.apiUrl}/api/points`, [this.requestModel])
+          .post(`${this.apiUrl}/api/points`, this.requestModel)
           .then(response => {
             if (response.status === 202) {
               alert("Punkty poprawnie dodane");
@@ -142,7 +142,7 @@ export default {
               alert("Mecz dla istnieje.");
             } else {
               alert(
-                "Nieznany błąd podczas próby usuniecia punktów graczy dla tego meczu"
+                "Nieznany błąd podczas próby dodanie punktów graczy dla tego meczu"
               );
             }
           })
