@@ -1,7 +1,13 @@
 <template>
   <v-dialog v-model="dialog" max-width="700">
     <template v-slot:activator="{ on }">
-      <v-icon v-if="withAdminOptions" v-on="on" color="green" size="22">
+      <v-icon
+        v-if="withAdminOptions"
+        v-on="on"
+        color="green"
+        size="22"
+        @click="getMatchPoints(match.matchId)"
+      >
         settings_applications
       </v-icon>
       <v-icon v-else v-on="on" size="22">
@@ -136,9 +142,6 @@ export default {
     match: Object,
     withAdminOptions: Boolean
   },
-  created() {
-    this.getMatchPoints(this.match.matchId);
-  },
   components: {
     AddPointsForm
   },
@@ -154,6 +157,7 @@ export default {
         .get(`${this.apiUrl}/api/match/${matchId}/points`)
         .then(response => {
           if (response.status === 200) {
+            this.matchScores = [[], []];
             response.data.forEach(d => {
               if (d.player.teamId === this.match.homeTeamId) {
                 this.matchScores[0].push(d);
@@ -168,7 +172,6 @@ export default {
         .catch(err => console.log(err));
     },
     onPointsAdded: function(event) {
-      this.matchScores = [[], []];
       this.getMatchPoints(event);
     },
     onResetButtonClicked: function() {
