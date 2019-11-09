@@ -41,17 +41,17 @@ export default {
       tournament: Object,
       navBarCardInfo: [
         {
-          LabelInfo: "Edytuj Informacje",
+          LabelInfo: "Informacje",
           ActiveClass: "EditGeneral",
           RouterLink: "EditGeneral"
         },
         {
-          LabelInfo: "Edytuj Uczestników",
+          LabelInfo: "Uczestnicy",
           ActiveClass: "EditParticipants",
           RouterLink: "EditParticipants"
         },
         {
-          LabelInfo: "Edytuj Przebieg",
+          LabelInfo: "Przebieg",
           ActiveClass: "EditProgress",
           RouterLink: "EditProgress"
         },

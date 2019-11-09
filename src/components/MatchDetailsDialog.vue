@@ -10,7 +10,7 @@
       >
         settings_applications
       </v-icon>
-      <v-icon v-else v-on="on" size="22">
+      <v-icon v-else v-on="on" size="22" @click="getMatchPoints(match.matchId)">
         search
       </v-icon>
     </template>
