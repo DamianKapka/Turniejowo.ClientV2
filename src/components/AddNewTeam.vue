@@ -4,7 +4,7 @@
       <v-expansion-panel-content>
         <template #header>
           <div class="text-xs-center">
-            Dodaj nową drużynę
+            DODAJ NOWĄ DRUŻYNĘ
           </div>
         </template>
         <v-form ref="form" v-model="valid" class="form">
