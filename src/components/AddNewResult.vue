@@ -175,6 +175,10 @@ export default {
               this.$emit("ResultAdded");
               break;
             }
+            case 406:{
+              alert("Jedna z drużyn rozgrywa już mecz w tym terminie");
+              break;
+            }
             default: {
               console.log(res);
               alert("Błąd podczas dodawania meczu");
