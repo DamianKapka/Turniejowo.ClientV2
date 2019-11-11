@@ -1,8 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" max-width="290">
-    <template #activator="{on}">
-      <v-icon style="color: firebrick" v-on="on"
-      >delete_forever</v-icon
+  <v-dialog v-model="dialog" max-width="320">
+    <template v-slot:activator="{ on }">
+      <v-icon style="color: firebrick" v-on="on" size="30"
+        >delete_forever</v-icon
       >
     </template>
     <v-card>
@@ -11,8 +11,8 @@
         >Potwierdzenie</v-card-title
       >
       <v-card-text
-        >Czy napewno chcesz usunąc drużynę <strong>{{ Team.name }}</strong> z
-        tego turnieju? Decyzja ta bedzie nieodwracalna!</v-card-text
+        >Czy napewno chcesz usunąc mecz z tego turnieju? Decyzja ta bedzie
+        nieodwracalna!</v-card-text
       >
       <v-card-actions>
         <v-btn color="success" @click="confirm"
@@ -32,38 +32,38 @@ import axios from "axios";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "ThrashDeleteDialog",
+  name: "ThrashDeleteMatchDialog",
   data() {
     return {
       dialog: false
     };
   },
-  props: ["Team"],
-  computed: mapGetters(["apiUrl"]),
   methods: {
     confirm() {
       axios
-        .delete(`${this.apiUrl}/api/team/${this.Team.teamId}`)
+        .delete(`${this.apiUrl}/api/match/${this.matchId}`)
         .then(res => {
           switch (res.status) {
             case 202: {
-              alert("Dryżyna poprawnie usunięta");
-              this.$emit("confirmed");
-              this.dialog = false;
+              alert("Mecz usunięty");
+              this.$emit('deleted');
               break;
             }
             case 404: {
-              alert("Drużyna o takim ID nie istnieje");
+              alert("Mecz nie istnieje");
               break;
             }
-            default:
-              alert("Nieznany błąd przy usuwaniu");
+            default: {
+              alert("Nieznany błąd podczas próby usunięcia meczu");
               break;
+            }
           }
         })
         .catch(err => console.log(err));
     }
-  }
+  },
+  computed: mapGetters(["apiUrl"]),
+  props: ["matchId"]
 };
 </script>
 

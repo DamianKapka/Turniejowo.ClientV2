@@ -1,18 +1,15 @@
 <template>
   <v-dialog v-model="dialog" max-width="320">
     <template #activator="{on}">
-      <font-awesome-icon
-        icon="user-plus"
-        style="color: limegreen"
-        v-on="on"
-      ></font-awesome-icon>
+      <v-icon style="color: limegreen" v-on="on">
+        person_add
+      </v-icon>
     </template>
     <v-card style="padding: 10%">
       <v-card-title class="headline">
-        <font-awesome-icon
-          icon="user-plus"
-          style="margin-right: 5%"
-        ></font-awesome-icon>
+        <v-icon style="color: limegreen;margin-right: 5%" v-on="on">
+          person_add
+        </v-icon>
         Dodaj gracza
       </v-card-title>
       <v-form ref="form" v-model="valid">

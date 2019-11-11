@@ -7,16 +7,16 @@
     v-bind:pagination.sync="Pagination"
   >
     <template v-slot:items="team">
-      <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
+      <td class="text-xs-center table-entry" v-bind:class="getMedalColor(team.index + 1)">
         {{ team.index + 1 }}
       </td>
-      <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
+      <td class="text-xs-center table-entry" v-bind:class="getMedalColor(team.index + 1)">
         {{ team.item.player.fName }} {{ team.item.player.lName }}
       </td>
-      <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
+      <td class="text-xs-center table-entry" v-bind:class="getMedalColor(team.index + 1)">
         {{ team.item.player.teamName }}
       </td>
-      <td class="text-xs-center" v-bind:class="getMedalColor(team.index + 1)">
+      <td class="text-xs-center table-entry" v-bind:class="getMedalColor(team.index + 1)">
         {{ team.item.pointsQty }}
       </td>
     </template>

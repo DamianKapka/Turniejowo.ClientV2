@@ -3,7 +3,7 @@
     <v-data-table :headers="TableHeaders" :items="Teams" :hide-actions="true">
       <template v-slot:items="team">
         <td class="text-xs-center">{{ team.index + 1 }}</td>
-        <td>
+        <td class="text-xs-center">
           {{ team.item.team.name }}
         </td>
         <td style="padding: 0; min-width: 200px">
@@ -97,9 +97,9 @@ export default {
           sortable: false,
           align: "center"
         },
-        { text: "Team", value: "Team", sortable: false, align: "left" },
-        { text: "Players", value: "Players", sortable: false, align: "left" },
-        { text: "Actions", value: "Actions", sortable: false, align: "left" }
+        { text: "Team", value: "Team", sortable: false, align: "center" },
+        { text: "Players", value: "Players", sortable: false, align: "center" },
+        { text: "Actions", value: "Actions", sortable: false, align: "center" }
       ],
       Teams: []
     };

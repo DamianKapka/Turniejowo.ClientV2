@@ -1,16 +1,16 @@
 <template>
-  <v-dialog v-model="dialog" max-width="700">
+  <v-dialog v-model="dialog" max-width="1000">
     <template v-slot:activator="{ on }">
       <v-icon
         v-if="withAdminOptions"
         v-on="on"
+        size="30"
         color="green"
-        size="22"
         @click="getMatchPoints(match.matchId)"
       >
         settings_applications
       </v-icon>
-      <v-icon v-else v-on="on" size="22" @click="getMatchPoints(match.matchId)">
+      <v-icon v-else v-on="on" size="30" @click="getMatchPoints(match.matchId)">
         search
       </v-icon>
     </template>
@@ -29,7 +29,7 @@
       <v-layout row>
         <v-flex xs4>
           <v-card tile class="pa-3 match-score-participant">
-            <v-icon color="black" size="34px">people</v-icon>
+            <v-icon color="black" size="30px">people</v-icon>
             {{ match.homeTeamName }}
           </v-card>
         </v-flex>
@@ -40,8 +40,8 @@
         </v-flex>
         <v-flex xs4>
           <v-card tile class="pa-3 match-score-participant">
+            <v-icon color="black" size="30px">people</v-icon>
             {{ match.guestTeamName }}
-            <v-icon color="black" size="34px">people</v-icon>
           </v-card>
         </v-flex>
       </v-layout>

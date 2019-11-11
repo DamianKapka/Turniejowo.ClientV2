@@ -1,6 +1,6 @@
 <template>
   <v-layout row v-if="match.isFinished">
-    <v-flex xs6>
+    <v-flex xs4>
       <v-dialog
         v-if="match.isFinished"
         persistent
@@ -8,7 +8,7 @@
         max-width="480"
       >
         <template #activator="{on}">
-          <v-icon v-on="on" color="orange" size="22">
+          <v-icon v-on="on" color="orange" size="30">
             edit
           </v-icon>
         </template>
@@ -68,18 +68,20 @@
         </v-card>
       </v-dialog>
     </v-flex>
-    <v-flex xs6>
+    <v-flex xs4>
       <MatchDetailsDialog :match="match" :withAdminOptions="true">
       </MatchDetailsDialog>
+    </v-flex>
+    <v-flex xs4>
+      <ThrashDeleteMatchDialog @deleted="$emit('updated')" :matchId="match.matchId">
+      </ThrashDeleteMatchDialog>
     </v-flex>
   </v-layout>
   <v-dialog v-else persistent v-model="dialogDefault" max-width="480">
     <template #activator="{on}">
-      <font-awesome-icon
-        icon="calendar-check"
-        style="color: limegreen"
-        v-on="on"
-      ></font-awesome-icon>
+      <v-icon color="green" v-on="on" size="30">
+        assignment_turned_in
+      </v-icon>
     </template>
     <v-card style="padding: 10%">
       <v-card-title class="headline">
@@ -141,6 +143,7 @@
 import axios from "axios";
 import { mapGetters } from "vuex";
 import MatchDetailsDialog from "./MatchDetailsDialog";
+import ThrashDeleteMatchDialog from "./ThrashDeleteMatchDialog";
 
 export default {
   name: "UpdateResultDialog",
@@ -166,7 +169,8 @@ export default {
   },
   computed: mapGetters(["apiUrl"]),
   components: {
-    MatchDetailsDialog
+    MatchDetailsDialog,
+    ThrashDeleteMatchDialog
   },
   methods: {
     add() {
@@ -258,7 +262,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .button {
   width: 40%;
   padding-left: 5%;

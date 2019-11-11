@@ -1,18 +1,15 @@
 <template>
   <v-dialog v-model="dialog" max-width="320">
     <template #activator="{on}">
-      <font-awesome-icon
-        icon="edit"
-        style="color: goldenrod"
-        v-on="on"
-      ></font-awesome-icon>
+      <v-icon style="color: goldenrod" v-on="on">
+        edit
+      </v-icon>
     </template>
     <v-card style="padding: 10%">
       <v-card-title class="headline">
-        <font-awesome-icon
-          icon="edit"
-          style="margin-right: 5%"
-        ></font-awesome-icon>
+        <v-icon style="color: goldenrod;margin-right: 5%">
+          edit
+        </v-icon>
         Edycja drużyny
       </v-card-title>
       <v-form v-model="valid" ref="form">

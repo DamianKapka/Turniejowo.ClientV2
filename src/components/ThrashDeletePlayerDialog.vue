@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="dialog" max-width="290">
     <template #activator="{on}">
-      <font-awesome-icon
-        icon="trash-alt"
-        style="color: firebrick"
-        v-on="on"
-      ></font-awesome-icon>
+      <v-icon style="color: firebrick" v-on="on"
+      >delete_forever</v-icon
+      >
     </template>
     <v-card>
       <v-card-title class="headline"

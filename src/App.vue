@@ -38,4 +38,8 @@ export default {
   margin: 7% 0;
   opacity: 0.9;
 }
+
+table.v-table tbody td{
+  font-size: 15px;
+}
 </style>

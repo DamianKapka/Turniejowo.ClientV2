@@ -1,7 +1,7 @@
 <template>
   <v-card class="elevation-10" style="margin-top: 2%;margin-bottom: 2%;">
     <v-card-title>
-      <span class="bold">{{ Matches.dateTime.split("T")[0] }}</span>
+      <span class="bold matchtable-entry">{{ Matches.dateTime.split("T")[0] }}</span>
     </v-card-title>
     <v-divider style="margin:0"></v-divider>
     <v-card-text>
@@ -91,7 +91,7 @@ export default {
             text: "Akcje",
             value: "actions",
             align: "center",
-            width: 100,
+            width: 160,
             sortable: false
           }
         ];
@@ -144,4 +144,7 @@ export default {
 .bold {
   font-weight: bold;
 }
+  .matchtable-entry{
+    font-size: 18px;
+  }
 </style>
