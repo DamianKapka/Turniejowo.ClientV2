@@ -7,16 +7,28 @@
     v-bind:pagination.sync="Pagination"
   >
     <template v-slot:items="team">
-      <td class="text-xs-center table-entry" v-bind:class="getMedalColor(team.index + 1)">
+      <td
+        class="text-xs-center table-entry"
+        v-bind:class="getMedalColor(team.index + 1)"
+      >
         {{ team.index + 1 }}
       </td>
-      <td class="text-xs-center table-entry" v-bind:class="getMedalColor(team.index + 1)">
+      <td
+        class="text-xs-center table-entry"
+        v-bind:class="getMedalColor(team.index + 1)"
+      >
         {{ team.item.player.fName }} {{ team.item.player.lName }}
       </td>
-      <td class="text-xs-center table-entry" v-bind:class="getMedalColor(team.index + 1)">
+      <td
+        class="text-xs-center table-entry"
+        v-bind:class="getMedalColor(team.index + 1)"
+      >
         {{ team.item.player.teamName }}
       </td>
-      <td class="text-xs-center table-entry" v-bind:class="getMedalColor(team.index + 1)">
+      <td
+        class="text-xs-center table-entry"
+        v-bind:class="getMedalColor(team.index + 1)"
+      >
         {{ team.item.pointsQty }}
       </td>
     </template>
@@ -57,7 +69,13 @@ export default {
     axios
       .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}/points`)
       .then(response => {
-        this.Statistics = response.data.content;
+        if (response.status === 200) {
+          this.Statistics = response.data.content;
+        } else if (response.status === 404) {
+          alert("W tym turnieju nie rozegrane zostały jeszcze żadne mecze");
+        } else {
+          alert("Błąd podczas próby pobrania statystyk turnieju");
+        }
       })
       // eslint-disable-next-line no-console
       .catch(error => console.log(error));

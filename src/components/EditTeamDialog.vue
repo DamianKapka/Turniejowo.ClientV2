@@ -60,9 +60,9 @@ export default {
             if (res.status === 202) {
               alert("Edycja powiodłą się");
               this.$emit("edited");
+              this.dialog = false;
             } else {
               this.teamName = this.Team.name;
-
               if (res.status === 404) {
                 alert("Drużna nie istnieje w bazie danych");
               } else if (res.status === 409) {

@@ -33,7 +33,7 @@
 
 <script>
 import axios from "axios";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 import getMedalColorMixin from "../../mixins/getMedalColorMixin";
 
 export default {
@@ -88,20 +88,16 @@ export default {
       ]
     };
   },
-  computed:mapGetters(["apiUrl"]),
+  computed: mapGetters(["apiUrl"]),
   mixins: [getMedalColorMixin],
   created() {
     axios
-      .get(
-        `${this.apiUrl}/api/tournament/${
-          this.$route.params.id
-        }/table`
-      )
+      .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}/table`)
       .then(response => {
         if (response.status === 200) {
           this.tableEntries = response.data.tableData;
         } else if (response.status === 404) {
-          alert("Brak meczów dla tego turnieju");
+          alert("W tym turnieju nie rozegrane zostały jeszcze żadne mecze");
         } else {
           alert("Błąd podczas próby pobrania meczów");
         }

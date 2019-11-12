@@ -36,6 +36,10 @@ export default {
             this.Matches = res.data;
             break;
           }
+          case 404: {
+            alert("W tym turnieju nie rozegrane zostały jeszcze żadne mecze")
+            break;
+          }
           default: {
             alert("Nie można pobrać rezultatów turnieju");
             break;
