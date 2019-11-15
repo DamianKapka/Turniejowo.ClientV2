@@ -44,6 +44,10 @@ export default {
               this.Matches = res.data;
               break;
             }
+            case 404: {
+              this.Matches = [];
+              break;
+            }
             default: {
               console.log("Cannot receive matches grouped by date");
               break;
