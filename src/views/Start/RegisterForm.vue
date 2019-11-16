@@ -134,20 +134,48 @@ export default {
           .then(response => {
             switch (response.status) {
               case 201: {
-                alert("Konto założone poprawnie");
+                this.$swal.fire({
+                  type: "success",
+                  title: "Sukces",
+                  confirmButtonColor: "#7fffd4",
+                  text: "Konto założone poprawnie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 this.$router.push({ name: "login" });
                 break;
               }
               case 409: {
-                alert("Podany adres e-mail istnieje już w bazie danych");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Podany adres e-mail istnieje już w bazie danych",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 400: {
-                alert("Nie można przetworzyć żądania");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Nie można przetworzyć żądania",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 500: {
-                alert("Wewnętrzny błąd servera");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Wewnętrzny błąd servera",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               default: {

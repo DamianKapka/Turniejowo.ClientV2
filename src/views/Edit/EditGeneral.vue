@@ -108,8 +108,7 @@ export default {
       AmountOfTeamsRules: [
         a => !!a || "Wprowadz ilość drużyn w turnieju",
         a =>
-          /^[1-9][0-9]?$/.test(a) ||
-          "Ilośc drużym musi być cyrfą wieksza od 0"
+          /^[1-9][0-9]?$/.test(a) || "Ilośc drużym musi być cyrfą wieksza od 0"
       ],
       EntryFee: "",
       EntryFeeRules: [
@@ -118,7 +117,7 @@ export default {
       ],
       Localization: "",
       LocalizationRules: [l => !!l || "Wprowadz lokalizacje turnieju"],
-      TournamentId: "",
+      TournamentId: ""
     };
   },
   created() {
@@ -126,17 +125,33 @@ export default {
   },
   methods: {
     editTourney() {
-      axios
-        .put(`${this.apiUrl}/api/tournament/${this.TournamentId}`, this.model)
-        .then(res => {
-          if (res.status === 202) {
-            alert("Edycja turnieju przebiegla poprawnie");
-            this.$emit("tournamentEdited", this.model);
-          } else {
-            alert("Błąd podczas próby edycji turnieju");
-          }
-        })
-        .catch();
+      if (this.$refs.form.validate()) {
+        axios
+          .put(`${this.apiUrl}/api/tournament/${this.TournamentId}`, this.model)
+          .then(res => {
+            if (res.status === 202) {
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Turniej zedytowany poprawnie",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              this.$emit("tournamentEdited", this.model);
+            } else {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Nie udało się zedytować turnieju",
+                showConfirmButton: true,
+                timer: 4000
+              });
+            }
+          })
+          .catch();
+      }
     },
     getTournamentInfo() {
       const tourney = this.currentlyEditedTournament;

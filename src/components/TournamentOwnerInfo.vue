@@ -52,10 +52,24 @@ export default {
           )
           .then(res => {
             if (res.status === 202) {
-              alert("Turniej usunięty prawidłowo");
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Turniej usunięty poprawnie",
+                showConfirmButton: true,
+                timer: 4000
+              });
               this.$emit("tournamentDeleted");
             } else {
-              alert("Nie można usunac turnieju");
+              this.$swal.fire({
+                type: "error",
+                title: "Blad",
+                confirmButtonColor: "#7fffd4",
+                text: "Nie udało się usunąc turnieju",
+                showConfirmButton: true,
+                timer: 4000
+              });
             }
           })
           .catch(err => console.log(err.response));

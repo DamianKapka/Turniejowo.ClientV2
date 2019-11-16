@@ -143,10 +143,24 @@ export default {
           .post(`${this.apiUrl}/api/tournament`, this.model)
           .then(res => {
             if (res.status === 201) {
-              alert("Turniej został założony");
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Turniej założony poprawnie",
+                showConfirmButton: true,
+                timer: 4000
+              });
               this.$router.push({ name: "MyTournaments" });
             } else {
-              alert("Nie udało się załóżyć turnieju.");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Nie udało się utworzyć turnieju",
+                showConfirmButton: true,
+                timer: 4000
+              });
             }
           })
 

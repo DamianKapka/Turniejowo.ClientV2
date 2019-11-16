@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="290">
     <template #activator="{on}">
-      <v-icon style="color: firebrick" v-on="on"
-      >delete_forever</v-icon
-      >
+      <v-icon style="color: firebrick" v-on="on">delete_forever</v-icon>
     </template>
     <v-card>
       <v-card-title class="headline"
@@ -47,17 +45,38 @@ export default {
         .then(res => {
           switch (res.status) {
             case 202: {
-              alert("Dryżyna poprawnie usunięta");
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Drużyna usunięta",
+                showConfirmButton: true,
+                timer: 4000
+              });
               this.$emit("confirmed");
               this.dialog = false;
               break;
             }
             case 404: {
-              alert("Drużyna o takim ID nie istnieje");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Drużyna nie istnieje w bazie dancyh",
+                showConfirmButton: true,
+                timer: 4000
+              });
               break;
             }
             default:
-              alert("Nieznany błąd przy usuwaniu");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Nieznany błąd przy usuwaniu drużyny",
+                showConfirmButton: true,
+                timer: 4000
+              });
               break;
           }
         })

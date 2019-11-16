@@ -59,27 +59,62 @@ export default {
           .then(res => {
             switch (res.status) {
               case 201: {
-                alert("Druzyna dodana");
+                this.$swal.fire({
+                  type: "success",
+                  title: "Sukces",
+                  confirmButtonColor: "#7fffd4",
+                  text: "Dryżyna dodana poprawnie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 this.TName = "";
                 this.$emit("TeamAdded");
                 break;
               }
               case 404: {
-                alert("Turniej do którego dużyna ma być dodana nie istnieje");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Turniej do którego dużyna ma być dodana nie istnieje",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 409: {
-                alert("Taka drużyna w tym turnieju już istnieje");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Taka drużyna w tym turnieju już istnieje",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               default: {
-                alert("Nieznany błąd podczas próby dodania druyżyny");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Nieznany błąd podczas próby dodania druyżyny",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
             }
           })
           .catch(() => {
-            alert("Nie udalo sie dodać drużyny");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Nieznany błąd podczas próby dodania druyżyny",
+              showConfirmButton: true,
+              timer: 4000
+            });
           });
       }
     }

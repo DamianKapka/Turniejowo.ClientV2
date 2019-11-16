@@ -45,16 +45,37 @@ export default {
         .then(res => {
           switch (res.status) {
             case 202: {
-              alert("Mecz usunięty");
-              this.$emit('deleted');
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Mecz usunięty",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              this.$emit("deleted");
               break;
             }
             case 404: {
-              alert("Mecz nie istnieje");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Mecz nie istnieje",
+                showConfirmButton: true,
+                timer: 4000
+              });
               break;
             }
             default: {
-              alert("Nieznany błąd podczas próby usunięcia meczu");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Nieznany błąd podczas usuwania meczu",
+                showConfirmButton: true,
+                timer: 4000
+              });
               break;
             }
           }

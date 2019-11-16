@@ -58,17 +58,36 @@ export default {
           .put(`${this.apiUrl}/api/team/${this.Team.teamId}`, this.Team)
           .then(res => {
             if (res.status === 202) {
-              alert("Edycja powiodłą się");
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Edycja drużyny powiodła się",
+                showConfirmButton: true,
+                timer: 4000
+              });
               this.$emit("edited");
               this.dialog = false;
             } else {
               this.teamName = this.Team.name;
               if (res.status === 404) {
-                alert("Drużna nie istnieje w bazie danych");
-              } else if (res.status === 409) {
-                alert("Id teamu i Id drużyny nie zgadzają się");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Drużyna nie istnieje w bazie danych",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
               } else {
-                alert("Nieznany błąd");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Nieznany błąd",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
               }
             }
           })

@@ -59,11 +59,25 @@ export default {
             break;
           }
           case 404: {
-            alert("Turniej nie istnieje");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Turniej nie istnieje",
+              showConfirmButton: true,
+              timer: 4000
+            });
             break;
           }
           default: {
-            alert("Błąd podczas próby odczytania informacji o turnieju");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Błąd podczas próby odczytania informacji o turnieju",
+              showConfirmButton: true,
+              timer: 4000
+            });
           }
         }
       });

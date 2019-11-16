@@ -49,12 +49,19 @@ export default {
                 break;
               }
               default: {
-                alert("Turniej o takim ID nie istnieje");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Turniej o podanym id nie istnieje",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
               }
             }
           })
           .catch(error => {
-            alert(error);
+            console.log(error);
           });
       }
     }

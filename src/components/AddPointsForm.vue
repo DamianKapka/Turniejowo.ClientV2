@@ -114,14 +114,28 @@ export default {
               `${this.apiUrl}/api/team/${this.match.guestTeamId}/players`
             );
           } else {
-            alert("Wystąpił problem z pobranie, graczy występujących w meczu");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Wystąpił problem z pobranie, graczy występujących w meczu",
+              showConfirmButton: true,
+              timer: 4000
+            });
           }
         })
         .then(response => {
           if (response.status === 200) {
             this.guestTeamPlayers = response.data;
           } else {
-            alert("Wystąpił problem z pobranie, graczy występujących w meczu");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Wystąpił problem z pobranie, graczy występujących w meczu",
+              showConfirmButton: true,
+              timer: 4000
+            });
           }
         })
         .catch(err => console.log(err));
@@ -132,18 +146,52 @@ export default {
           .post(`${this.apiUrl}/api/points`, this.requestModel)
           .then(response => {
             if (response.status === 202) {
-              alert("Punkty poprawnie dodane");
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Punkty dodane poprawnie",
+                showConfirmButton: true,
+                timer: 4000
+              });
               this.$emit("added", this.match.matchId);
             } else if (response.status === 406) {
-              alert("Przekroczono pulę punktów.");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Przekroczono pulę punktów.",
+                showConfirmButton: true,
+                timer: 4000
+              });
             } else if (response.status === 409) {
-              alert("Podany gracz widnieje już w tabeli punktów tego meczu");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Podany gracz widnieje już w tabeli punktów tego meczu",
+                showConfirmButton: true,
+                timer: 4000
+              });
             } else if (response.status === 404) {
-              alert("Mecz dla istnieje.");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Mecz nie istnieje",
+                showConfirmButton: true,
+                timer: 4000
+              });
             } else {
-              alert(
-                "Nieznany błąd podczas próby dodanie punktów graczy dla tego meczu"
-              );
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text:
+                  "Nieznany błąd podczas próby dodanie punktów graczy dla tego meczu",
+                showConfirmButton: true,
+                timer: 4000
+              });
             }
           })
           .catch(err => console.log(err));

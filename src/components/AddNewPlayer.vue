@@ -66,25 +66,60 @@ export default {
           .then(res => {
             switch (res.status) {
               case 201: {
-                alert("Gracz dodany prawidłowo");
                 this.$emit("playerAdded");
                 this.dialog = false;
+                this.$swal.fire({
+                  type: "success",
+                  title: "Sukces",
+                  confirmButtonColor: "#7fffd4",
+                  text: "Gracz dodany poprawnie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 404: {
-                alert("Drużyna do której próbowano dodać gracza nie istnieje");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Drużyna do której próbowano dodać gracza nie istnieje",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 409: {
-                alert("Taki gracz już istnieje w tej dużynie");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Taki gracz już istnieje w tej drużynie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 400: {
-                alert("Błedne zapytanie");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Błędne zapytanie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               default: {
-                alert("Nieznany błąd");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Błędne zapytanie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
             }

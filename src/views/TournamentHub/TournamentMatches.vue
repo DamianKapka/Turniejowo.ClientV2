@@ -37,11 +37,25 @@ export default {
             break;
           }
           case 404: {
-            alert("W tym turnieju nie rozegrane zostały jeszcze żadne mecze")
+            this.$swal.fire({
+              type: "info",
+              title: "Informacja",
+              //confirmButtonColor: "#cb4154",
+              text: "W tym turnieju nie rozegrane zostały jeszcze żadne mecze",
+              showConfirmButton: true,
+              timer: 4000
+            });
             break;
           }
           default: {
-            alert("Nie można pobrać rezultatów turnieju");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Nie można pobrać rezultatów turnieju",
+              showConfirmButton: true,
+              timer: 4000
+            });
             break;
           }
         }

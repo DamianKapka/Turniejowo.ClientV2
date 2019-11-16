@@ -97,9 +97,23 @@ export default {
         if (response.status === 200) {
           this.tableEntries = response.data.tableData;
         } else if (response.status === 404) {
-          alert("W tym turnieju nie rozegrane zostały jeszcze żadne mecze");
+          this.$swal.fire({
+            type: "info",
+            title: "Informacja",
+            //confirmButtonColor: "#cb4154",
+            text: "W tym turnieju nie rozegrane zostały jeszcze żadne mecze",
+            showConfirmButton: true,
+            timer: 4000
+          });
         } else {
-          alert("Błąd podczas próby pobrania meczów");
+          this.$swal.fire({
+            type: "error",
+            title: "Błąd",
+            confirmButtonColor: "#cb4154",
+            text: "Błąd podczas próby pobrania meczów",
+            showConfirmButton: true,
+            timer: 4000
+          });
         }
       })
       // eslint-disable-next-line no-console

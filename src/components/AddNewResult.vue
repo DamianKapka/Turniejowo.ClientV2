@@ -155,11 +155,25 @@ export default {
               break;
             }
             case 404: {
-              alert("Brak drużyn dla tego turnieju");
+              this.$swal.fire({
+                type: "info",
+                title: "Informacja",
+                //confirmButtonColor: "#cb4154",
+                text: "Brak drużyn w tym turnieju",
+                showConfirmButton: true,
+                timer: 4000
+              });
               break;
             }
             default: {
-              alert("Nieznany błąd podczas dodawania meczu");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Brak drużyn w tym turnieju",
+                showConfirmButton: true,
+                timer: 4000
+              });
               break;
             }
           }
@@ -171,17 +185,38 @@ export default {
         axios.post(`${this.apiUrl}/api/match`, this.matchModel).then(res => {
           switch (res.status) {
             case 201: {
-              alert("Mecz dodany");
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Dodano mecz",
+                showConfirmButton: true,
+                timer: 4000
+              });
               this.$emit("ResultAdded");
               break;
             }
-            case 406:{
-              alert("Jedna z drużyn rozgrywa już mecz w tym terminie");
+            case 406: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Jedna z drużyn rozgrywa już mecz w tym terminie",
+                showConfirmButton: true,
+                timer: 4000
+              });
               break;
             }
             default: {
-              console.log(res);
-              alert("Błąd podczas dodawania meczu");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Nieznany błąd podczas próby dodania meczu",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              break;
             }
           }
         });

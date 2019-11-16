@@ -166,7 +166,14 @@ export default {
               }
             });
           } else {
-            alert("Nie udało się zdobyć informacji na temat punktów w meczu");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Nie udało się zdobyć informacji na temat punktów w meczu",
+              showConfirmButton: true,
+              timer: 4000
+            });
           }
         })
         .catch(err => console.log(err));
@@ -180,14 +187,34 @@ export default {
           .delete(`${this.apiUrl}/api/points/${this.match.matchId}`)
           .then(response => {
             if (response.status === 202) {
-              alert("Poprawnie zresetowano punkty graczy dla tego meczu");
+              this.$swal.fire({
+                type: "success",
+                title: "Sukces",
+                confirmButtonColor: "#7fffd4",
+                text: "Poprawnie zresetowano punkty graczy dla tego meczu",
+                showConfirmButton: true,
+                timer: 4000
+              });
               this.matchScores = [[], []];
             } else if (response.status === 404) {
-              alert("Mecz dla istnieje.");
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Mecz dla istnieje.",
+                showConfirmButton: true,
+                timer: 4000
+              });
             } else {
-              alert(
-                "Nieznany błąd podczas próby usuniecia punktów graczy dla tego meczu"
-              );
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text:
+                  "Nieznany błąd podczas próby usuniecia punktów graczy dla tego meczu",
+                showConfirmButton: true,
+                timer: 4000
+              });
             }
           })
           .catch(err => console.log(err));

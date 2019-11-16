@@ -73,7 +73,10 @@
       </MatchDetailsDialog>
     </v-flex>
     <v-flex xs4>
-      <ThrashDeleteMatchDialog @deleted="$emit('updated')" :matchId="match.matchId">
+      <ThrashDeleteMatchDialog
+        @deleted="$emit('updated')"
+        :matchId="match.matchId"
+      >
       </ThrashDeleteMatchDialog>
     </v-flex>
   </v-layout>
@@ -192,20 +195,48 @@ export default {
           .then(res => {
             switch (res.status) {
               case 202: {
-                alert("Wynik wprowadzony");
+                this.$swal.fire({
+                  type: "success",
+                  title: "Sukces",
+                  confirmButtonColor: "#7fffd4",
+                  text: "Wynik dodany",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 this.$emit("updated");
                 break;
               }
               case 404: {
-                alert("Turniej nie istnieje");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Turniej nie występuje w bazie danych",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 400: {
-                alert("Błędne żądanie");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Błąd podczas próby edycji wyniku",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               default: {
-                alert("Nieznany błąd podczas próby zaktualizowania wyniku");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Nieznany błąd podczas próby edycji wyniku",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
             }
@@ -225,20 +256,48 @@ export default {
           .then(res => {
             switch (res.status) {
               case 202: {
-                alert("Wynik edytowany");
+                this.$swal.fire({
+                  type: "success",
+                  title: "Sukces",
+                  confirmButtonColor: "#7fffd4",
+                  text: "Wynik zedytowany",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 this.$emit("updated");
                 break;
               }
               case 404: {
-                alert("Turniej nie istnieje");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Turniej nie istnieje",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 400: {
-                alert("Błędne żądanie");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Błędne żądanie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               default: {
-                alert("Nieznany błąd podczas próby zaktualizowania wyniku");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Nieznany błąd podczas próby zaktualizowania wyniku",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
             }

@@ -79,11 +79,25 @@ export default {
             break;
           }
           case 404: {
-            alert("Błąd podczas pobierania graczy.");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Błąd podczas pobierania graczy.",
+              showConfirmButton: true,
+              timer: 4000
+            });
             break;
           }
           default: {
-            alert("Nieznany błąd podczas próby pobrania graczy");
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Nieznany błąd podczas próby pobrania graczy",
+              showConfirmButton: true,
+              timer: 4000
+            });
             break;
           }
         }

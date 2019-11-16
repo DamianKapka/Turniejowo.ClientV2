@@ -66,24 +66,59 @@ export default {
           .then(res => {
             switch (res.status) {
               case 202: {
-                alert("Gracz zedytowany");
+                this.$swal.fire({
+                  type: "success",
+                  title: "Sukces",
+                  confirmButtonColor: "#7fffd4",
+                  text: "Gracz zedytwany poprawnie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 this.$emit("edited");
                 break;
               }
               case 404: {
-                alert("Gracz nieodnaleziony");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Gracz nieodnaleziony",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 409: {
-                alert("Id gracza nie pasuje z Id gracza do usuniecia");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Id gracza nie pasuje z Id gracza do usuniecia",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 400: {
-                alert("Nieprawidłowe zapytanie");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Nieprawidłowe zapytanie",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               default: {
-                alert("Nieznany błąd");
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Nieznany błąd",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
             }
