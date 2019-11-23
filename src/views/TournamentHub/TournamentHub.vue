@@ -1,6 +1,6 @@
 <template>
   <v-layout row>
-    <v-flex xs8 offset-xs2>
+    <v-flex xs10 offset-xs1>
       <v-card class="elevation-24 main-card">
         <v-layout row>
           <v-flex
@@ -23,28 +23,63 @@
 
 <script>
 import NavBarCard from "@/components/NavBarCard";
+import { mapMutations } from "vuex";
+import { mapGetters } from "vuex";
+import navBarCardsFactory from "../../utils/navBarCardsFactoryMixin";
+import axios from "axios";
 
 export default {
   name: "TournamentHub",
   data() {
     return {
-      navBardCardInfo: [
-        { LabelInfo: "Ogólne", ActiveClass: "info", RouterLink: "info" },
-        {
-          LabelInfo: "Uczestnicy",
-          ActiveClass: "participants",
-          RouterLink: "participants"
-        },
-        { LabelInfo: "Tabela", ActiveClass: "table", RouterLink: "table" },
-        { LabelInfo: "Statystyki", ActiveClass: "stats", RouterLink: "stats" },
-        { LabelInfo: "Mecze", ActiveClass: "matches", RouterLink: "matches" },
-        { LabelInfo: "Cofnij", ActiveClass: "find", RouterLink: "find" }
-      ]
+      isBracketTournament: Boolean
     };
   },
   components: {
     NavBarCard
-  }
+  },
+  async created() {
+    await axios
+      .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}`)
+      .then(res => {
+        switch (res.status) {
+          case 200: {
+            this.isBracketTournament = res.data.isBracket;
+            this.mutateCurrentlyViewedTournament(res.data);
+            break;
+          }
+          case 404: {
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Turniej nie istnieje",
+              showConfirmButton: true,
+              timer: 4000
+            });
+            break;
+          }
+          default: {
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Błąd podczas próby odczytania informacji o turnieju",
+              showConfirmButton: true,
+              timer: 4000
+            });
+          }
+        }
+      });
+  },
+  methods: mapMutations(["mutateCurrentlyViewedTournament"]),
+  computed: {
+    navBardCardInfo: function() {
+      return this.createNavBarCards(this.isBracketTournament);
+    },
+    ...mapGetters(["apiUrl"])
+  },
+  mixins: [navBarCardsFactory]
 };
 </script>
 

@@ -40,7 +40,6 @@ export default {
             this.$swal.fire({
               type: "info",
               title: "Informacja",
-              //confirmButtonColor: "#cb4154",
               text: "W tym turnieju nie rozegrane zostały jeszcze żadne mecze",
               showConfirmButton: true,
               timer: 4000

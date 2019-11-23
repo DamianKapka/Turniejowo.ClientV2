@@ -113,7 +113,7 @@ export default {
       EntryFee: "",
       EntryFeeRules: [
         e => !!e || "Wprowadz wpisowe do turnieju",
-        e => /^[1-9]{1}[0-9]*$/.test(e) || "Wpisowe musi być cyrfą wieksza od 0"
+        e => /^[1-9][0-9]*$/.test(e) || "Wpisowe musi być cyrfą wieksza od 0"
       ],
       Localization: "",
       LocalizationRules: [l => !!l || "Wprowadz lokalizacje turnieju"],

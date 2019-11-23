@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-data-table
-    :items="tournamentIntoDetails"
+    :items="tournamentInfoDetails"
     class="elevation-7 table"
     :hide-actions="true"
   >
@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapGetters } from "vuex";
+import getTournamentTypeMixin from "../../mixins/getTournamentTypeMixin";
 
 export default {
   name: "TournamentInfo",
@@ -23,64 +23,47 @@ export default {
     };
   },
   computed: {
-    tournamentIntoDetails: function() {
+    tournamentInfoDetails: function() {
       const details = [
-        { key: "Nazwa", value: this.tournamentInfo.name },
-        { key: "Dyscyplina", value: this.tournamentInfo.discipline },
+        { key: "Nazwa", value: this.currentlyViewedTournament.name },
+        { key: "Dyscyplina", value: this.currentlyViewedTournament.discipline },
+        {
+          key: "Typ",
+          value: this.getTournamentTypeBasedOnBool(
+            this.currentlyViewedTournament.isBracket
+          )
+        },
         {
           key: "Data rozpoczecia",
-          value: this.tournamentInfo.date
+          value: this.currentlyViewedTournament.date.slice(0, 10)
         },
-        { key: "Liczba drużyn", value: this.tournamentInfo.amountOfTeams },
+        {
+          key: "Liczba drużyn",
+          value: this.currentlyViewedTournament.amountOfTeams
+        },
         {
           key: "Liczba zapisanych drużyn",
-          value: this.tournamentInfo.amountOfSignedTeams
+          value: this.currentlyViewedTournament.amountOfSignedTeams
         },
-        { key: "Wpisowe", value: this.tournamentInfo.entryFee },
-        { key: "Lokalizacja", value: this.tournamentInfo.localization },
-        { key: "Organizator", value: this.tournamentInfo.creatorName },
+        { key: "Wpisowe", value: this.currentlyViewedTournament.entryFee },
+        {
+          key: "Lokalizacja",
+          value: this.currentlyViewedTournament.localization
+        },
+        {
+          key: "Organizator",
+          value: this.currentlyViewedTournament.creatorName
+        },
         {
           key: "Kontakt z organizatorem",
-          value: this.tournamentInfo.creatorContact
+          value: this.currentlyViewedTournament.creatorContact
         }
       ];
 
       return details;
     },
-    ...mapGetters(["apiUrl"])
+    ...mapGetters(["apiUrl", "currentlyViewedTournament"])
   },
-  created() {
-    axios
-      .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}`)
-      .then(res => {
-        switch (res.status) {
-          case 200: {
-            this.tournamentInfo = res.data;
-            break;
-          }
-          case 404: {
-            this.$swal.fire({
-              type: "error",
-              title: "Błąd",
-              confirmButtonColor: "#cb4154",
-              text: "Turniej nie istnieje",
-              showConfirmButton: true,
-              timer: 4000
-            });
-            break;
-          }
-          default: {
-            this.$swal.fire({
-              type: "error",
-              title: "Błąd",
-              confirmButtonColor: "#cb4154",
-              text: "Błąd podczas próby odczytania informacji o turnieju",
-              showConfirmButton: true,
-              timer: 4000
-            });
-          }
-        }
-      });
-  }
+  mixins: [getTournamentTypeMixin]
 };
 </script>

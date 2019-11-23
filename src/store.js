@@ -11,12 +11,14 @@ const types = {
 };
 
 const state = {
-  currentlyEditedTournament: "",
-  apiUrl: "http://78.47.36.35:7000"
+  currentlyEditedTournament: Object,
+  currentlyViewedTournament: Object,
+  apiUrl: "https://localhost:5001"
 };
 
 const getters = {
   currentlyEditedTournament: state => state.currentlyEditedTournament,
+  currentlyViewedTournament: state => state.currentlyViewedTournament,
   apiUrl: state => state.apiUrl
 };
 
@@ -67,6 +69,10 @@ const mutations = {
   },
   mutateCurrentlyEditedTournament(state, tournament) {
     state.currentlyEditedTournament = tournament;
+  },
+
+  mutateCurrentlyViewedTournament(state, tournament) {
+    state.currentlyViewedTournament = tournament;
   }
 };
 
