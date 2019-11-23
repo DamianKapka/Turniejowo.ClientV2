@@ -1,6 +1,6 @@
 <template>
   <v-layout row>
-    <v-flex xs10 offset-xs1>
+    <v-flex xs8 offset-xs2>
       <v-card class="elevation-24 main-card">
         <v-layout row>
           <v-flex
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import NavBarCard from "@/components/NavBarCard";
+import NavBarCard from "../../components/NavBarCard";
 import { mapMutations } from "vuex";
 import { mapGetters } from "vuex";
 import navBarCardsFactory from "../../utils/navBarCardsFactoryMixin";

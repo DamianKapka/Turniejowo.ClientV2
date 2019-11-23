@@ -35,15 +35,15 @@
 </template>
 
 <script>
-//import { SixteenTeamsFilled } from "../../utils/bracketTestData";
-import { EightTeamsFilled } from "../../utils/bracketTestData";
+import { SixteenTeamsFilled } from "../../utils/bracketTestData";
+//import { EightTeamsFilled } from "../../utils/bracketTestData";
 
 export default {
   name: "Bracket",
   data() {
     return {
-      numOfTeams: EightTeamsFilled.numOfTeams,
-      rounds: EightTeamsFilled.rounds
+      numOfTeams: SixteenTeamsFilled.numOfTeams,
+      rounds: SixteenTeamsFilled.rounds
     };
   },
   methods: {

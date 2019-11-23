@@ -138,7 +138,7 @@ export const SixteenTeamsFilled = {
   ]
 };
 
-export const EightTeamsFilled = {
+export const EightTeamsUnfilled = {
   numOfTeams: 8,
   rounds: [
     {
@@ -170,7 +170,7 @@ export const EightTeamsFilled = {
   ]
 };
 
-export const EightTeamsUnfilled = {
+export const EightTeamsFilled = {
   numOfTeams: 8,
   rounds: [
     {
