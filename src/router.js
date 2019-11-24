@@ -143,6 +143,11 @@ export default new Router({
           component: TournamentTable
         },
         {
+          path: "bracket",
+          name: "AdminBracket",
+          component: TournamentBracket
+        },
+        {
           path: "progress",
           name: "EditProgress",
           component: EditProgress

@@ -12,6 +12,15 @@
         label="Dyscyplina"
         v-model="Discipline"
         :items="DisciplineOptions"
+        readonly
+      >
+      </v-combobox>
+
+      <v-combobox
+        label="Dyscyplina"
+        v-model="Type"
+        :items="TypeOptions"
+        readonly
       >
       </v-combobox>
 
@@ -87,6 +96,7 @@
 import axios from "axios";
 import getDisciplineInfo from "../../mixins/getDisciplineInfo";
 import getLoggedUserIdMixin from "../../mixins/getLoggedUserIdMixin";
+import getTournamentTypeMixin from "../../mixins/getTournamentTypeMixin";
 import { mapGetters } from "vuex";
 
 export default {
@@ -103,6 +113,8 @@ export default {
       ],
       Discipline: "",
       DisciplineOptions: ["Piłka Nożna", "Koszykówka", "Siatkówka"],
+      Type: "",
+      TypeOptions: ["Tabela", "Drabinka"],
       StartingDate: new Date().toISOString().substr(0, 10),
       AmountOfTeams: "",
       AmountOfTeamsRules: [
@@ -160,6 +172,7 @@ export default {
       this.Name = tourney.name;
       this.Discipline = this.getDisciplineById(tourney.disciplineId);
       this.StartingDate = tourney.date.slice(0, 10);
+      this.Type = this.getTournamentTypeBasedOnBool(tourney.isBracket);
       this.AmountOfTeams = tourney.amountOfTeams;
       this.EntryFee = tourney.entryFee;
       this.Localization = tourney.localization;
@@ -172,6 +185,7 @@ export default {
         name: this.Name,
         disciplineId: this.getDisciplineId(this.Discipline),
         creatorId: this.getLoggedUserId(),
+        isBracket: this.getTournamentBoolBasedOnName(this.Type),
         date: this.StartingDate,
         amountOfTeams: this.AmountOfTeams,
         entryFee: this.EntryFee,
@@ -180,6 +194,6 @@ export default {
     },
     ...mapGetters(["apiUrl", "currentlyEditedTournament"])
   },
-  mixins: [getDisciplineInfo, getLoggedUserIdMixin]
+  mixins: [getDisciplineInfo, getLoggedUserIdMixin, getTournamentTypeMixin]
 };
 </script>
