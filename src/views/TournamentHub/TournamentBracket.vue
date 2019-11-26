@@ -35,17 +35,20 @@
 </template>
 
 <script>
-import { SixteenTeamsFilled } from "../../utils/bracketTestData";
-//import { EightTeamsFilled } from "../../utils/bracketTestData";
+import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Bracket",
   data() {
     return {
-      numOfTeams: SixteenTeamsFilled.numOfTeams,
-      rounds: SixteenTeamsFilled.rounds
+      rounds: []
     };
   },
+  created() {
+    this.getTournamentBracket();
+  },
+  computed: mapGetters(["apiUrl"]),
   methods: {
     bracketFlexClasses: function(roundsLenght) {
       return [`xs${12 / roundsLenght}`, "text-xs-left"];
@@ -88,7 +91,7 @@ export default {
     countMarginBottomForRound: function(roundIndex) {
       switch (roundIndex) {
         case 0:
-          return 0;
+          return 2;
         case 1:
           return 70;
         case 2:
@@ -96,6 +99,51 @@ export default {
         case 3:
           return 0;
       }
+    },
+    getTournamentBracket: function() {
+      axios
+        .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}/bracket`)
+        .then(res => {
+          switch (res.status) {
+            case 200: {
+              this.rounds = res.data.rounds;
+              break;
+            }
+            case 404: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Turniej nie istnieje w bazie danych",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              break;
+            }
+            case 409: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text:
+                  "Turniej nie jest typem drabinkowym, bądź nie ma odpowiedniej liczy drużyn",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              break;
+            }
+            default: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Nieznany błąd podczas próby pobrania drabinki turnieju",
+                showConfirmButton: true,
+                timer: 4000
+              });
+            }
+          }
+        });
     }
   }
 };
