@@ -14,17 +14,17 @@
         >
           <v-card :class="bracketCardEntryClasses(match, `A`)">
             <v-layout row>
-              <v-flex xs10>{{ match.teamA || "-" }}</v-flex>
+              <v-flex xs10>{{ match.homeTeamName || "-" }}</v-flex>
               <v-flex xs2 style="border: 1px solid black"
-                ><strong>{{ match.teamAPoints || "-" }}</strong></v-flex
+                ><strong>{{ match.homeTeamPoints || "-" }}</strong></v-flex
               >
             </v-layout>
           </v-card>
           <v-card :class="bracketCardEntryClasses(match, `B`)">
             <v-layout row>
-              <v-flex xs10>{{ match.teamB || "-" }}</v-flex>
+              <v-flex xs10>{{ match.guestTeamName || "-" }}</v-flex>
               <v-flex xs2 style="border: 1px solid black"
-                ><strong>{{ match.teamBPoints || "-" }}</strong></v-flex
+                ><strong>{{ match.guestTeamPoints || "-" }}</strong></v-flex
               >
             </v-layout>
           </v-card>
@@ -68,8 +68,8 @@ export default {
       if (!match.isFinished) {
         return ["bracketCardEntryUndefinedStyle"];
       } else if (
-        (match.teamAPoints > match.teamBPoints && teamId === "A") ||
-        (match.teamBPoints > match.teamAPoints && teamId === "B")
+        (match.homeTeamPoints > match.guestTeamPoints && teamId === "A") ||
+        (match.guestTeamPoints > match.homeTeamPoints && teamId === "B")
       ) {
         return ["bracketCardEntryWinnerStyle"];
       } else {
@@ -106,6 +106,7 @@ export default {
         .then(res => {
           switch (res.status) {
             case 200: {
+              console.log(res.data.rounds);
               this.rounds = res.data.rounds;
               break;
             }
