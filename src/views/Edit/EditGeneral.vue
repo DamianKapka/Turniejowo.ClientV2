@@ -57,6 +57,14 @@
         label="Ilość dryżun"
         :rules="AmountOfTeamsRules"
         required
+        readonly
+      >
+      </v-text-field>
+
+      <v-text-field
+        v-model="AmountOfSignedTeams"
+        label="Ilość zapisanych dryżun"
+        readonly
       >
       </v-text-field>
 
@@ -122,6 +130,7 @@ export default {
         a =>
           /^[1-9][0-9]?$/.test(a) || "Ilośc drużym musi być cyrfą wieksza od 0"
       ],
+      AmountOfSignedTeams: "",
       EntryFee: "",
       EntryFeeRules: [
         e => !!e || "Wprowadz wpisowe do turnieju",
@@ -174,9 +183,10 @@ export default {
       this.StartingDate = tourney.date.slice(0, 10);
       this.Type = this.getTournamentTypeBasedOnBool(tourney.isBracket);
       this.AmountOfTeams = tourney.amountOfTeams;
+      this.AmountOfSignedTeams = tourney.amountOfSignedTeams;
       this.EntryFee = tourney.entryFee;
       this.Localization = tourney.localization;
-    }
+    },
   },
   computed: {
     model: function() {
@@ -197,3 +207,5 @@ export default {
   mixins: [getDisciplineInfo, getLoggedUserIdMixin, getTournamentTypeMixin]
 };
 </script>
+<style scoped>
+</style>

@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     tournamentInfoDetails: function() {
-      const details = [
+      var details = [
         { key: "Nazwa", value: this.currentlyViewedTournament.name },
         { key: "Dyscyplina", value: this.currentlyViewedTournament.discipline },
         {

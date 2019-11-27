@@ -15,7 +15,7 @@
             ></NavBarCard>
           </v-flex>
         </v-layout>
-        <router-view />
+        <router-view v-if="dataFetched" />
       </v-card>
     </v-flex>
   </v-layout>
@@ -32,7 +32,8 @@ export default {
   name: "TournamentHub",
   data() {
     return {
-      isBracketTournament: Boolean
+      isBracketTournament: Boolean,
+      dataFetched: false
     };
   },
   components: {
@@ -46,6 +47,7 @@ export default {
           case 200: {
             this.isBracketTournament = res.data.isBracket;
             this.mutateCurrentlyViewedTournament(res.data);
+            this.dataFetched = true;
             break;
           }
           case 404: {

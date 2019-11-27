@@ -34,7 +34,12 @@ export default {
     return {
       valid: false,
       TName: "",
-      NameRules: [n => !!n || "Wpisz nazwe druzyny"]
+      NameRules: [
+        n => !!n || "Wpisz nazwe druzyny",
+        n =>
+          n.length < 20 ||
+          "Nazwa drużyny może składać się z maksymalnie 20 znaków"
+      ]
     };
   },
   computed: {
@@ -77,6 +82,17 @@ export default {
                   title: "Błąd",
                   confirmButtonColor: "#cb4154",
                   text: "Turniej do którego dużyna ma być dodana nie istnieje",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
+                break;
+              }
+              case 406: {
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text: "Turniej posiada już maksymalna ilość uczestników",
                   showConfirmButton: true,
                   timer: 4000
                 });
