@@ -16,7 +16,7 @@
             <v-layout row>
               <v-flex xs10>{{ match.homeTeamName || "-" }}</v-flex>
               <v-flex xs2 style="border: 1px solid black"
-                ><strong>{{ match.homeTeamPoints || "-" }}</strong></v-flex
+                ><strong>{{ match.isFinished ? match.homeTeamPoints : "-" }}</strong></v-flex
               >
             </v-layout>
           </v-card>
@@ -24,7 +24,7 @@
             <v-layout row>
               <v-flex xs10>{{ match.guestTeamName || "-" }}</v-flex>
               <v-flex xs2 style="border: 1px solid black"
-                ><strong>{{ match.guestTeamPoints || "-" }}</strong></v-flex
+                ><strong>{{ match.isFinished ? match.guestTeamPoints : "-" }}</strong></v-flex
               >
             </v-layout>
           </v-card>
