@@ -144,9 +144,7 @@ export default {
     getTournamentTeams() {
       axios
         .get(
-          `${this.apiUrl}/api/tournament/${
-            this.currentlyEditedTournament.tournamentId
-          }/teams`
+          `${this.apiUrl}/api/tournament/${this.currentlyEditedTournament.tournamentId}/teams`
         )
         .then(response => {
           switch (response.status) {
@@ -202,6 +200,29 @@ export default {
                 title: "Błąd",
                 confirmButtonColor: "#cb4154",
                 text: "Jedna z drużyn rozgrywa już mecz w tym terminie",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              break;
+            }
+            case 418: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Drużyny nie są z tego samego turnieju",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              break;
+            }
+            case 427: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text:
+                  "W turnieju drabinkowym manulanie można dodać tylko 1 runde turnueju. Reszta bedzie autogenerowana",
                 showConfirmButton: true,
                 timer: 4000
               });

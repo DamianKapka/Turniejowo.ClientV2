@@ -185,7 +185,8 @@ export default {
           HomeTeamId: this.match.homeTeamId,
           GuestTeamId: this.match.guestTeamId,
           HomeTeamPoints: this.addHomeTeamPoints,
-          GuestTeamPoints: this.addGuestTeamPoints
+          GuestTeamPoints: this.addGuestTeamPoints,
+          BracketIndex: this.match.bracketIndex
         };
 
         const apiUrl = `${this.apiUrl}/api/match/${this.match.matchId}`;
