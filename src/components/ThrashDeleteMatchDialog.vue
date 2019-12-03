@@ -54,6 +54,7 @@ export default {
                 timer: 4000
               });
               this.$emit("deleted");
+              this.dialog=false;
               break;
             }
             case 404: {
