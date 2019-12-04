@@ -228,6 +228,30 @@ export default {
               });
               break;
             }
+            case 429: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text:
+                  "W turnieju drabinkowym mecz nie może zakończyć się remisem",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              break;
+            }
+            case 431: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text:
+                  "W turnieju drabinkowym drużyna może rozgywać tylko 1 mecz w rundzie",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              break;
+            }
             default: {
               this.$swal.fire({
                 type: "error",

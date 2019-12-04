@@ -218,6 +218,18 @@ export default {
                 });
                 break;
               }
+              case 429: {
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text:
+                    "W turnieju drabinkowym mecz nie może zakończyć się remisem",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
+                break;
+              }
               case 400: {
                 this.$swal.fire({
                   type: "error",
@@ -266,6 +278,18 @@ export default {
                   timer: 4000
                 });
                 this.$emit("updated");
+                break;
+              }
+              case 429: {
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text:
+                    "W turnieju drabinkowym mecz nie może zakończyć się remisem",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
                 break;
               }
               case 404: {
