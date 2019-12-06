@@ -290,6 +290,20 @@ export default {
                   showConfirmButton: true,
                   timer: 4000
                 });
+                this.cancel();
+                break;
+              }
+              case 431: {
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text:
+                    "Nie można usunąć meczu. Jedna z drużyn rozgrywa mecz w dalszej fazie turnieju",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
+                this.cancel();
                 break;
               }
               case 404: {
@@ -312,6 +326,7 @@ export default {
                   showConfirmButton: true,
                   timer: 4000
                 });
+                this.cancel();
                 break;
               }
               default: {
@@ -323,6 +338,7 @@ export default {
                   showConfirmButton: true,
                   timer: 4000
                 });
+                this.cancel();
                 break;
               }
             }

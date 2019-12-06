@@ -54,7 +54,7 @@ export default {
                 timer: 4000
               });
               this.$emit("deleted");
-              this.dialog=false;
+              this.dialog = false;
               break;
             }
             case 404: {
@@ -66,6 +66,19 @@ export default {
                 showConfirmButton: true,
                 timer: 4000
               });
+              this.dialog = false;
+              break;
+            }
+            case 431: {
+              this.$swal.fire({
+                type: "error",
+                title: "Błąd",
+                confirmButtonColor: "#cb4154",
+                text: "Nie można usunąć meczu. Jedna z drużyn rozgrywa mecz w dalszej fazie turnieju",
+                showConfirmButton: true,
+                timer: 4000
+              });
+              this.dialog = false;
               break;
             }
             default: {
@@ -77,6 +90,7 @@ export default {
                 showConfirmButton: true,
                 timer: 4000
               });
+              this.dialog = false;
               break;
             }
           }
