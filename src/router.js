@@ -11,6 +11,7 @@ import TournamentInfo from "@/views/TournamentHub/TournamentInfo";
 import TournamentParticipants from "@/views/TournamentHub/TournamentParticipants";
 import TournamentStats from "@/views/TournamentHub/TournamentStats";
 import TournamentTable from "@/views/TournamentHub/TournamentTable";
+import TournamentBracket from "./views/TournamentHub/TournamentBracket";
 import TournamentMatches from "@/views/TournamentHub/TournamentMatches";
 import Profile from "@/views/Profile/Profile";
 import NewTournament from "@/views/Profile/NewTournament";
@@ -87,6 +88,11 @@ export default new Router({
           component: TournamentTable
         },
         {
+          path: "bracket",
+          name: 'bracket',
+          component: TournamentBracket
+        },
+        {
           path: "matches",
           name: "matches",
           component: TournamentMatches
@@ -135,6 +141,11 @@ export default new Router({
           path: "table",
           name: "AdminTable",
           component: TournamentTable
+        },
+        {
+          path: "bracket",
+          name: "AdminBracket",
+          component: TournamentBracket
         },
         {
           path: "progress",

@@ -1,7 +1,7 @@
 <template>
   <v-card class="elevation-10" style="margin-top: 2%;margin-bottom: 2%;">
     <v-card-title>
-      <span class="bold matchtable-entry">{{ Matches.dateTime.split("T")[0] }}</span>
+      <span class="bold matchtable-entry">{{ matchesDate }}</span>
     </v-card-title>
     <v-divider style="margin:0"></v-divider>
     <v-card-text>
@@ -131,6 +131,13 @@ export default {
           sortable: false
         }
       ];
+    },
+    matchesDate: function() {
+      if (this.Matches.dateTime.split("T")[0] == "0001-01-01") {
+        return "WYGENEROWANE AUTOMATYCZIE";
+      }
+
+      return this.Matches.dateTime.split("T")[0];
     }
   },
   components: {
@@ -144,7 +151,7 @@ export default {
 .bold {
   font-weight: bold;
 }
-  .matchtable-entry{
-    font-size: 18px;
-  }
+.matchtable-entry {
+  font-size: 18px;
+}
 </style>

@@ -185,7 +185,8 @@ export default {
           HomeTeamId: this.match.homeTeamId,
           GuestTeamId: this.match.guestTeamId,
           HomeTeamPoints: this.addHomeTeamPoints,
-          GuestTeamPoints: this.addGuestTeamPoints
+          GuestTeamPoints: this.addGuestTeamPoints,
+          BracketIndex: this.match.bracketIndex
         };
 
         const apiUrl = `${this.apiUrl}/api/match/${this.match.matchId}`;
@@ -212,6 +213,18 @@ export default {
                   title: "Błąd",
                   confirmButtonColor: "#cb4154",
                   text: "Turniej nie występuje w bazie danych",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
+                break;
+              }
+              case 429: {
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text:
+                    "W turnieju drabinkowym mecz nie może zakończyć się remisem",
                   showConfirmButton: true,
                   timer: 4000
                 });
@@ -267,6 +280,32 @@ export default {
                 this.$emit("updated");
                 break;
               }
+              case 429: {
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text:
+                    "W turnieju drabinkowym mecz nie może zakończyć się remisem",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
+                this.cancel();
+                break;
+              }
+              case 431: {
+                this.$swal.fire({
+                  type: "error",
+                  title: "Błąd",
+                  confirmButtonColor: "#cb4154",
+                  text:
+                    "Nie można usunąć meczu. Jedna z drużyn rozgrywa mecz w dalszej fazie turnieju",
+                  showConfirmButton: true,
+                  timer: 4000
+                });
+                this.cancel();
+                break;
+              }
               case 404: {
                 this.$swal.fire({
                   type: "error",
@@ -287,6 +326,7 @@ export default {
                   showConfirmButton: true,
                   timer: 4000
                 });
+                this.cancel();
                 break;
               }
               default: {
@@ -298,6 +338,7 @@ export default {
                   showConfirmButton: true,
                   timer: 4000
                 });
+                this.cancel();
                 break;
               }
             }

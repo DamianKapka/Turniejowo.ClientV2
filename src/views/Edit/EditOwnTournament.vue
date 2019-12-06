@@ -30,6 +30,7 @@ import axios from "axios";
 import NavBarCard from "../../components/NavBarCard";
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
+import navBarCardsFactoryMixin from "../../utils/navBarCardsFactoryMixin";
 
 export default {
   name: "EditOwnTournament",
@@ -38,42 +39,15 @@ export default {
     return {
       isFetching: true,
       tournamentId: Number,
-      tournament: Object,
-      navBarCardInfo: [
-        {
-          LabelInfo: "Informacje",
-          ActiveClass: "EditGeneral",
-          RouterLink: "EditGeneral"
-        },
-        {
-          LabelInfo: "Uczestnicy",
-          ActiveClass: "EditParticipants",
-          RouterLink: "EditParticipants"
-        },
-        {
-          LabelInfo: "Przebieg",
-          ActiveClass: "EditProgress",
-          RouterLink: "EditProgress"
-        },
-        {
-          LabelInfo: "Tabela",
-          ActiveClass: "AdminTable",
-          RouterLink: "AdminTable"
-        },
-        {
-          LabelInfo: "Statystyki",
-          ActiveClass: "AdminStatistics",
-          RouterLink: "AdminStatistics"
-        },
-        {
-          LabelInfo: "Cofnij",
-          ActiveClass: "MyTournaments",
-          RouterLink: "MyTournaments"
-        }
-      ]
+      tournament: Object
     };
   },
-  computed: mapGetters(["apiUrl"]),
+  computed: {
+    navBarCardInfo: function() {
+      return this.createAdminNavBarCards(this.tournament.isBracket);
+    },
+    ...mapGetters(["apiUrl"])
+  },
   created() {
     this.tournamentId = this.$route.params.id;
 
@@ -93,7 +67,8 @@ export default {
       this.mutateCurrentlyEditedTournament(tournament);
     },
     ...mapMutations(["mutateCurrentlyEditedTournament"])
-  }
+  },
+  mixins: [navBarCardsFactoryMixin]
 };
 </script>
 

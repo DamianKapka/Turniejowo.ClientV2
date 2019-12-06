@@ -15,36 +15,73 @@
             ></NavBarCard>
           </v-flex>
         </v-layout>
-        <router-view />
+        <router-view v-if="dataFetched" />
       </v-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import NavBarCard from "@/components/NavBarCard";
+import NavBarCard from "../../components/NavBarCard";
+import { mapMutations } from "vuex";
+import { mapGetters } from "vuex";
+import navBarCardsFactory from "../../utils/navBarCardsFactoryMixin";
+import axios from "axios";
 
 export default {
   name: "TournamentHub",
   data() {
     return {
-      navBardCardInfo: [
-        { LabelInfo: "Ogólne", ActiveClass: "info", RouterLink: "info" },
-        {
-          LabelInfo: "Uczestnicy",
-          ActiveClass: "participants",
-          RouterLink: "participants"
-        },
-        { LabelInfo: "Tabela", ActiveClass: "table", RouterLink: "table" },
-        { LabelInfo: "Statystyki", ActiveClass: "stats", RouterLink: "stats" },
-        { LabelInfo: "Mecze", ActiveClass: "matches", RouterLink: "matches" },
-        { LabelInfo: "Cofnij", ActiveClass: "find", RouterLink: "find" }
-      ]
+      isBracketTournament: Boolean,
+      dataFetched: false
     };
   },
   components: {
     NavBarCard
-  }
+  },
+  async created() {
+    await axios
+      .get(`${this.apiUrl}/api/tournament/${this.$route.params.id}`)
+      .then(res => {
+        switch (res.status) {
+          case 200: {
+            this.isBracketTournament = res.data.isBracket;
+            this.mutateCurrentlyViewedTournament(res.data);
+            this.dataFetched = true;
+            break;
+          }
+          case 404: {
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Turniej nie istnieje",
+              showConfirmButton: true,
+              timer: 4000
+            });
+            break;
+          }
+          default: {
+            this.$swal.fire({
+              type: "error",
+              title: "Błąd",
+              confirmButtonColor: "#cb4154",
+              text: "Błąd podczas próby odczytania informacji o turnieju",
+              showConfirmButton: true,
+              timer: 4000
+            });
+          }
+        }
+      });
+  },
+  methods: mapMutations(["mutateCurrentlyViewedTournament"]),
+  computed: {
+    navBardCardInfo: function() {
+      return this.createNavBarCards(this.isBracketTournament);
+    },
+    ...mapGetters(["apiUrl"])
+  },
+  mixins: [navBarCardsFactory]
 };
 </script>
 

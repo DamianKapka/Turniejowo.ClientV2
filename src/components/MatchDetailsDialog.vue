@@ -6,7 +6,7 @@
         v-on="on"
         size="30"
         color="green"
-        @click="getMatchPoints(match.matchId)"
+        @click="getMatchPoints(match.matchid)"
       >
         settings_applications
       </v-icon>
@@ -14,8 +14,7 @@
         search
       </v-icon>
     </template>
-    <v-container class="grey lighted-5">
-      <v-layout row>
+    <v-container class="grey lighted-5"><v-layout row>
         <v-flex xs12>
           <v-card tile class="pa-2 match-dateTime">
             <v-icon color="black">alarm</v-icon>

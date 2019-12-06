@@ -42,8 +42,8 @@ export default {
       teamNameRules: [
         n => !!n || "Wpisz nazwe drużyny",
         n =>
-          /^.{1,16}$/.test(n.trim()) ||
-          "Nazwa drużyny nie może być dluższa niż 16 znaków"
+          n.length < 20 ||
+          "Nazwa drużyny może składać się z maksymalnie 20 znaków"
       ]
     };
   },

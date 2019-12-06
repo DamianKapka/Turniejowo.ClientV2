@@ -14,6 +14,8 @@
       >
       </v-combobox>
 
+      <v-combobox label="Typ" v-model="Type" :items="TypeOptions"> </v-combobox>
+
       <v-menu
         ref="menu"
         :close-on-content-click="false"
@@ -88,6 +90,7 @@ import axios from "axios";
 import getDisciplineInfo from "../../mixins/getDisciplineInfo";
 import { mapGetters } from "vuex";
 import getLoggedUserIdMixin from "../../mixins/getLoggedUserIdMixin";
+import getTournamentTypeMixin from "../../mixins/getTournamentTypeMixin";
 
 export default {
   name: "NewTournament",
@@ -103,13 +106,20 @@ export default {
       ],
       Discipline: "Piłka Nożna",
       DisciplineOptions: ["Piłka Nożna", "Koszykówka", "Siatkówka"],
+      Type: "Tabela",
+      TypeOptions: ["Tabela", "Drabinka"],
       StartingDate: new Date().toISOString().substr(0, 10),
       AmountOfTeams: "",
       AmountOfTeamsRules: [
         a => !!a || "Wprowadz ilość drużyn w turnieju",
         a =>
           /^[1-9][0-9]?$/.test(a.trim()) ||
-          "Ilośc drużym musi być cyrfą wieksza od 0"
+          "Ilośc drużym musi być cyrfą wieksza od 0",
+        a => {
+          if (this.Type === "Drabinka" && a !== "4" && a !== "8" && a !== "16") {
+            return "Turniej w trybie drabinkowym wymaga 4,8 lub 16 drużyn"
+          }
+        }
       ],
       EntryFee: "",
       EntryFeeRules: [
@@ -127,6 +137,7 @@ export default {
       return {
         Name: this.Name,
         DisciplineId: this.getDisciplineId(this.Discipline),
+        isBracket: this.getTournamentBoolBasedOnName(this.Type),
         CreatorId: this.getLoggedUserId(),
         Date: this.StartingDate,
         AmountOfTeams: this.AmountOfTeams,
@@ -171,7 +182,7 @@ export default {
       this.$refs.form.reset();
     }
   },
-  mixins: [getLoggedUserIdMixin, getDisciplineInfo]
+  mixins: [getLoggedUserIdMixin, getDisciplineInfo, getTournamentTypeMixin]
 };
 </script>
 
