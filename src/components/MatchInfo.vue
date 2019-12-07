@@ -133,7 +133,7 @@ export default {
       ];
     },
     matchesDate: function() {
-      if (this.Matches.dateTime.split("T")[0] == "0001-01-01") {
+      if (this.Matches.dateTime.split("T")[0] == "2000-01-01") {
         return "WYGENEROWANE AUTOMATYCZIE";
       }
 
