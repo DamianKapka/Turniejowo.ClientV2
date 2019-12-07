@@ -13,7 +13,7 @@ const types = {
 const state = {
   currentlyEditedTournament: Object,
   currentlyViewedTournament: Object,
-  apiUrl: "https://localhost:5001"
+  apiUrl: "http://78.47.36.35:7000"
 };
 
 const getters = {
