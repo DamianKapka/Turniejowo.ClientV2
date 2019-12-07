@@ -210,7 +210,7 @@
             </v-menu>
           </v-form>
           <v-card-actions>
-            <v-btn color="success" @click="editTime()" class="button"
+            <v-btn color="success" @click="edit()" class="button"
               ><v-icon>thumb_up</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
@@ -379,7 +379,7 @@ export default {
                   type: "success",
                   title: "Sukces",
                   confirmButtonColor: "#7fffd4",
-                  text: "Wynik zedytowany",
+                  text: "Mecz zedytowany",
                   showConfirmButton: true,
                   timer: 4000
                 });
@@ -455,7 +455,6 @@ export default {
           .catch(err => console.log(err));
       }
     },
-    editTime() {},
     cancel() {
       this.match.homeTeamPoints = this.initialHomeTeamPoints;
       this.match.guestTeamPoints = this.initialGuestTeamPoints;
