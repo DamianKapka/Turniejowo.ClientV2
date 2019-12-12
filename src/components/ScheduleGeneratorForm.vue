@@ -28,10 +28,57 @@
         </header>
         <v-layout row>
           <v-flex xs3 offset-xs3>
-            <v-text-field class="double-textfield"></v-text-field>
+            <v-menu
+              v-model="startDateMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  ref="menu"
+                  v-model="startDate"
+                  label="Data rozpoczecia"
+                  prepend-icon="event"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="startDate"
+                @input="startDateMenu = false"
+              ></v-date-picker>
+            </v-menu>
           </v-flex>
           <v-flex xs3>
-            <v-text-field class="double-textfield"></v-text-field>
+            <v-menu
+              v-model="endDateMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  ref="menu"
+                  v-model="endDate"
+                  label="Data zakonczenia"
+                  prepend-icon="event"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="endDate"
+                @input="endDateMenu = false"
+                :allowed-dates="allowedEndDates"
+              ></v-date-picker>
+            </v-menu>
           </v-flex>
         </v-layout>
         <header class="header-style">
@@ -39,10 +86,62 @@
         </header>
         <v-layout row>
           <v-flex xs3 offset-xs3>
-            <v-text-field class="double-textfield"></v-text-field>
+            <v-menu
+              ref="menu"
+              v-model="startTimeMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="startTime"
+                  label="Godzina startu spotkań"
+                  prepend-icon="access_time"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="startTimeMenu"
+                v-model="startTime"
+                full-width
+                @click:minute="startTimeMenu = false"
+              ></v-time-picker>
+            </v-menu>
           </v-flex>
           <v-flex xs3>
-            <v-text-field class="double-textfield"></v-text-field>
+            <v-menu
+              ref="menu"
+              v-model="endTimeMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="endTime"
+                  label="Godzina ostatniego spotkania"
+                  prepend-icon="access_time"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="endTimeMenu"
+                v-model="endTime"
+                full-width
+                @click:minute="endTimeMenu = false"
+              ></v-time-picker>
+            </v-menu>
           </v-flex>
         </v-layout>
         <header class="header-style">
@@ -50,7 +149,7 @@
         </header>
         <v-layout row>
           <v-flex xs2 offset-xs5>
-            <v-text-field></v-text-field>
+            <v-text-field v-model="simultaneousMatches"></v-text-field>
           </v-flex>
         </v-layout>
         <header class="header-style">
@@ -58,7 +157,7 @@
         </header>
         <v-layout row>
           <v-flex xs2 offset-xs5>
-            <v-checkbox style="margin-left: 43%"></v-checkbox>
+            <v-checkbox style="margin-left: 43%" v-model="rematch"></v-checkbox>
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -81,12 +180,16 @@ export default {
     return {
       valid: false,
       daysOfWeek: [],
-      startDate: "",
-      endDate: "",
-      startTime: "",
-      endTime: "",
-      simultaneousMatches: Number,
-      rematch: Boolean
+      startDate: new Date().toISOString().substr(0, 10),
+      startDateMenu: false,
+      endDate: new Date().toISOString().substr(0, 10),
+      endDateMenu: false,
+      startTime: "0:00:00",
+      startTimeMenu: false,
+      endTime: "0:00:00",
+      endTimeMenu: false,
+      simultaneousMatches: 1,
+      rematch: false
     };
   },
   computed: {
@@ -100,6 +203,12 @@ export default {
         simultaneousMatches: this.simultaneousMatches,
         rematch: this.rematch
       };
+    }
+  },
+  methods: {
+    allowedEndDates: function(val) {
+      const parsedStartDate = parseInt(this.startDate.replace(/-/g, ""), 10);
+      return parseInt(val.replace(/-/g, ""), 10) >= parsedStartDate;
     }
   }
 };
