@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-flex xs10 offset-xs1 style="padding:2%">
     <AddNewResult @ResultAdded="getMatchesGroupedByDate"></AddNewResult>
-    <ScheduleGeneratorForm></ScheduleGeneratorForm>
+    <ScheduleGeneratorForm @scheduleGenerated="getMatchesGroupedByDate"></ScheduleGeneratorForm>
     <v-divider></v-divider>
     <MatchInfo
       v-for="match in Matches"

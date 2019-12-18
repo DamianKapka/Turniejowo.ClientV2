@@ -6,7 +6,7 @@
           WYGENERUJ TERMINARZ
         </div>
       </template>
-      <v-form style="padding: 4%">
+      <v-form ref="form" style="padding: 4%">
         <header class="header-style">
           Dni tygodnia
         </header>
@@ -21,7 +21,7 @@
           <v-switch v-model="daysOfWeek" label="Czwartek" value="4"></v-switch>
           <v-switch v-model="daysOfWeek" label="Piątek" value="5"></v-switch>
           <v-switch v-model="daysOfWeek" label="Sobota" value="6"></v-switch>
-          <v-switch v-model="daysOfWeek" label="Niedziela" value="7"></v-switch>
+          <v-switch v-model="daysOfWeek" label="Niedziela" value="0"></v-switch>
         </v-layout>
         <header class="header-style">
           Początek/koniec turnieju
@@ -149,7 +149,10 @@
         </header>
         <v-layout row>
           <v-flex xs2 offset-xs5>
-            <v-text-field v-model="simultaneousMatches"></v-text-field>
+            <v-text-field
+              v-model="simultaneousMatches"
+              :rules="simultaneousMatchesRules"
+            ></v-text-field>
           </v-flex>
         </v-layout>
         <header class="header-style">
@@ -157,12 +160,18 @@
         </header>
         <v-layout row>
           <v-flex xs2 offset-xs5>
-            <v-checkbox style="margin-left: 43%" v-model="rematch"></v-checkbox>
+            <v-checkbox
+              style="margin-left: 43%"
+              v-model="rematch"
+              :disabled="rematchReadonly"
+            ></v-checkbox>
           </v-flex>
         </v-layout>
         <v-layout row>
           <v-flex xs2 offset-xs4>
-            <v-btn color="success" class="double-button">GENERUJ</v-btn>
+            <v-btn color="success" class="double-button" @click="generate"
+              >GENERUJ</v-btn
+            >
           </v-flex>
           <v-flex xs2>
             <v-btn color="reset" class="double-button">RESET</v-btn>
@@ -174,6 +183,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import axios from "axios";
+
 export default {
   name: "ScheduleGeneratorForm",
   data() {
@@ -189,12 +201,27 @@ export default {
       endTime: "0:00:00",
       endTimeMenu: false,
       simultaneousMatches: 1,
+      simultaneousMatchesRules: [
+        s =>
+          s < 5 ||
+          "W turnieju mogą się odbywać maxymalnie 4 mecze jednej godziny"
+      ],
       rematch: false
     };
   },
   computed: {
+    rematchReadonly: function() {
+      let result = false;
+
+      if (this.currentlyEditedTournament.isBracket === true) {
+        result = true;
+      }
+
+      return result;
+    },
     requestContract: function() {
       return {
+        tournamentId: this.currentlyEditedTournament.tournamentId,
         daysOfWeek: this.daysOfWeek,
         startDate: this.startDate,
         endDate: this.endDate,
@@ -203,12 +230,87 @@ export default {
         simultaneousMatches: this.simultaneousMatches,
         rematch: this.rematch
       };
-    }
+    },
+    ...mapGetters(["apiUrl", "currentlyEditedTournament"])
   },
   methods: {
     allowedEndDates: function(val) {
       const parsedStartDate = parseInt(this.startDate.replace(/-/g, ""), 10);
       return parseInt(val.replace(/-/g, ""), 10) >= parsedStartDate;
+    },
+    generate: function() {
+      if (this.daysOfWeek === undefined || this.daysOfWeek.length === 0) {
+        this.$swal.fire({
+          type: "error",
+          title: "Błąd",
+          confirmButtonColor: "#cb4154",
+          text: "Wybierz conajmniej 1 dzień w którym mają się odbywać mecze",
+          showConfirmButton: true,
+          timer: 4000
+        });
+      } else if (
+        parseInt(this.startTime.replace(/:/g, "", 10)) % 100 !== 0 ||
+        parseInt(this.endTime.replace(/:/g, "", 10)) % 100 !== 0
+      ) {
+        this.$swal.fire({
+          type: "error",
+          title: "Błąd",
+          confirmButtonColor: "#cb4154",
+          text: "Godzina 1 i ostatniego meczu muszą być pełnymi godzinami",
+          showConfirmButton: true,
+          timer: 4000
+        });
+      } else if (
+        this.currentlyEditedTournament.amountOfSignedTeams !==
+          this.currentlyEditedTournament.amountOfTeams &&
+        this.currentlyEditedTournament.isBracket === true
+      ) {
+        this.$swal.fire({
+          type: "error",
+          title: "Błąd",
+          confirmButtonColor: "#cb4154",
+          text: `Aby wygenerować harmonogram dla turnieju drabinkowego wszystkie drużyny muszą być dodane.\n Ilość: ${this.currentlyEditedTournament.amountOfTeams}`,
+          showConfirmButton: true,
+          timer: 4000
+        });
+      } else {
+        if (this.$refs.form.validate()) {
+          this.$swal
+            .fire({
+              title: "Czy jesteś pewny",
+              text:
+                "Wygenerowanie harmonogramu meczu skutkuje usunieciem istniejącyh meczów.\n Czy kontynuować?",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Wygeneruj"
+            })
+            .then(result => {
+              if (result.value) {
+                axios
+                  .post(
+                    "https://localhost:5001/api/ScheduleGenerator",
+                    this.requestContract
+                  )
+                  .then(res => {
+                    if (res.status === 200) {
+                      this.$swal.fire({
+                        type: "success",
+                        title: "Sukces",
+                        confirmButtonColor: "#7fffd4",
+                        text: "Terminarz wygenerowany poprawnie",
+                        showConfirmButton: true,
+                        timer: 4000
+                      });
+                      this.$emit("scheduleGenerated");
+                    }
+                  })
+                  .catch(err => console.log(err));
+              }
+            });
+        }
+      }
     }
   }
 };
