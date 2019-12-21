@@ -1,6 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-flex xs10 offset-xs1 style="padding:2%">
     <AddNewResult @ResultAdded="getMatchesGroupedByDate"></AddNewResult>
+    <ScheduleGeneratorForm @scheduleGenerated="getMatchesGroupedByDate"></ScheduleGeneratorForm>
     <v-divider></v-divider>
     <MatchInfo
       v-for="match in Matches"
@@ -17,10 +18,11 @@ import axios from "axios";
 import { mapGetters } from "vuex";
 import MatchInfo from "../../components/MatchInfo";
 import AddNewResult from "../../components/AddNewResult";
+import ScheduleGeneratorForm from "../../components/ScheduleGeneratorForm";
 
 export default {
   name: "EditProgress",
-  components: { MatchInfo, AddNewResult },
+  components: { MatchInfo, AddNewResult, ScheduleGeneratorForm },
   data() {
     return {
       valid: false,

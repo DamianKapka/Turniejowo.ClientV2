@@ -106,7 +106,6 @@ export default {
         .then(res => {
           switch (res.status) {
             case 200: {
-              console.log(res.data.rounds);
               this.rounds = res.data.rounds;
               break;
             }
