@@ -168,13 +168,10 @@
           </v-flex>
         </v-layout>
         <v-layout row>
-          <v-flex xs2 offset-xs4>
+          <v-flex xs4 offset-xs4>
             <v-btn color="success" class="double-button" @click="generate"
               >GENERUJ</v-btn
             >
-          </v-flex>
-          <v-flex xs2>
-            <v-btn color="reset" class="double-button">RESET</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -304,6 +301,55 @@ export default {
                         timer: 4000
                       });
                       this.$emit("scheduleGenerated");
+                    } else if (res.status === 404) {
+                      this.$swal.fire({
+                        type: "error",
+                        title: "Błąd",
+                        confirmButtonColor: "#cb4154",
+                        text:
+                          "Z podanych danych wejściowych nie da się utworzyć żadnego terminu meczu.",
+                        showConfirmButton: true,
+                        timer: 4000
+                      });
+                    } else if (res.status === 406) {
+                      this.$swal.fire({
+                        type: "error",
+                        title: "Błąd",
+                        confirmButtonColor: "#cb4154",
+                        text: "Błędny format terminów meczów.",
+                        showConfirmButton: true,
+                        timer: 4000
+                      });
+                    } else if (res.status === 409) {
+                      this.$swal.fire({
+                        type: "error",
+                        title: "Błąd",
+                        confirmButtonColor: "#cb4154",
+                        text:
+                          "Liczba meczów przekracza ilość możliwych terminów meczów.",
+                        showConfirmButton: true,
+                        timer: 4000
+                      });
+                    } else if (res.status === 418) {
+                      this.$swal.fire({
+                        type: "error",
+                        title: "Błąd",
+                        confirmButtonColor: "#cb4154",
+                        text:
+                          "Brak wymaganej liczby drużyn w turnieju. W celu wygenerowania terminarza, dodaj conajmniej 2 drużyny do turnieju.",
+                        showConfirmButton: true,
+                        timer: 4000
+                      });
+                    } else {
+                      this.$swal.fire({
+                        type: "error",
+                        title: "Błąd",
+                        confirmButtonColor: "#cb4154",
+                        text:
+                          "Nieznany błąd. NIe udało się wygenerować terminarza.",
+                        showConfirmButton: true,
+                        timer: 4000
+                      });
                     }
                   })
                   .catch(err => console.log(err));
