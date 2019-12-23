@@ -287,7 +287,7 @@ export default {
               if (result.value) {
                 axios
                   .post(
-                    "https://localhost:5001/api/ScheduleGenerator",
+                    `${this.apiUrl}/api/ScheduleGenerator`,
                     this.requestContract
                   )
                   .then(res => {
