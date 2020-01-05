@@ -27,7 +27,7 @@ export default {
       navBarCardInfo: [
         { LabelInfo: "ZALOGUJ", ActiveClass: "login", RouterLink: "login" },
         {
-          LabelInfo: "ZAREJSTRUJ",
+          LabelInfo: "ZAREJESTRUJ",
           ActiveClass: "register",
           RouterLink: "register"
         },
