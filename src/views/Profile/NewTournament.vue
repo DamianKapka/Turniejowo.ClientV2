@@ -116,8 +116,13 @@ export default {
           /^[1-9][0-9]?$/.test(a.trim()) ||
           "Ilośc drużym musi być cyrfą wieksza od 0",
         a => {
-          if (this.Type === "Drabinka" && a !== "4" && a !== "8" && a !== "16") {
-            return "Turniej w trybie drabinkowym wymaga 4,8 lub 16 drużyn"
+          if (
+            this.Type === "Drabinka" &&
+            a !== "4" &&
+            a !== "8" &&
+            a !== "16"
+          ) {
+            return "Turniej w trybie drabinkowym wymaga 4,8 lub 16 drużyn";
           }
         }
       ],

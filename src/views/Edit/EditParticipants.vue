@@ -97,9 +97,9 @@ export default {
           sortable: false,
           align: "center"
         },
-        { text: "Team", value: "Team", sortable: false, align: "center" },
-        { text: "Players", value: "Players", sortable: false, align: "center" },
-        { text: "Actions", value: "Actions", sortable: false, align: "center" }
+        { text: "Drużyna", value: "Team", sortable: false, align: "center" },
+        { text: "Gracze", value: "Players", sortable: false, align: "center" },
+        { text: "Akcje", value: "Actions", sortable: false, align: "center" }
       ],
       Teams: []
     };

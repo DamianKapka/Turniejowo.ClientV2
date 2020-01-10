@@ -17,7 +17,7 @@
       </v-combobox>
 
       <v-combobox
-        label="Dyscyplina"
+        label="Typ"
         v-model="Type"
         :items="TypeOptions"
         readonly

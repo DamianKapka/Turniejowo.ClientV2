@@ -6,7 +6,7 @@
         v-on="on"
         size="30"
         color="green"
-        @click="getMatchPoints(match.matchid)"
+        @click="getMatchPoints(match.matchId)"
       >
         settings_applications
       </v-icon>
